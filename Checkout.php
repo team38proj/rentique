@@ -50,56 +50,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             die("Invalid card selection.");
         }
 
-        // Process payment here
+        // Process payment here (backend logic)
         echo "<p>Payment processed using saved card ending in: " . htmlspecialchars(substr($card['masked_card_number'], -4)) . "</p>";
         exit;
     }
 
-    // Victor Backend – Handle NEW card details //
-    $name = trim($_POST['cardholder_name'] ?? '');
-    $number = trim($_POST['card_number'] ?? '');
-    $type = trim($_POST['card_type'] ?? '');
+    // Victor Backend – Handle NEW card submission (real card number received from hidden input)
+    $name   = trim($_POST['cardholder_name'] ?? '');
+    $number = trim($_POST['card_number_real'] ?? '');
+    $type   = trim($_POST['card_type'] ?? '');
     $expiry = trim($_POST['expiry_date'] ?? '');
-    $cvv = trim($_POST['cvv'] ?? '');
+    $cvv    = trim($_POST['cvv'] ?? '');
 
-    // Victor Backend – Validation
-    $errors = [];
-
-    if ($name === '' || $number === '' || $type === '' || $expiry === '' || $cvv === '') {
-        $errors[] = "All fields are required.";
-    }
-
-    if ($name !== $billingFullName) {
-        $errors[] = "Cardholder name must match your billing full name on file: " . htmlspecialchars($billingFullName);
-    }
-
-    if (!preg_match('/^[0-9]{16}$/', $number)) {
-        $errors[] = "Card number must be 16 digits.";
-    }
-
-    if (!preg_match('/^[0-9]{3}$/', $cvv)) {
-        $errors[] = "CVV must be 3 digits.";
-    }
-
-    if (strtotime($expiry . "-01") < time()) { // expiry is month input, convert to first day
-        $errors[] = "Expiry date must be in the future.";
-    }
-
-    if (!empty($errors)) {
-        foreach ($errors as $err) {
-            echo "<p style='color:red;'>" . htmlspecialchars($err) . "</p>";
-        }
-        exit;
-    }
-
-    // Victor Backend – Mask card number for storage //
+    // Mask card number for storage
     $masked = str_repeat('*', 12) . substr($number, -4);
 
-    // Victor Backend – Insert new saved card //
+    // Insert new saved card
     $stmt = $db->prepare("INSERT INTO saved_cards (uid, cardholder_name, card_type, masked_card_number) VALUES (?, ?, ?, ?)");
     $stmt->execute([$uid, $name, $type, $masked]);
 
-    // Victor Backend – Process payment (demo) //
+    // Process payment (backend logic)
     echo "<p>Payment processed using new card ending in: " . substr($number, -4) . "</p>";
     exit;
 }
@@ -110,6 +80,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <link rel="stylesheet" href="rentique.css">
     <title>Checkout: Rentique</title>
+    <script>
+        // Victor Backend – Pass billing name to JS
+        window.userBillingName = <?= json_encode($billingFullName) ?>;
+    </script>
     <script src="script.js" defer></script> <!-- Victor Backend – External JS file -->
 </head>
 <body id="checkoutPage">
@@ -142,7 +116,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
         <div class="right-side">
-
             <form action="checkout.php" method="POST" id="checkoutForm">
 
                 <h1>Checkout</h1>
@@ -193,7 +166,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <button type="submit" class="button">Confirm</button>
             </form>
-
         </div>
     </div>
 </div>
