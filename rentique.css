@@ -266,3 +266,172 @@ footer {
 }
 
 
+#checkoutPage {
+    font-family: "Inter", sans-serif;
+    background-image: url("bgimg.jpeg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    color: #013220;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+#checkoutPage header {
+    background-color: #000000;
+    padding: 2px 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+#checkoutPage .header-logo {
+    height: 120px;
+    width: auto;
+}
+
+#checkoutPage .brand-name {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #ffffff;
+    letter-spacing: 0.08rem;
+}
+
+#checkoutPage h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #013220;
+    margin-bottom: 0.7rem;
+}
+
+#checkoutPage h2 {
+    font-size: 1rem;
+    font-weight: 300;
+    color: #555555;
+    margin-bottom: 1.5rem;
+    line-height: 1.4;
+}
+
+#checkoutPage p {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-top: 1rem;
+    margin-bottom: 0.8rem;
+    color: #013220;
+}
+
+#checkoutPage .main {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    justify-content: center;
+    align-items: center;
+}
+
+#checkoutPage .card {
+    width: 90%;
+    max-width: 1000px;
+    height: 80vh;
+    background: #ffffff;
+    align-self: center;
+    box-shadow: 4px 3px 28px #3535358c;
+    display: flex;
+    flex-direction: row;
+    border-radius: 0rem;
+    overflow: hidden;
+}
+
+#checkoutPage .left-side {
+    background: #000000;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    color: #ffffff;
+}
+
+#checkoutPage .order-summary {
+    width: 100%;
+    background: rgba(0,0,0,0.6);
+    border: 1px solid #ffffff;
+    padding: 1.8rem 1.4rem;
+}
+
+#checkoutPage .order-summary h3 {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+#checkoutPage .order-summary li {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1rem;
+    margin-bottom: 0.6rem;
+    color: #e3f5e4;
+}
+
+#checkoutPage .order-total {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.8rem;
+    padding-top: 0.8rem;
+    border-top: 1px solid #ffffff;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #ffffff;
+}
+
+#checkoutPage .right-side {
+    flex: 1;
+    background-color: #ffffff;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow-y: auto;
+}
+
+#checkoutPage .inputbox {
+    width: 100%;
+    padding: 0.5rem;
+    border: none;
+    border-bottom: 1.5px solid #ccc;
+    margin-bottom: 1rem;
+    color: #615a5a;
+    font-size: 1.1rem;
+    outline: none;
+}
+
+#checkoutPage .expcvv {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 0.6rem 0;
+}
+
+#checkoutPage .button {
+    background: #013220;
+    padding: 15px;
+    border: none;
+    color: #ffffff;
+    font-size: 1.2rem;
+    margin-top: 10px;
+    width: 100%;
+    letter-spacing: 0.11rem;
+    cursor: pointer;
+}
+
+#checkoutPage .button:hover {
+    transform: scale(1.05) translateY(-3px);
+    box-shadow: 3px 3px 6px #38373785;
+    transition: 0.5s;
+}
+
