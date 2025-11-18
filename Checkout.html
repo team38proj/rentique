@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="style.css">
+    <title>Checkout: Rentique</title>
+</head>
+<body>
+    <header>
+        <img src="logo.jpeg" alt="Rentique logo" class="header-logo">
+        <span class="brand-name">Checkout</span>
+    </header>
+
+    <div class="main">
+        <div class="card">
+            <div class="left-side">
+                <div class="order-summary">
+                    <h3>Order Summary</h3>
+                    <ul>
+                        <li>
+                            <span class="item-name">Green Satin Dress (3 days)</span>
+                            <span class="item-price">£45.00</span>
+                        </li>
+                        <li>
+                            <span class="item-name">Delivery</span>
+                            <span class="item-price">£4.99</span>
+                        </li>
+                    </ul>
+                    <div class="order-total">
+                        <span>Total</span>
+                        <span>£49.99</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-side">
+                <form action="">
+                    <h1>Checkout</h1>
+                    <h2>Almost there! Please enter your card details to confirm your purchase.</h2>
+
+                    <p>Cardholder Name</p>
+                    <input type="text" class="inputbox" required>
+
+                    <p>Card Number</p>
+                    <input type="number" class="inputbox" required>
+
+                    <p>Card Type</p>
+                    <select class="inputbox" required>
+                        <option value="">Select a card type</option>
+                        <option value="visa">Visa</option>
+                        <option value="mastercard">MasterCard</option>
+                        <option value="other">Other</option>
+                    </select>
+
+                    <div class="expcvv">
+                        <div style="flex:1;">
+                            <p class="expcvv_text">Expiry Date</p>
+                            <input type="date" class="inputbox" required>
+                        </div>
+                        <div style="flex:1;">
+                            <p class="expcvv_text2">CVV</p>
+                            <input type="password" class="inputbox" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="button">Confirm</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
