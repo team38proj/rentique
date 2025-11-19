@@ -119,4 +119,55 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Victor Backend – if using saved card, ensure a selection is made
             if (savedCardSelect && savedCardSelect.options.length > 1 && !usingSavedCard) {
-                errors.push("Please select a saved card or enter new
+                errors.push("Please select a saved card or enter new card details.");
+            }
+
+            // Validate new card fields only if not using a saved card
+            if (!usingSavedCard) {
+                const name = checkoutForm.cardholder_name.value.trim();
+                const number = checkoutForm.card_number_real ? checkoutForm.card_number_real.value.trim() : '';
+                const type = checkoutForm.card_type.value.trim();
+                const expiry = checkoutForm.expiry_date.value;
+                const cvv = checkoutForm.cvv.value.trim();
+
+                if (!name || !number || !type || !expiry || !cvv) {
+                    errors.push("All new card fields are required.");
+                }
+
+                if (!/^\d{16}$/.test(number)) errors.push("Card number must be 16 digits.");
+                if (!/^\d{3}$/.test(cvv)) errors.push("CVV must be 3 digits.");
+                if (new Date(expiry + "-01") < new Date()) errors.push("Expiry date must be in the future.");
+                if (name !== userBillingName) errors.push(`Cardholder name must match your billing name: ${userBillingName}`);
+            }
+
+            if (errors.length > 0) {
+                e.preventDefault();
+                alert(errors.join("\n"));
+            }
+        });
+    }
+
+    // ---------- Mask new card number ----------
+    const cardNumberInput = document.querySelector('input[name="card_number"]');
+
+    if (cardNumberInput) {
+        // Create a hidden input to store the real card number
+        const realCardInput = document.createElement('input');
+        realCardInput.type = 'hidden';
+        realCardInput.name = 'card_number_real';
+        cardNumberInput.parentNode.appendChild(realCardInput);
+
+        // Mask the card number as user types
+        cardNumberInput.addEventListener('input', function(e) {
+            const val = e.target.value.replace(/\D/g, '').slice(0, 16); // Only digits, max 16
+            realCardInput.value = val;
+
+            // Display only last 4 digits
+            if (val.length <= 4) {
+                e.target.value = val;
+            } else {
+                e.target.value = '*'.repeat(val.length - 4) + val.slice(-4);
+            }
+        });
+    }
+});
