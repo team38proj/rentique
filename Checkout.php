@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html>
 <head>
     <link rel="stylesheet" href="rentique.css">
-    <title>Rentique|Checkout</title>
+    <title>Rentique | Checkout</title>
     <script>
         // Victor Backend – Pass billing name to JS
         window.userBillingName = <?= json_encode($billingFullName) ?>;
@@ -164,4 +164,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </div>
 </body>
 </html>
+
 
