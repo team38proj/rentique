@@ -91,8 +91,7 @@ resetButton.addEventListener('click', function() {
     document.getElementById('categoryFilter').value = 'all'
 })
 
-/* CHECKOUT JAVACODE */
-
+//CHECKOUT PAGE=====
 document.addEventListener('DOMContentLoaded', function() {
 
     const savedCardSelect = document.getElementById('savedCardSelect');
@@ -134,9 +133,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     errors.push("All new card fields are required.");
                 }
 
-                if (!/^\d{16}$/.test(number)) errors.push("Card number must be 16 digits.");
-                if (!/^\d{3}$/.test(cvv)) errors.push("CVV must be 3 digits.");
-                if (new Date(expiry + "-01") < new Date()) errors.push("Expiry date must be in the future.");
+                if (!/^\d{16}$/.test(number)) errors.push("Card number INVALID!!");
+                if (!/^\d{3}$/.test(cvv)) errors.push("CVV INVALID!!");
+                if (new Date(expiry + "-01") < new Date()) errors.push("Expiry date INVALID!!");
                 if (name !== userBillingName) errors.push(`Cardholder name must match your billing name: ${userBillingName}`);
             }
 
@@ -147,7 +146,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // ---------- Mask new card number ----------
+    // ---------- Store new card number in hidden input (no masking) ----------
     const cardNumberInput = document.querySelector('input[name="card_number"]');
 
     if (cardNumberInput) {
@@ -157,17 +156,11 @@ document.addEventListener('DOMContentLoaded', function() {
         realCardInput.name = 'card_number_real';
         cardNumberInput.parentNode.appendChild(realCardInput);
 
-        // Mask the card number as user types
+        // Simply store digits as user types, no masking
         cardNumberInput.addEventListener('input', function(e) {
             const val = e.target.value.replace(/\D/g, '').slice(0, 16); // Only digits, max 16
             realCardInput.value = val;
-
-            // Display only last 4 digits
-            if (val.length <= 4) {
-                e.target.value = val;
-            } else {
-                e.target.value = '*'.repeat(val.length - 4) + val.slice(-4);
-            }
+            e.target.value = val; // Show full number as typed
         });
     }
 });
