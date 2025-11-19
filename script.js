@@ -93,35 +93,30 @@ resetButton.addEventListener('click', function() {
 
 //CHECKOUT PAGE=====
 document.addEventListener('DOMContentLoaded', function() {
-
+    // Victor Backend – Grab saved card select and new card section
     const savedCardSelect = document.getElementById('savedCardSelect');
     const newCardSection = document.getElementById('newCardSection');
     const checkoutForm = document.getElementById('checkoutForm');
-
-    // Victor Backend – user's billing name passed from PHP
     const userBillingName = window.userBillingName || '';
 
-    // ---------- Toggle new card section when saved card is selected ----------
+    // Victor Backend – Toggle new card section
     if (savedCardSelect && newCardSection) {
-        newCardSection.style.display = 'block'; // default show new card
+        newCardSection.style.display = 'block';
         savedCardSelect.addEventListener('change', function() {
             newCardSection.style.display = this.value ? 'none' : 'block';
         });
     }
 
-    // ---------- Form validation ----------
+    // Victor Backend – Form validation
     if (checkoutForm) {
         checkoutForm.addEventListener('submit', function(e) {
-
             const usingSavedCard = savedCardSelect && savedCardSelect.value;
             let errors = [];
 
-            // Victor Backend – if using saved card, ensure a selection is made
             if (savedCardSelect && savedCardSelect.options.length > 1 && !usingSavedCard) {
                 errors.push("Please select a saved card or enter new card details.");
             }
 
-            // Validate new card fields only if not using a saved card
             if (!usingSavedCard) {
                 const name = checkoutForm.cardholder_name.value.trim();
                 const number = checkoutForm.card_number_real ? checkoutForm.card_number_real.value.trim() : '';
@@ -129,11 +124,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 const expiry = checkoutForm.expiry_date.value;
                 const cvv = checkoutForm.cvv.value.trim();
 
-                if (!name || !number || !type || !expiry || !cvv) {
-                    errors.push("All new card fields are required.");
+                if (!name || !number || !type || !expiry || !cvv) errors.push("All new card fields are required.");
+                if (!/^\d{16}$/.test(number)) errors.push("Card number INVALID!!");
+
+                // Victor Backend – Card type validation
+                if (type === "Visa" && !number.startsWith("4")) errors.push("Visa card INVALID!!");
+                if (type === "MasterCard") {
+                    const prefix = parseInt(number.slice(0, 2), 10);
+                    if (prefix < 51 || prefix > 55) errors.push("MasterCard INVALID!!");
                 }
 
-                if (!/^\d{16}$/.test(number)) errors.push("Card number INVALID!!");
                 if (!/^\d{3}$/.test(cvv)) errors.push("CVV INVALID!!");
                 if (new Date(expiry + "-01") < new Date()) errors.push("Expiry date INVALID!!");
                 if (name !== userBillingName) errors.push(`Cardholder name must match your billing name: ${userBillingName}`);
@@ -146,21 +146,50 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // ---------- Store new card number in hidden input (no masking) ----------
+    // Victor Backend – Store real card number in hidden input
     const cardNumberInput = document.querySelector('input[name="card_number"]');
-
     if (cardNumberInput) {
-        // Create a hidden input to store the real card number
         const realCardInput = document.createElement('input');
         realCardInput.type = 'hidden';
         realCardInput.name = 'card_number_real';
         cardNumberInput.parentNode.appendChild(realCardInput);
 
-        // Simply store digits as user types, no masking
         cardNumberInput.addEventListener('input', function(e) {
-            const val = e.target.value.replace(/\D/g, '').slice(0, 16); // Only digits, max 16
+            const val = e.target.value.replace(/\D/g, '').slice(0, 16);
             realCardInput.value = val;
-            e.target.value = val; // Show full number as typed
+            e.target.value = val;
         });
+    }
+
+    // Victor Backend – Dynamic order summary
+    const deliveryCost = 4.99;
+    window.renderOrderSummary = function(basket) {
+        const orderItemsContainer = document.getElementById('orderItems');
+        const deliveryContainer = document.getElementById('orderDelivery');
+        const totalContainer = document.getElementById('orderTotal');
+        orderItemsContainer.innerHTML = '';
+        let subtotal = 0;
+
+        basket.forEach(item => {
+            subtotal += parseFloat(item.price);
+            const div = document.createElement('div');
+            div.style.display = 'flex';
+            div.style.alignItems = 'center';
+            div.style.marginBottom = '10px';
+            div.innerHTML = `
+                <img src="${item.image}" alt="${item.title}" style="width:50px;height:50px;margin-right:10px;object-fit:cover;border-radius:4px;">
+                <span style="flex:1;">${item.title}</span>
+                <span>£${parseFloat(item.price).toFixed(2)}</span>
+            `;
+            orderItemsContainer.appendChild(div);
+        });
+
+        deliveryContainer.innerHTML = `<div style="display:flex;justify-content:space-between;margin-top:10px;"><span>Delivery</span><span>£${deliveryCost.toFixed(2)}</span></div>`;
+        const total = subtotal + deliveryCost;
+        totalContainer.innerHTML = `<div style="display:flex;justify-content:space-between;font-weight:bold;margin-top:10px;"><span>Total</span><span>£${total.toFixed(2)}</span></div>`;
+    };
+
+    if (window.basket && window.basket.length > 0) {
+        window.renderOrderSummary(window.basket);
     }
 });
