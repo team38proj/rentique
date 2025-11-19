@@ -3,28 +3,22 @@
 session_start();
 require_once 'connectdb.php';
 
-// Victor Backend – Ensure user is logged in //
-if (!isset($_SESSION['uid'])) {
-    die("Access denied. Please log in.");
-}
+// Victor Backend – Ensure user is logged in
 $uid = $_SESSION['uid'];
+if (!isset($_SESSION['uid'])) die("Access denied.");
 
-// Victor Backend – Fetch the user's billing_fullname from users table //
+// Victor Backend – Fetch user's billing_fullname
 try {
     $stmt = $db->prepare("SELECT billing_fullname FROM users WHERE uid = ?");
     $stmt->execute([$uid]);
     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if (!$userData) {
-        die("User not found in database.");
-    }
-
+    if (!$userData) die("User not found.");
     $billingFullName = $userData['billing_fullname'];
 } catch (PDOException $e) {
     die("Database error: " . htmlspecialchars($e->getMessage()));
 }
 
-// Victor Backend – Fetch saved cards for this user (only masked numbers) //
+// Victor Backend – Fetch saved cards for this user (masked)
 $savedCards = [];
 try {
     $stmt = $db->prepare("SELECT id, cardholder_name, card_type, masked_card_number FROM saved_cards WHERE uid = ?");
@@ -34,42 +28,52 @@ try {
     echo "Database error: " . htmlspecialchars($e->getMessage());
 }
 
-// Victor Backend – Handle form submission //
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+// Victor Backend – Fetch basket items for this user
+$basket = [];
+try {
+    $stmt = $db->prepare("SELECT pid, title, image, product_type, uid, price FROM basket WHERE uid = ?");
+    $stmt->execute([$uid]);
+    $basket = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    echo "Database error: " . htmlspecialchars($e->getMessage());
+}
 
-    // If user selects an existing saved card
+// Victor Backend – Handle form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Victor Backend – If user selects a saved card
     if (!empty($_POST['use_saved_card'])) {
         $selectedCardId = intval($_POST['use_saved_card']);
-
-        // Verify card belongs to user
         $stmt = $db->prepare("SELECT * FROM saved_cards WHERE id = ? AND uid = ?");
         $stmt->execute([$selectedCardId, $uid]);
         $card = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!$card) die("Invalid card selection.");
 
-        if (!$card) {
-            die("Invalid card selection.");
-        }
+        // Victor Backend – Clear basket after purchase
+        $stmt = $db->prepare("DELETE FROM basket WHERE uid = ?");
+        $stmt->execute([$uid]);
 
-        // Process payment here (backend logic)
         echo "<p>Payment processed using saved card ending in: " . htmlspecialchars(substr($card['masked_card_number'], -4)) . "</p>";
         exit;
     }
 
-    // Victor Backend – Handle NEW card submission (real card number received from hidden input)
+    // Victor Backend – Handle new card submission
     $name   = trim($_POST['cardholder_name'] ?? '');
     $number = trim($_POST['card_number_real'] ?? '');
     $type   = trim($_POST['card_type'] ?? '');
     $expiry = trim($_POST['expiry_date'] ?? '');
     $cvv    = trim($_POST['cvv'] ?? '');
 
-    // Mask card number for storage
+    // Victor Backend – Mask card number for storage
     $masked = str_repeat('*', 12) . substr($number, -4);
 
-    // Insert new saved card
+    // Victor Backend – Save new card to database
     $stmt = $db->prepare("INSERT INTO saved_cards (uid, cardholder_name, card_type, masked_card_number) VALUES (?, ?, ?, ?)");
     $stmt->execute([$uid, $name, $type, $masked]);
 
-    // Process payment (backend logic)
+    // Victor Backend – Clear basket after purchase
+    $stmt = $db->prepare("DELETE FROM basket WHERE uid = ?");
+    $stmt->execute([$uid]);
+
     echo "<p>Payment processed using new card ending in: " . substr($number, -4) . "</p>";
     exit;
 }
@@ -83,11 +87,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script>
         // Victor Backend – Pass billing name to JS
         window.userBillingName = <?= json_encode($billingFullName) ?>;
+
+        // Victor Backend – Pass basket to JS
+        window.basket = <?= json_encode($basket) ?>;
     </script>
-    <script src="script.js" defer></script> <!-- Victor Backend – External JS file -->
+    <script src="script.js" defer></script>
 </head>
 <body id="checkoutPage">
-
 <header>
     <img src="logo.jpeg" alt="Rentique logo" class="header-logo">
     <span class="brand-name">Checkout</span>
@@ -98,30 +104,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="left-side">
             <div class="order-summary">
                 <h3>Order Summary</h3>
-                <ul>
-                    <li>
-                        <span class="item-name">Green Satin Dress (3 days)</span>
-                        <span class="item-price">£45.00</span>
-                    </li>
-                    <li>
-                        <span class="item-name">Delivery</span>
-                        <span class="item-price">£4.99</span>
-                    </li>
-                </ul>
-                <div class="order-total">
-                    <span>Total</span>
-                    <span>£49.99</span>
-                </div>
+                <div id="orderItems"></div>
+                <div id="orderDelivery"></div>
+                <div id="orderTotal"></div>
             </div>
         </div>
 
         <div class="right-side">
             <form action="checkout.php" method="POST" id="checkoutForm">
-
                 <h1>Checkout</h1>
                 <h2>Almost there! Please choose or enter your card details.</h2>
 
-                <!-- Victor Backend – Saved Card Selection -->
+                <!-- Victor Backend – Display saved cards if available -->
                 <?php if (!empty($savedCards)): ?>
                     <p>Use Saved Card</p>
                     <select class="inputbox" name="use_saved_card" id="savedCardSelect">
@@ -132,11 +126,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </option>
                         <?php endforeach; ?>
                     </select>
-
                     <p style="text-align:center; font-weight:bold;">— OR —</p>
                 <?php endif; ?>
 
-                <!-- Victor Backend – New Card Fields -->
+                <!-- Victor Backend – New card input fields -->
                 <div id="newCardSection">
                     <p>Cardholder Name</p>
                     <input type="text" class="inputbox" name="cardholder_name" required>
@@ -169,6 +162,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </div>
 </div>
-
 </body>
 </html>
