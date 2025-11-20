@@ -3,7 +3,7 @@
 session_start();
 require_once 'connectdb.php';
 
-// Victor Backend – Ensure user is logged in
+// Victor Backend –  user is logged in
 $uid = $_SESSION['uid'];
 if (!isset($_SESSION['uid'])) die("Access denied.");
 
@@ -18,7 +18,7 @@ try {
     die("Database error: " . htmlspecialchars($e->getMessage()));
 }
 
-// Victor Backend – Fetch saved cards for this user (masked)
+// Victor Backend – Fetch saved cards for user (masked)
 $savedCards = [];
 try {
     $stmt = $db->prepare("SELECT id, cardholder_name, card_type, masked_card_number FROM saved_cards WHERE uid = ?");
@@ -28,7 +28,7 @@ try {
     echo "Database error: " . htmlspecialchars($e->getMessage());
 }
 
-// Victor Backend – Fetch basket items for this user
+// Victor Backend – Fetch basket items for user
 $basket = [];
 try {
     $stmt = $db->prepare("SELECT pid, title, image, product_type, uid, price FROM basket WHERE uid = ?");
@@ -164,5 +164,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </div>
 </body>
 </html>
+
 
 
