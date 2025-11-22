@@ -622,3 +622,45 @@ footer {
     box-shadow: 3px 3px 6px #38373785;
     transition: 0.5s;
 }
+/* Contact Page */
+.contactForm {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.nameRow {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.nameRow div {
+    flex: 1;
+}
+
+.contactForm label {
+    color: #a3ff00;
+    margin-bottom: 8px;
+    font-size: 14px;
+    display: block;
+}
+
+.contactForm input,
+.contactForm textarea {
+    width: 100%;
+    padding: 10px 15px;
+    background: #1a1a1a;
+    color: #fff;
+    border: 1px solid #333;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+#sendBtn {
+    padding: 10px 30px;
+    background: #a3ff00;
+    color: #000;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
