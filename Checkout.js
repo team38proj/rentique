@@ -1,41 +1,65 @@
-
-//CHECKOUT PAGE=====
 document.addEventListener('DOMContentLoaded', function() {
-    // Victor Backend – Grab saved card select and new card section
     const savedCardSelect = document.getElementById('savedCardSelect');
     const newCardSection = document.getElementById('newCardSection');
     const checkoutForm = document.getElementById('checkoutForm');
     const userBillingName = window.userBillingName || '';
 
-    // Victor Backend – Toggle new card section
+    // Show/hide new card section based on saved card selection
     if (savedCardSelect && newCardSection) {
-        newCardSection.style.display = 'block';
+        newCardSection.style.display = 'block'; // default show
         savedCardSelect.addEventListener('change', function() {
-            newCardSection.style.display = this.value ? 'none' : 'block';
+            newCardSection.style.display = this.value && this.value !== "" ? 'none' : 'block';
         });
     }
 
-    // Victor Backend – Form validation
+    //  hidden input for real card number exists
+    let realCardInput = document.querySelector('input[name="card_number_real"]');
+    if (!realCardInput) {
+        realCardInput = document.createElement('input');
+        realCardInput.type = 'hidden';
+        realCardInput.name = 'card_number_real';
+        checkoutForm.appendChild(realCardInput);
+    }
+
+    //  card number input and sync to hidden input
+    const cardNumberInput = document.querySelector('input[name="card_number"]');
+    if (cardNumberInput) {
+        cardNumberInput.addEventListener('input', function(e) {
+            const val = e.target.value.replace(/\D/g, '').slice(0, 16); // keep only digits
+            realCardInput.value = val;  // hidden field for backend
+            e.target.value = val;       // sanitized visible input
+        });
+    }
+
+    // Form validation
     if (checkoutForm) {
         checkoutForm.addEventListener('submit', function(e) {
-            const usingSavedCard = savedCardSelect && savedCardSelect.value;
+            const usingSavedCard = savedCardSelect && savedCardSelect.value && savedCardSelect.value !== "";
             let errors = [];
 
-            if (savedCardSelect && savedCardSelect.options.length > 1 && !usingSavedCard) {
+            // Check if user filled new card fields
+            const anyNewCardFilled = (checkoutForm.cardholder_name.value.trim() ||
+                                      checkoutForm.card_number.value.trim() ||
+                                      checkoutForm.card_type.value.trim() ||
+                                      checkoutForm.expiry_date.value.trim() ||
+                                      checkoutForm.cvv.value.trim());
+
+            // Must select a saved card OR enter new card info
+            if (!usingSavedCard && !anyNewCardFilled) {
                 errors.push("Please select a saved card or enter new card details.");
             }
 
-            if (!usingSavedCard) {
+            // Validate new card only if not using saved card
+            if (!usingSavedCard && anyNewCardFilled) {
                 const name = checkoutForm.cardholder_name.value.trim();
-                const number = checkoutForm.card_number_real ? checkoutForm.card_number_real.value.trim() : '';
+                const number = realCardInput.value.trim();
                 const type = checkoutForm.card_type.value.trim();
                 const expiry = checkoutForm.expiry_date.value;
                 const cvv = checkoutForm.cvv.value.trim();
 
                 if (!name || !number || !type || !expiry || !cvv) errors.push("All new card fields are required.");
-                if (!/^\d{16}$/.test(number)) errors.push("Card number INVALID!!");
+                if (!/^\d{13,16}$/.test(number)) errors.push("Card number INVALID!!"); // allow 13–16 digits
 
-                // Victor Backend – Card type validation
                 if (type === "Visa" && !number.startsWith("4")) errors.push("Visa card INVALID!!");
                 if (type === "MasterCard") {
                     const prefix = parseInt(number.slice(0, 2), 10);
@@ -51,21 +75,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 e.preventDefault();
                 alert(errors.join("\n"));
             }
-        });
-    }
-
-    // Victor Backend – Store real card number in hidden input
-    const cardNumberInput = document.querySelector('input[name="card_number"]');
-    if (cardNumberInput) {
-        const realCardInput = document.createElement('input');
-        realCardInput.type = 'hidden';
-        realCardInput.name = 'card_number_real';
-        cardNumberInput.parentNode.appendChild(realCardInput);
-
-        cardNumberInput.addEventListener('input', function(e) {
-            const val = e.target.value.replace(/\D/g, '').slice(0, 16);
-            realCardInput.value = val;
-            e.target.value = val;
         });
     }
 
