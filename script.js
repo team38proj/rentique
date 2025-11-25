@@ -170,7 +170,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['user_id'] = $pdo->lastInsertId();
             $_SESSION['username'] = $username;
 	    //go to homepage
-            header('Location: index.php');
+            header('Location: homepage.php');
             exit;
         } 
         else {
@@ -221,7 +221,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['user_id'] = $user['uid'];
             $_SESSION['username'] = $user['username'];
             session_regenerate_id(true);
-            header('Location: index.php');
+            header('Location: homepage.php');
             exit;
         } 
         else {
