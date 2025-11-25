@@ -1,11 +1,13 @@
 <?php
-// Victor Backend – Start session and load database connection //
+// Victor Backend – Start session and load database connection
 session_start();
 require_once 'connectdb.php';
 
-// Victor Backend –  user is logged in
-$uid = $_SESSION['uid'];
-if (!isset($_SESSION['uid'])) die("Access denied.");
+$errorMessage = ""; // variable for errors
+
+// Victor Backend – user is logged in
+$uid = $_SESSION['uid'] ?? null;
+if (!$uid) die("Access denied.");
 
 // Victor Backend – Fetch user's billing_fullname
 try {
@@ -25,7 +27,7 @@ try {
     $stmt->execute([$uid]);
     $savedCards = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
-    echo "Database error: " . htmlspecialchars($e->getMessage());
+    $errorMessage = "Database error: " . htmlspecialchars($e->getMessage());
 }
 
 // Victor Backend – Fetch basket items for user
@@ -35,51 +37,72 @@ try {
     $stmt->execute([$uid]);
     $basket = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
-    echo "Database error: " . htmlspecialchars($e->getMessage());
+    $errorMessage = "Database error: " . htmlspecialchars($e->getMessage());
 }
 
 // Victor Backend – Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Victor Backend – If user selects a saved card
-    if (!empty($_POST['use_saved_card'])) {
-        $selectedCardId = intval($_POST['use_saved_card']);
-        $stmt = $db->prepare("SELECT * FROM saved_cards WHERE id = ? AND uid = ?");
-        $stmt->execute([$selectedCardId, $uid]);
-        $card = $stmt->fetch(PDO::FETCH_ASSOC);
-        if (!$card) die("Invalid card selection.");
 
-        // Victor Backend – Clear basket after purchase
+    // Fetch basket items for this user
+    $stmt = $db->prepare("SELECT * FROM basket WHERE uid = ?");
+    $stmt->execute([$uid]);
+    $basketItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    if (empty($basketItems)) {
+        $errorMessage = "Your basket is empty."; // <-- show error instead of dying
+    }
+
+    if (!$errorMessage) {
+        // Determine card info
+        $usingSavedCard = !empty($_POST['use_saved_card']);
+        if ($usingSavedCard) {
+            $selectedCardId = intval($_POST['use_saved_card']);
+            $stmt = $db->prepare("SELECT * FROM saved_cards WHERE id = ? AND uid = ?");
+            $stmt->execute([$selectedCardId, $uid]);
+            $card = $stmt->fetch(PDO::FETCH_ASSOC);
+            if (!$card) {
+                $errorMessage = "Invalid card selection.";
+            } else {
+                $cardLast4 = substr($card['masked_card_number'], -4);
+            }
+        } else {
+            $name   = trim($_POST['cardholder_name'] ?? '');
+            $number = trim($_POST['card_number_real'] ?? '');
+            $type   = trim($_POST['card_type'] ?? '');
+            $expiry = trim($_POST['expiry_date'] ?? '');
+            $cvv    = trim($_POST['cvv'] ?? '');
+
+            // Mask card number for storage
+            $masked = str_repeat('*', 12) . substr($number, -4);
+
+            // Save new card
+            $stmt = $db->prepare("INSERT INTO saved_cards (uid, cardholder_name, card_type, masked_card_number) VALUES (?, ?, ?, ?)");
+            $stmt->execute([$uid, $name, $type, $masked]);
+
+            $cardLast4 = substr($number, -4);
+        }
+    }
+
+    if (!$errorMessage) {
+        // Generate a unique order ID for this checkout
+        $orderId = uniqid('ORD_');
+
+        // Insert basket items into transactions with order_id
+        foreach ($basketItems as $item) {
+            $stmt = $db->prepare("INSERT INTO transactions (order_id, pid, paying_uid, receiving_uid, price) VALUES (?, ?, ?, ?, ?)");
+            $receiving_uid = 1; // adjust if products have owners
+            $stmt->execute([$orderId, $item['pid'], $uid, $receiving_uid, $item['price']]);
+        }
+
+        // Clear basket after purchase
         $stmt = $db->prepare("DELETE FROM basket WHERE uid = ?");
         $stmt->execute([$uid]);
 
-        // Redirect to OrderComplete page
-        header("Location: OrderComplete.php?card=" . urlencode(substr($card['masked_card_number'], -4)));
+        // Redirect to OrderComplete page with order_id and card last 4
+        header("Location: OrderComplete.php?order_id=" . urlencode($orderId) . "&card=" . urlencode($cardLast4));
         exit;
     }
-
-    // Victor Backend – Handle new card submission
-    $name   = trim($_POST['cardholder_name'] ?? '');
-    $number = trim($_POST['card_number_real'] ?? '');
-    $type   = trim($_POST['card_type'] ?? '');
-    $expiry = trim($_POST['expiry_date'] ?? '');
-    $cvv    = trim($_POST['cvv'] ?? '');
-
-    // Victor Backend – Mask card number for storage
-    $masked = str_repeat('*', 12) . substr($number, -4);
-
-    // Victor Backend – Save new card to database
-    $stmt = $db->prepare("INSERT INTO saved_cards (uid, cardholder_name, card_type, masked_card_number) VALUES (?, ?, ?, ?)");
-    $stmt->execute([$uid, $name, $type, $masked]);
-
-    // Victor Backend – Clear basket after purchase
-    $stmt = $db->prepare("DELETE FROM basket WHERE uid = ?");
-    $stmt->execute([$uid]);
-
-    // Redirect to OrderComplete page
-    header("Location: OrderComplete.php?card=" . urlencode(substr($number, -4)));
-    exit;
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -101,6 +124,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <img src="logo.jpeg" alt="Rentique logo" class="header-logo">
     <span class="brand-name">Checkout</span>
 </header>
+
+<?php if (!empty($errorMessage)): ?>
+    <div class="error-message" style="color:red; text-align:center; margin:10px 0;">
+        <?= htmlspecialchars($errorMessage) ?>
+    </div>
+<?php endif; ?>
 
 <div class="main">
     <div class="card">
@@ -133,35 +162,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php endif; ?>
 
                 <!-- Victor Backend – New card input fields -->
-<div id="newCardSection">
-    <p>Cardholder Name</p>
-    <input type="text" class="inputbox" name="cardholder_name">
+                <div id="newCardSection">
+                    <p>Cardholder Name</p>
+                    <input type="text" class="inputbox" name="cardholder_name">
 
-    <p>Card Number</p>
-    <input type="text" class="inputbox" name="card_number">
+                    <p>Card Number</p>
+                    <input type="text" class="inputbox" name="card_number">
 
-    <p>Card Type</p>
-    <select class="inputbox" name="card_type">
-        <option value="">Select a card type</option>
-        <option value="Visa">Visa</option>
-        <option value="MasterCard">MasterCard</option>
-        <option value="Other">Other</option>
-    </select>
+                    <p>Card Type</p>
+                    <select class="inputbox" name="card_type">
+                        <option value="">Select a card type</option>
+                        <option value="Visa">Visa</option>
+                        <option value="MasterCard">MasterCard</option>
+                        <option value="Other">Other</option>
+                    </select>
 
-    <div class="expcvv">
-        <div style="flex:1;">
-            <p class="expcvv_text">Expiry Date</p>
-            <input type="month" class="inputbox" name="expiry_date">
-        </div>
-        <div style="flex:1;">
-            <p class="expcvv_text2">CVV</p>
-            <input type="password" class="inputbox" name="cvv">
-        </div>
-    </div>
-</div>
+                    <div class="expcvv">
+                        <div style="flex:1;">
+                            <p class="expcvv_text">Expiry Date</p>
+                            <input type="month" class="inputbox" name="expiry_date">
+                        </div>
+                        <div style="flex:1;">
+                            <p class="expcvv_text2">CVV</p>
+                            <input type="password" class="inputbox" name="cvv">
+                        </div>
+                    </div>
+                </div>
 
-<!-- hidden input for JS -->
-<input type="hidden" name="card_number_real">
+                <!-- hidden input for JS -->
+                <input type="hidden" name="card_number_real">
 
                 <button type="submit" class="button">Confirm</button>
             </form>
@@ -170,4 +199,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </div>
 </body>
 </html>
-
