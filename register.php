@@ -77,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['user_id'] = $pdo->lastInsertId();
             $_SESSION['username'] = $username;
 	    //go to homepage
-            header('Location: homepage.php');
+            header('Location: Homepage.php');
             exit;
         } 
         else {
