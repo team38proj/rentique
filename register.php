@@ -6,8 +6,8 @@
 /*
 Saja (backend) - connect to database
 */
-include('cs2team38_db.php');
 session_start();
+require('connectdb.php');
 $errors = [];
 
 /*
@@ -77,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['user_id'] = $pdo->lastInsertId();
             $_SESSION['username'] = $username;
 	    //go to homepage
-            header('Location: Homepage.php');
+            header('Location: homepage.php');
             exit;
         } 
         else {
