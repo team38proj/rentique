@@ -91,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Victor Backend – Pass basket to JS
         window.basket = <?= json_encode($basket) ?>;
     </script>
-    <script src="script.js" defer></script>
+    <script src="Checkout.js" defer></script>
 </head>
 <body id="checkoutPage">
 <header>
@@ -164,6 +164,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </div>
 </body>
 </html>
+
 
 
 
