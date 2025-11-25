@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Rentique — Sign Up</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="auth-wrap">
+        <div class="auth-card">
+            <div class="auth-header">
+                <img src="rentique_logo.png" alt="Rentique" class="auth-logo">
+                <h2>Create your account</h2>
+                <p class="muted">Join Rentique as buyer or seller</p>
+            </div>
+
+            <form id="signupForm" onsubmit="handleRegister(event)">
+                <label>Full name</label>
+                <input id="signupName" type="text" placeholder="Your full name" required>
+
+                <label>Email</label>
+                <input id="signupEmail" type="email" placeholder="you@example.com" required>
+
+                <label>Password</label>
+                <input id="signupPassword" type="password" placeholder="Create a password" minlength="6" required>
+
+                <label>Role</label>
+                <select id="signupRole" required onchange="toggleSellerFields()">
+                    <option value="user">Buyer / User</option>
+                    <option value="seller">Seller</option>
+                </select>
+
+                <!-- seller-specific fields (optional) -->
+                <div id="sellerFields" style="display:none;">
+                    <label>Shop / Display Name</label>
+                    <input id="sellerDisplayName" type="text" placeholder="Optional — shop name">
+
+                    <label>Payout Account (optional)</label>
+                    <input id="sellerSort" type="text" placeholder="Sort code (00-00-00)">
+                    <input id="sellerAccount" type="text" placeholder="Account number (8 digits)">
+                </div>
+
+                <button class="btn primary" type="submit">Create account</button>
+
+                <div class="auth-footer">
+                    <p>Already have an account? <a href="login.html">Login</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../js/auth.js"></script>
+</body>
+</html>
