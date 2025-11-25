@@ -664,3 +664,74 @@ footer {
     border-radius: 5px;
     cursor: pointer;
 }
+/* Order Complete */
+.tickIcon {
+    width: 60px;
+    height: 60px;
+    background: #a3ff00;
+    color: #000;
+    font-size: 40px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 60px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+}
+
+.orderSummary {
+    background: #1a1a1a;
+    padding: 30px;
+    border-radius: 8px;
+    max-width: 500px;
+    margin: 40px auto 0 auto;
+}
+
+.orderSummary h2 {
+    color: #a3ff00;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.orderItem {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #333;
+}
+
+.orderItem h3 {
+    color: #fff;
+    font-size: 16px;
+    margin: 0;
+    display: inline-block;
+}
+
+.itemPrice {
+    color: #a3ff00;
+    font-size: 16px;
+    float: right;
+}
+
+.orderTotal {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.totalPrice {
+    color: #a3ff00;
+    float: right;
+}
+
+#backHomeBtn {
+    width: 100%;
+    padding: 12px 30px;
+    background: #a3ff00;
+    color: #000;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    font-size: 16px;
+}
