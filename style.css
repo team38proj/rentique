@@ -175,3 +175,59 @@ form div.incorrect input{
     margin-top: 5px;
     font-size:0.9rem;
 }
+
+/* 
+Saja Backend - contact page style
+*/
+
+.contact-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+    background: var(--base-color);
+    border-radius: 12px;
+    box-sizing: border-box;
+}
+
+.contact-form label {
+    display: block;
+    margin-top: 15px;
+    font-weight: 600;
+}
+
+.contact-form select,
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 2px solid var(--input-color);
+    border-radius: 10px;
+    background-color: var(--input-color);
+    font: inherit;
+    box-sizing: border-box;
+}
+
+.contact-form select:hover,
+.contact-form input:hover,
+.contact-form textarea:hover {
+    border-color: var(--accent-color);
+}
+
+.contact-form button {
+    margin-top: 20px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 1000px;
+    background: var(--accent-color);
+    color: var(--base-color);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+.contact-form button:hover {
+    background: var(--text-color);
+}
+
