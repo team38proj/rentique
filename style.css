@@ -1,10 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 :root{
-    --accent-color: #008000;
-    --base-color: white;
-    --text-color: #000000;
-    --input-color: white;
+    --accent-color: #a3ff00;     
+    --base-color: #000000;       
+    --text-color: #eaeaea;       
+    --input-color: #1a1a1a;     
     --error-color: #f06272;
 }
 
@@ -17,39 +17,67 @@ html{
     font-family: Poppins, Segoe UI, sans-serif;
     font-size:12pt;
     color:var(--text-color);
-    text-align:center
+    text-align:center;
 }
 
-body{
-    min-height:100vh;
-    background-image: url(background.jpg);
-    background-size:cover;
-    background-position:right;
+body {
+    min-height: 100vh;
+    background-color: #000;
     overflow: hidden;
 }
 
+
+.auth-wrapper {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+}
+
+
+.auth-wrapper .login-container {
+    flex: 0 0 40%;
+    max-width: 600px;
+    background-color: #0d0d0d;
+    z-index: 2;
+}
+
+
+.auth-wrapper::after {
+    content: "";
+    flex: 1;
+    background-image: url("rentique_logo.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 60%;  
+    opacity: 0.25;         
+    z-index: 1;
+}
+
+
+
+
+
 .login-container{
     box-sizing: border-box;
-    background-color:var(--base-color);
-    height:100vh;                     /* keep full screen height */
+    background-color:#0d0d0d;     
+    height:100vh;
     width:max(40%,600px);
-    padding:16px 24px;                /* smaller padding so everything fits */
+    padding:16px 24px;
     border-radius: 0 20px 20px 0;
     display:flex;
     flex-direction:column;
     align-items:center;
-    justify-content:flex-start;       /* keep content starting from top */
+    justify-content:flex-start;
     gap:10px;
 }
 
-
 h2{
-    font-size: 2.2rem;                 /* was very large before */
+    font-size: 2.2rem;
     font-weight: 900;
     text-transform: uppercase;
-    margin: 4px 0 10px;                /* very small vertical margins */
+    color:#a3ff00;               
+    margin: 4px 0 10px;
 }
-
 
 
 form{
@@ -59,7 +87,7 @@ form{
     display:flex;
     flex-direction:column;
     align-items:center;
-    gap:6px;                           /* was 10px */
+    gap:6px;
 }
 
 .field{
@@ -79,8 +107,8 @@ form .icon{
     height: 42px;
     width: 42px;
     background-color: var(--accent-color);
-    fill: var(--base-color);
-    color: var(--base-color);
+    fill: #000;
+    color: #000;
     border-radius: 10px 0 0 10px;
     display:flex;
     justify-content: center;
@@ -88,6 +116,7 @@ form .icon{
     font-size: 1.5rem;
     font-weight:500;
 }
+
 
 form input{
     box-sizing:border-box;
@@ -97,8 +126,9 @@ form input{
     padding: 0.8em;
     font: inherit;
     border-radius: 0 10px 10px 0;
-    border: 2px solid var(--input-color);
+    border: 2px solid #333;      
     background-color: var(--input-color);
+    color: var(--text-color);
     transition: 150ms;
 }
 
@@ -108,18 +138,14 @@ form input:hover{
 
 form input:focus{
     outline:none;
+    border-color: var(--accent-color);
 }
-
-/* 🔴 removed this so icons don't always go red on focus
-.field:has(input:focus) > .icon{
-    background-color: var(--error-color);
-}
-*/
 
 form input::placeholder{
-    color:var(--text-color);
+    color:#aaaaaa;
     opacity:1;
 }
+
 
 form button{
     margin-top: 8px;
@@ -127,7 +153,7 @@ form button{
     border-radius: 1000px;
     padding: 0.65em 3em;
     background-color: var(--accent-color);
-    color:var(--base-color);
+    color:#000;
     font:inherit;
     font-weight:600;
     text-transform:uppercase;
@@ -136,12 +162,13 @@ form button{
 }
 
 form button:hover{
-    background-color: var(--text-color);
+    background-color:#d2ff4c;  
+    color: #000;
 }
 
 form button:focus{
     outline:none;
-    background-color: var(--text-color);
+    background-color:#d2ff4c;
 }
 
 a{
@@ -160,7 +187,7 @@ a:hover{
     }
 }
 
-/* Error styles */
+
 form div.incorrect .icon{
     background-color:var(--error-color);
 }
