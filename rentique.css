@@ -622,6 +622,79 @@ footer {
     box-shadow: 3px 3px 6px #38373785;
     transition: 0.5s;
 }
+
+#aboutPage {
+	margin:0px;
+	padding:0px;
+	box-sizing: border-box;
+	font-family: sans-serif;
+}
+
+#aboutPage .about-us {
+	width: 85%;
+	display: flex;
+	justify-content: space-between;
+	margin: 50px auto;
+}
+
+#aboutPage .about-text {
+	max-width: 45%;
+	margin:0px 20px;	
+}
+
+#aboutPage .about-image img{
+	max-width: 80%;
+	height: auto;
+	border-radius: 15px;
+	box-shadow: 1px, 8px, 16px, rgba(0, 0, 0, 0.1);
+}
+
+#aboutPage .about-text h2{
+	font-size: 45px;
+	color:#A3FF00;
+	margin-bottom: 20px;
+}
+
+#aboutPage .about-text h3{
+	font-size: 25px;
+	margin-bottom: 5px;
+	color:#5E9900;
+}
+
+#aboutPage .about-text p{
+	font-size: 17px;
+	color:#666;
+	line-height: 1.6;
+	margin-bottom: 20px;
+}
+
+#aboutPage .button{
+	text-decoration: none;
+	font-size: 17px;
+	display: inline-block;
+	padding: 10px 20px;
+	background-color: #007bff;
+	color:#fff;
+	border-radius: 5px;
+	transition: 0.3s ease;
+}
+
+#aboutPage .button:hover{
+	background-color: #0056b3;
+}
+
+@media screen and (max-width:768px) {
+	.about-us{
+		flex-direction: column;
+	}
+	
+	.about-text{
+		max-width: 100%;
+		margin:50px 0px;
+	}
+}
+
+
 /* Contact Page */
 .contactForm {
     max-width: 600px;
