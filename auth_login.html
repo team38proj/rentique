@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Rentique — Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="auth-wrap">
+        <div class="auth-card">
+            <div class="auth-header">
+                <img src="rentique_logo.png" alt="Rentique" class="auth-logo">
+                <h2>Welcome back</h2>
+                <p class="muted">Log in to continue to Rentique</p>
+            </div>
+
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <label>Email</label>
+                <input id="loginEmail" type="email" placeholder="you@example.com" required>
+
+                <label>Password</label>
+                <input id="loginPassword" type="password" placeholder="••••••••" required>
+
+                <label>Login as</label>
+                <select id="loginRole" required>
+                    <option value="user">User / Buyer</option>
+                    <option value="seller">Seller</option>
+                    <option value="admin">Admin</option>
+                </select>
+
+                <button class="btn primary" type="submit">Login</button>
+
+                <div class="auth-footer">
+                    <p>Don't have an account? <a href="signup.html">Sign up</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script>
+        // small convenience to prefill admin for demo (optional)
+        // localStorage.setItem('rentique_users', JSON.stringify([{name:'Admin', email:'admin@rentique.com', password: btoa('adminpass'), role:'admin'}]));
+    </script>
+</body>
+</html>
