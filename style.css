@@ -180,79 +180,62 @@ form div.incorrect input{
 Saja Backend - contact page style
 */
 
-/*
-Saja backend - Page background 
-*/
-body.contact-page {
-    background: #000;
-    overflow: auto; 
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #000;
+    color: white;
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    overflow-y: auto;
 }
 
-/* 
-Saja backend - form container 
-*/
+
 .contact-container {
     max-width: 600px;
-    margin: 50px auto;
-    padding: 25px;
-    background: var(--base-color);
-    border-radius: 15px;
-    box-sizing: border-box;
-    text-align: left;
+    margin: 40px auto;
+    padding: 20px;
 }
 
-/* 
-Saja backend - heading 
-*/
-.contact-container h2 {
-    color: var(--accent-color); 
-    font-size: 1.8rem;
-    font-weight: 900;
-    text-transform: uppercase;
-    margin-bottom: 15px;
+h1 {
+    color: #2ecc71; 
+    text-align: center;
+    margin-bottom: 20px;
 }
 
-.contact-form label {
+label {
+    font-size: 16px;
+    color: white;
     display: block;
-    margin-top: 15px;
-    font-weight: 600;
+    margin-bottom: 8px;
 }
 
-.contact-form select,
-.contact-form input,
-.contact-form textarea {
+select, input[type="email"], textarea {
     width: 100%;
-    padding: 12px;
-    margin-top: 6px;
-    background: var(--input-color);
-    border: 2px solid var(--input-color);
-    border-radius: 10px;
-    font: inherit;
-    box-sizing: border-box;
-}
-
-.contact-form select:hover,
-.contact-form input:hover,
-.contact-form textarea:hover {
-    border-color: var(--accent-color); 
-}
-
-.contact-form button {
-    margin-top: 20px;
-    width: 100%;
-    padding: 12px;
-    background: var(--accent-color);
-    color: var(--base-color);
+    padding: 10px;
+    border-radius: 6px;
     border: none;
-    border-radius: 1000px;
-    text-transform: uppercase;
-    font-weight: 600;
-    font: inherit;
-    cursor: pointer;
-    transition: 150ms ease;
+    margin-bottom: 15px;
+    font-size: 16px;
 }
 
-.contact-form button:hover {
-    background: var(--text-color);
-    color: var(--base-color);
+textarea {
+    height: 150px;
+    resize: none;
 }
+
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #2ecc71;
+    color: black;
+    font-size: 18px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #2ecc71;
+}
+
