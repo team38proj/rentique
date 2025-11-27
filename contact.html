@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,8 +8,36 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
     <header>
         <h1>Contact Us</h1>
     </header>
+
+    <section class="contact-container">
+        <h2>How can we help you?</h2>
+
+        <form action="submit_contact.php" method="POST" class="contact-form">
+
+            <!-- Reason -->
+            <label for="topic">Select one:</label>
+            <select name="topic" id="topic" required>
+                <option value="">-- Please choose an option --</option>
+                <option value="orders">Orders</option>
+                <option value="complaint">Make a complaint</option>
+                <option value="other">Something else</option>
+            </select>
+
+            <!-- Email -->
+            <label for="email">Your Email:</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email..." required>
+
+            <!-- Message -->
+            <label for="message">Your Message:</label>
+            <textarea id="message" name="message" rows="5" placeholder="Type your message here..." required></textarea>
+
+            <button type="submit">Send Message</button>
+        </form>
+    </section>
+
 </body>
 </html>
