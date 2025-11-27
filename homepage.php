@@ -3,6 +3,41 @@
 session_start();
 require_once 'connectdb.php';
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <nav class="navbar">
+    <div class="logo">
+        <img src="rentique_logo.png" alt="Rentique logo">
+        <span>rentique.</span>
+    </div>
+
+    <ul class="nav-links">
+        <li><a href="homepage.php">Home</a></li>
+        <li><a href="index.php">Shop</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+
+        <?php if (!empty($_SESSION['uid'])): ?>
+            <!-- USER IS LOGGED IN: show profile dropdown only -->
+            <li class="dropdown" id="profileDropdown">
+                <button type="button" class="profile-btn" id="profileBtn" aria-haspopup="true" aria-expanded="false">
+                    <?= htmlspecialchars($_SESSION['first_name'] ?? $_SESSION['email'] ?? 'Profile'); ?> ▾
+                </button>
+                <div class="dropdown-menu" role="menu" aria-labelledby="profileBtn">
+                    <a href="profile.php" role="menuitem">My Profile</a>
+                    <a href="logout.php" role="menuitem">Logout</a>
+                </div>
+            </li>
+        <?php else: ?>
+            <!-- USER NOT LOGGED IN: show login / signup -->
+            <li><a href="login.php" class="btn login">Login</a></li>
+            <li><a href="signup.php" class="btn signup">Sign Up</a></li>
+        <?php endif; ?>
+    </ul>
+</nav>
+</head>
+
 // Rentique Homepage [Krish Backend] Check if user is logged in and obtain user data
 $userData = null;
 if (isset($_SESSION['uid'])) {
@@ -157,3 +192,4 @@ if (isset($_GET['logout'])) {
     window.searchResults = <?= json_encode($searchResults) ?>;
 
 </script>
+
