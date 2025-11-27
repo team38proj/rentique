@@ -17,6 +17,8 @@ require_once 'connectdb.php';
         <li><a href="index.php">Shop</a></li>
         <li><a href="#">About</a></li>
         <li><a href="#">Contact</a></li>
+        <li><a href="login.html">Login</a></li>
+        <li><a href="signup.html">Sign Up</a></li>
 
         <?php if (!empty($_SESSION['uid'])): ?>
             <!-- USER IS LOGGED IN: show profile dropdown only -->
@@ -192,4 +194,5 @@ if (isset($_GET['logout'])) {
     window.searchResults = <?= json_encode($searchResults) ?>;
 
 </script>
+
 
