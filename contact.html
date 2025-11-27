@@ -1,43 +1,65 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rentique | Contact</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Rentique Contact Us</title>
+    <link rel="stylesheet" href="rentique.css">
+    <link rel="icon" type="image/png" href="rentique_logo.png">
 </head>
-<body class="contact-page">
-
+<body>
     <header>
-        <h1>Contact Us</h1>
+        <nav class="navbar">
+            <div class="logo">
+                <img src="rentique_logo.png">
+                <span>rentique.</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="Homepage.html">Home</a></li>
+                <li><a href="index.html">Shop</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="Contact.html">Contact</a></li>
+                <li><a href="#" class="btn login">Login</a></li>
+                <li><a href="#" class="btn signup">Sign Up</a></li>
+            </ul>
+        </nav>
     </header>
 
-    <section class="contact-container">
-        <h2>How can we help you?</h2>
+    <main>
+        <section class="intro">
+            <h1>Get in Touch</h1>
+            <p class="subtitle">We would like to hear from you!</p>
+            <p class="subtitle">If you have any inquiries please contact us here.</p>
 
-        <form action="submit_contact.php" method="POST" class="contact-form">
+            <div class="contactForm">
+                <div class="nameRow">
+                    <div>
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" placeholder="First Name">
+                    </div>
+                    <div>
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" placeholder="Last Name">
+                    </div>
+                </div>
 
-            <!-- Reason -->
-            <label for="topic">Select one:</label>
-            <select name="topic" id="topic" required>
-                <option value="">-- Please choose an option --</option>
-                <option value="orders">Orders</option>
-                <option value="complaint">Make a complaint</option>
-                <option value="other">Something else</option>
-            </select>
+                <div>
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" placeholder="Email">
+                </div>
 
-            <!-- Email -->
-            <label for="email">Your Email:</label>
-            <input type="email" id="email" name="email" placeholder="Enter your email..." required>
+                <div>
+                    <label for="message">Message</label>
+                    <textarea id="message" placeholder="Type your message here." rows="5"></textarea>
+                </div>
 
-            <!-- Message -->
-            <label for="message">Your Message:</label>
-            <textarea id="message" name="message" rows="5" placeholder="Type your message here..." required></textarea>
+                <button type="button" id="sendBtn">Send</button>
+            </div>
+        </section>
+    </main>
 
-            <button type="submit">Send Message</button>
-        </form>
-    </section>
-
+    <footer>
+        <p>© 2025 Rentique. All rights reserved.</p>
+    </footer>
 </body>
 </html>
