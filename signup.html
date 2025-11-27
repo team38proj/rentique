@@ -2,17 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-   
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Signup</title>
     <link rel="stylesheet" href="style.css">
-    <script type="text/javascript" src="script.js" defer></script> //sync backend
+    <script type="text/javascript" src="script.js" defer></script>
 </head>
 <body>
+    <div class="auth-wrapper">
 <div class="login-container">
     <h2>Signup</h2>
 
     <form id="loginform" novalidate>
+        
         
         <div class="field">
             <div class="icon">
@@ -26,7 +28,7 @@
         
         <div class="field">
             <div class="icon">
-               
+                
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
                     <path d="M160-200q-33 0-56.5-23.5T80-280v-400q0-33 23.5-56.5T160-760h640q33 0 56.5 23.5T880-680v400q0 33-23.5 56.5T800-200H160Zm320-260L160-640v360h640v-360L480-460Z"/>
                 </svg>
@@ -34,7 +36,7 @@
             <input type="email" id="email" placeholder="Email">
         </div>
 
-        
+       
         <div class="field">
             <div class="icon">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
@@ -44,7 +46,7 @@
             <input type="password" id="password" placeholder="Password">
         </div>
 
-       
+        
         <div class="field">
             <div class="icon">
                 
@@ -61,6 +63,7 @@
     <p id="error-message"></p>
     <p>Already have an account? <a href="login.html">login</a></p>
 
+</div>
 </div>
 </body>
 </html>
