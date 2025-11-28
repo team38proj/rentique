@@ -20,22 +20,20 @@ require_once 'connectdb.php';
         <li><a href="login.html">Login</a></li>
         <li><a href="signup.html">Sign Up</a></li>
 
-        <?php if (!empty($_SESSION['uid'])): ?>
-            <!-- USER IS LOGGED IN: show profile dropdown only -->
-            <li class="dropdown" id="profileDropdown">
-                <button type="button" class="profile-btn" id="profileBtn" aria-haspopup="true" aria-expanded="false">
-                    <?= htmlspecialchars($_SESSION['first_name'] ?? $_SESSION['email'] ?? 'Profile'); ?> ▾
-                </button>
-                <div class="dropdown-menu" role="menu" aria-labelledby="profileBtn">
-                    <a href="profile.php" role="menuitem">My Profile</a>
-                    <a href="logout.php" role="menuitem">Logout</a>
-                </div>
-            </li>
-        <?php else: ?>
-            <!-- USER NOT LOGGED IN: show login / signup -->
-            <li><a href="login.php" class="btn login">Login</a></li>
-            <li><a href="signup.php" class="btn signup">Sign Up</a></li>
-        <?php endif; ?>
+         <?php if (!empty($_SESSION['uid'])): ?>
+                <li class="dropdown" id="profileDropdown">
+                    <button type="button" class="profile-btn" id="profileBtn" aria-haspopup="true" aria-expanded="false">
+                        <?= htmlspecialchars($_SESSION['first_name'] ?? $_SESSION['email'] ?? 'Profile'); ?> ▾
+                    </button>
+                    <div class="dropdown-menu" role="menu" aria-labelledby="profileBtn">
+                        <a href="profile.php" role="menuitem">My Profile</a>
+                        <a href="?logout=1" role="menuitem">Logout</a>
+                    </div>
+                </li>
+            <?php else: ?>
+                <li><a href="login.php" class="btn login">Login</a></li>
+                <li><a href="signup.php" class="btn signup">Sign Up</a></li>
+            <?php endif; ?>
     </ul>
 </nav>
 </head>
@@ -194,5 +192,6 @@ if (isset($_GET['logout'])) {
     window.searchResults = <?= json_encode($searchResults) ?>;
 
 </script>
+
 
 
