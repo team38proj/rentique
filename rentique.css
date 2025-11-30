@@ -808,3 +808,156 @@ footer {
     margin-top: 20px;
     font-size: 16px;
 }
+/* Basket Page */
+.basketContainer {
+    display: flex;
+    gap: 40px;
+    margin-top: 30px;
+}
+
+.basketLeft {
+    flex: 2;
+}
+
+.basketRight {
+    flex: 1;
+}
+
+.savedText {
+    color: #666;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.basketItem {
+    background: #1a1a1a;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    display: flex;
+    gap: 20px;
+}
+
+.removeBtn {
+    background: none;
+    border: none;
+    color: #666;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+}
+
+.itemImage {
+    width: 80px;
+    height: 80px;
+    background: #0d0d0d;
+    border-radius: 8px;
+}
+
+.itemImage img {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+}
+
+.itemDetails {
+    flex: 1;
+}
+
+.itemDetails h3 {
+    color: #fff;
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.itemSize {
+    color: #999;
+    font-size: 14px;
+}
+
+.itemQuantity {
+    display: flex;
+    gap: 10px;
+}
+
+.qtyBtn {
+    width: 30px;
+    height: 30px;
+    background: #0d0d0d;
+    border: 1px solid #333;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.itemQuantity input {
+    width: 40px;
+    height: 30px;
+    text-align: center;
+    background: #0d0d0d;
+    border: 1px solid #333;
+    color: #fff;
+    border-radius: 5px;
+}
+
+.itemTotal {
+    min-width: 100px;
+    text-align: right;
+}
+
+.summaryBox {
+    background: #1a1a1a;
+    padding: 30px;
+    border-radius: 8px;
+}
+
+.summaryBox h2 {
+    color: #a3ff00;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.summaryLine {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    color: #ccc;
+}
+
+.summaryTotal {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    margin-top: 10px;
+    border-top: 1px solid #333;
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.couponInput {
+    width: 100%;
+    padding: 12px 15px;
+    background: #0d0d0d;
+    border: 1px solid #333;
+    color: #fff;
+    border-radius: 5px;
+    margin-top: 20px;
+    margin-bottom: 15px;
+}
+
+.checkoutBtn {
+    width: 100%;
+    padding: 15px;
+    background: #a3ff00;
+    color: #000;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
