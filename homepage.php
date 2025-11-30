@@ -1,9 +1,8 @@
 <?php
-// Rentique Homepage [Krish Backend] Start session and load database connection
 session_start();
 require_once 'connectdb.php';
 
-// Rentique Homepage [Krish Backend] Check if user is logged in and obtain user data
+// Rentique Homepage [Krish Backend] checks if user's logged in and obtains their data
 $userData = null;
 if (isset($_SESSION['uid'])) {
     try {
@@ -16,7 +15,7 @@ if (isset($_SESSION['uid'])) {
     }
 }
 
-// Rentique Homepage [Krish Backend] Fetch featured products for the shop section
+// Rentique Homepage [Krish Backend] fetches featured products in the shop section
 $featuredProducts = [];
 try {
     $stmt = $db->prepare("SELECT id, name, description, category, rental_price, image_url, size, color FROM products WHERE featured = 1 AND available = 1 LIMIT 8");
@@ -26,7 +25,7 @@ try {
     error_log("Database error fetching featured products: " . $e->getMessage());
 }
 
-// Rentique Homepage [Krish Backend] Handles search functionality
+// Rentique Homepage [Krish Backend] search functionality
 $searchResults = [];
 if (isset($_GET['search']) || isset($_GET['category']) || isset($_GET['price_range'])) {
     $search = trim($_GET['search'] ?? '');
@@ -78,7 +77,7 @@ if (isset($_GET['search']) || isset($_GET['category']) || isset($_GET['price_ran
     }
 }
 
-// Rentique Homepage[Krish Backend] Handles login form submission
+// Rentique Homepage[Krish Backend] login form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     $email = trim($_POST['email'] ?? '');
     $password = trim($_POST['password'] ?? '');
@@ -93,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
             $_SESSION['email'] = $user['email'];
             $_SESSION['first_name'] = $user['first_name'];
             
-            // Redirects to prevent form resubmission
+            // redirection to prevent resubmission 
             header("Location: " . $_SERVER['PHP_SELF']);
             exit;
         } else {
@@ -104,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     }
 }
 
-// Rentique Homepage [Krish Backend] Handle signup form submission
+// Rentique Homepage [Krish Backend] signup form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signup'])) {
     $email = trim($_POST['email'] ?? '');
     $password = trim($_POST['password'] ?? '');
@@ -112,7 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signup'])) {
     $last_name = trim($_POST['last_name'] ?? '');
     
     try {
-        // Check if email already exists
+        // checks if email already exists
         $stmt = $db->prepare("SELECT uid FROM users WHERE email = ?");
         $stmt->execute([$email]);
         
@@ -128,7 +127,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signup'])) {
             $_SESSION['email'] = $email;
             $_SESSION['first_name'] = $first_name;
             
-            // Redirect to prevent form resubmission
+            // redirection to prevent resubmission
             header("Location: " . $_SERVER['PHP_SELF']);
             exit;
         }
@@ -137,23 +136,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signup'])) {
     }
 }
 
-// Rentique Homepage [Krish Backend] Handle logout
+// Rentique Homepage [Krish Backend] manages logout 
 if (isset($_GET['logout'])) {
     session_destroy();
     header("Location: " . $_SERVER['PHP_SELF']);
     exit;
 }
 
-// Rentique Homepage [Krish Backend] Sends data to frontend
+// Rentique Homepage [Krish Backend] data sends to frontend 
 ?>
 <script>
-    // Rentique Homepage [Krish Backend] Pass user data to JS
     window.userData = <?= json_encode($userData) ?>;
-    
-    // Rentique Homepage [Krish Backend] Pass featured products to JS
     window.featuredProducts = <?= json_encode($featuredProducts) ?>;
-    
-    // Rentique Homepage [Krish Backend] Pass search results to JS
     window.searchResults = <?= json_encode($searchResults) ?>;
 
 </script>
+
