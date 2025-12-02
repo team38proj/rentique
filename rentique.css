@@ -291,7 +291,7 @@ body.dark-mode #theme-toggle {
 }
 
 header {
-    background: #000;
+    background-color: var(--bg-color);
     border-bottom: 2px solid #a3ff00;
     padding: 20px;
     text-align: center;
