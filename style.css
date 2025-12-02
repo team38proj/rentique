@@ -20,7 +20,14 @@ body {
     color: var(--text-color);
     transition: 0.3s ease-in-out;
     font-family: Arial, sans-serif;
+    
+    min-height:100vh;
+    background-image: url(background.jpg);
+    background-size:cover;
+    background-position:right;
+    overflow: hidden;
 }
+
 
 #theme-toggle {
     cursor: pointer;
@@ -51,14 +58,6 @@ html{
     font-size:12pt;
     color:var(--text-color);
     text-align:center
-}
-
-body{
-    min-height:100vh;
-    background-image: url(background.jpg);
-    background-size:cover;
-    background-position:right;
-    overflow: hidden;
 }
 
 .login-container{
