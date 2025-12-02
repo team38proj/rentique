@@ -11,8 +11,8 @@
 body {
     margin: 0;
     font-family: 'Poppins', Arial, sans-serif;
-    background-color: #0a0a0a;
-    color: #eaeaea;
+    background-color: var(--bg-color);
+    color: var(--text-color);
     padding: 0;
     
     background-color: var(--bg-color);
@@ -24,30 +24,31 @@ body {
 body.dark-mode {
     --bg-color: #1e1e1e;
     --text-color: #ffffff;
-    --card-bg: #1a1a1a;
-    --section-bg: #111111;
-    --border-color: #2a2a2a;
+    --card-bg: var(--card-bg);
+    --section-bg: var(--section-bg);
+    --border-color: var(--border-color);
     --accent-color: #a3ff00;
-    --input-bg: #222222;
+    --input-bg: var(--input-bg);
+
 }
 
 #theme-toggle {
     cursor: pointer;
     padding: 10px 15px;
     border: none;
-    background: #000;
-    color: #fff;
+    background: var(--bg-color);
+    color: var(--text-color);
     border-radius: 5px;
     margin: 15px;
 }
 
 #theme-toggle:hover {
-    background: #222;
+    background: var(--section-bg);
 }
     
 body.dark-mode #theme-toggle {
-    background: #fff;
-    color: #000;
+    background: var(--text-color);
+    color: var(--bg-color);
 }
 
 /* Navigation Bar */
@@ -58,7 +59,7 @@ body.dark-mode #theme-toggle {
     padding: 20px 60px;
     background-color: var(--bg-color);
     color: var(--text-color);
-    border-bottom: 1px solid #1f1f1f;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .logo {
@@ -135,7 +136,7 @@ body.dark-mode #theme-toggle {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(to bottom right, #0f0f0f, #1a1a1a);
+    background: linear-gradient(to bottom right, var(--input-bg), var(--card-bg));
     text-align: center;
     padding: 40px;
 }
@@ -178,9 +179,9 @@ body.dark-mode #theme-toggle {
 
 /* Search Bar Section */
 .search-section {
-    background-color: #0c0c0c;
+    background-color: var(--section-bg);
     padding: 25px 60px;
-    border-bottom: 1px solid #1f1f1f;
+    border-bottom: 1px solid var(--border-color);
     display: flex;
     justify-content: center;
 }
@@ -196,9 +197,9 @@ body.dark-mode #theme-toggle {
 .search-container select {
     padding: 12px 16px;
     border-radius: 10px;
-    border: 1px solid #333;
-    background-color: #171717;
-    color: #eaeaea;
+    border: 1px solid var(--border-color);
+    background-color: var(--input-bg);
+    color: var(--text-color);
     font-size: 1rem;
     flex: 1;
 }
@@ -230,7 +231,7 @@ body.dark-mode #theme-toggle {
 .features {
     text-align: center;
     padding: 80px 40px;
-    background-color: #111;
+    background-color: var(--section-bg);
 }
 
 .features h2 {
@@ -246,8 +247,8 @@ body.dark-mode #theme-toggle {
 }
 
 .feature-card {
-    background-color: #1a1a1a;
-    border: 1px solid #2a2a2a;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
     border-radius: 16px;
     padding: 30px;
     transition: transform 0.3s, box-shadow 0.3s;
@@ -264,8 +265,8 @@ body.dark-mode #theme-toggle {
 }
 
 .feature-card.enhanced {
-    background: linear-gradient(145deg, #141414, #0d0d0d);
-    border: 1px solid #222;
+    background: linear-gradient(145deg, var(--card-bg), var(--section-bg));
+    border: 1px solid var(--border-color);
     padding: 35px;
     border-radius: 20px;
     box-shadow: inset 0 0 0 rgba(0,0,0,0);
@@ -378,8 +379,8 @@ main {
 
 .products,
 .product {
-    background: #1a1a1a;
-    border: 1px solid #333;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
     padding: 20px;
     border-radius: 8px;
 }
@@ -432,7 +433,8 @@ main {
 }
 
 .productContent {
-    background: #1a1a1a;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
     padding: 30px;
     border-radius: 8px;
     display: grid;
@@ -441,7 +443,8 @@ main {
 }
 
 .productImage {
-    background: #0d0d0d;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
     border-radius: 8px;
     padding: 20px;
 }
@@ -449,7 +452,8 @@ main {
 #productImg {
     width: 100%;
     height: 400px;
-    background: #222;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
     border-radius: 8px;
 }
 
@@ -458,7 +462,8 @@ main {
 }
 
 .productSpec {
-    background: #0d0d0d;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
     padding: 20px;
     border-radius: 8px;
     margin: 20px 0;
@@ -487,9 +492,9 @@ main {
 footer {
     text-align: center;
     padding: 25px;
-    background-color: #000;
-    color: #666;
-    border-top: 1px solid #1f1f1f;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    border-top: 1px solid var(--border-color); 
 }
 
 
@@ -636,9 +641,9 @@ footer {
     width: 100%;
     padding: 0.5rem;
     border: none;
-    border-bottom: 1.5px solid #ccc;
+    border-bottom: 1.5px solid var(--border-color);
     margin-bottom: 1rem;
-    color: #615a5a;
+    color: var(--text-color);
     font-size: 1.1rem;
     outline: none;
 }
