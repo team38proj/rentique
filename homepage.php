@@ -19,6 +19,7 @@ require_once 'connectdb.php';
         <li><a href="#">Contact</a></li>
         <li><a href="login.html">Login</a></li>
         <li><a href="signup.html">Sign Up</a></li>
+        <li><button id="theme-toggle" class="black-btn" aria-pressed="false">Light / Dark</button></li>
 
          <?php if (!empty($_SESSION['uid'])): ?>
                 <li class="dropdown" id="profileDropdown">
@@ -34,7 +35,7 @@ require_once 'connectdb.php';
                 <li><a href="login.php" class="btn login">Login</a></li>
                 <li><a href="signup.php" class="btn signup">Sign Up</a></li>
             <?php endif; ?>
-    <li><button id="theme-toggle" class="black-btn" aria-pressed="false">Light / Dark</button></li>
+    
     </ul>
 </nav>
 </head>
@@ -218,6 +219,7 @@ if (isset($_GET['logout'])) {
         });
     });
     </script>
+
 
 
 
