@@ -306,7 +306,7 @@ main {
 
 /* Browse Section */
 .intro {
-    background: #111;
+    background-color: var(--bg-color);
     padding: 25px;
     border-radius: 6px;
     margin-bottom: 40px;
