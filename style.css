@@ -34,7 +34,7 @@ body {
 }
 
 
-    :root
+    :root{
     --accent-color: #008000;
     --base-color: white;
     --text-color: #000000;
