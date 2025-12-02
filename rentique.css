@@ -1,3 +1,10 @@
+:root {
+    --bg-color: #ffffff;
+    --text-color: #000000;
+    --base-color: #f2f2f2;
+    --input-color: #e5e5e5;
+}
+
 body {
     margin: 0;
     font-family: 'Poppins', Arial, sans-serif;
