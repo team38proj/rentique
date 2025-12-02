@@ -699,9 +699,9 @@ footer {
 .contactForm textarea {
     width: 100%;
     padding: 10px 15px;
-    background: #1a1a1a;
-    color: #fff;
-    border: 1px solid #333;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
     border-radius: 5px;
     margin-bottom: 20px;
 }
