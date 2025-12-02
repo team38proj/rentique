@@ -2,11 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link rel="stylesheet" href="rentique.css">
     <link rel="stylesheet" href="style.css">
     <script src="login.php" defer></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const currentTheme = localStorage.getItem("theme") || "light";
+    if (currentTheme === "dark") {
+        document.body.classList.add("dark-mode");
+    }
+});
+</script>
+
 </head>
 <body>
 <div class="login-container">
