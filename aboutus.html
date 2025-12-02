@@ -6,55 +6,80 @@
     <title>Rentique | About Us</title>
 
     <style>
-
-        .about-container {
-            max-width: 900px;
-            margin: 100px auto;
-            padding: 30px;
-            background: var(--base-color);
-            border-radius: 20px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f8f9fa;
+            color: #111;
+            line-height: 1.6;
         }
 
-        .about-heading {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            color: var(--text-color);
+        .header {
+            background: #111;
+            color: white;
+            padding: 25px 40px;
         }
 
-        .about-section {
-            text-align: left;
-            margin-bottom: 25px;
-            line-height: 1.7;
-            font-size: 1.1rem;
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            letter-spacing: 1px;
         }
 
-        .highlight {
-            color: var(--accent-color);
-            font-weight: 600;
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: auto;
+            padding: 40px 0;
         }
 
-        .about-values {
-            margin-top: 30px;
+        h2 {
+            margin-top: 40px;
+            font-size: 24px;
+            color: #222;
         }
 
-        .value-box {
-            background: var(--input-color);
-            padding: 15px 20px;
-            border-radius: 15px;
-            margin-bottom: 15px;
-            border-left: 5px solid var(--accent-color);
-            text-align: left;
+        .section {
+            margin-bottom: 35px;
         }
 
-        .value-title {
-            font-weight: 700;
-            font-size: 1.2rem;
+        .highlight-box {
+            background: white;
+            border-left: 4px solid #28a745;
+            padding: 20px;
+            margin: 25px 0;
+            box-shadow: 0 0 8px rgba(0,0,0,0.06);
         }
 
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .value-card {
+            background: white;
+            padding: 20px;
+            border-radius: 6px;
+            box-shadow: 0 0 8px rgba(0,0,0,0.06);
+        }
+
+        .value-card h3 {
+            margin-top: 0;
+            color: #28a745;
+        }
+
+        .footer {
+            background: #111;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 40px;
+        }
     </style>
+
 </head>
 <body>
 
@@ -158,4 +183,3 @@
 
 </body>
 </html>
-
