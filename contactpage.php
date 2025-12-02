@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 // Rentique Contact page [Krish Backend] gets JSON input
 $input = json_decode(file_get_contents('php://input'), true);
 
-// Rentique Contact page [Krish Backend] checks for success on JSON parsing 
+// Rentique Contact page [Krish Backend] checks for success on JSON parsing
 if (json_last_error() !== JSON_ERROR_NONE) {
     http_response_code(400);
     echo json_encode(['success' => false, 'message' => 'Invalid JSON data']);
@@ -58,21 +58,21 @@ if (strlen($message) > 2000) {
 
 try {
    // Rentique Contact page [Krish Backend] prepares & executes SQL statement
-    $stmt = $pdo->prepare("INSERT INTO contact_messages (first_name, last_name, email, message, created_at) VALUES (?, ?, ?, ?, NOW())");
-    
+    $stmt = $db->prepare("INSERT INTO contact_messages (first_name, last_name, email, message, created_at) VALUES (?, ?, ?, ?, NOW())");
+
     $stmt->execute([$firstName, $lastName, $email, $message]);
-    
+
 // Rentique Contact page [Krish Backend] sends a successful response
     echo json_encode([
-        'success' => true, 
+        'success' => true,
         'message' => 'Thank you for your message! We will get back to you soon.'
     ]);
-    
+
 } catch (PDOException $e) {
     error_log("Database error: " . $e->getMessage());
     http_response_code(500);
     echo json_encode([
-        'success' => false, 
+        'success' => false,
         'message' => 'Failed to send message. Please try again later.'
     ]);
 }

@@ -51,12 +51,12 @@ if ($query->rowCount()>0){  // matching products
                 <span>rentique.</span>
             </div>
             <ul class="nav-links">
-                <li><a href="Homepage.html">Home</a></li>
-                <li><a href="index.html">Shop</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Contact</a></li>
-                <li><a href="#" class="btn login">Login</a></li>
-                <li><a href="#" class="btn signup">Sign Up</a></li>
+                <li><a href="homepage.php">Home</a></li>
+                <li><a href="productsPage.php">Shop</a></li>
+                <li><a href="AboutUs.php">About</a></li>
+                <li><a href="Contact.php">Contact</a></li>
+                <li><a href="login.html" class="btn login">Login</a></li>
+                <li><a href="signup.html" class="btn signup">Sign Up</a></li>
             </ul>
         </nav>
     </header>
