@@ -1,8 +1,38 @@
 <?php
-session_start();
-require_once 'connectdb.php';
-?>
+// connects to database
+require_once ("connectdb.php");
+$search = htmlspecialchars($_GET['search'] ?? '');
+$typesearch = htmlspecialchars($_GET['typesearch'] ?? '');
 
+try {
+    if ($search && $typesearch) {
+        $query = $db->prepare("SELECT * FROM products WHERE title like ? and product_type = ?");
+        $query->execute(["%$search%",$typesearch]);
+    } else if ($search) {
+        $query = $db->prepare("SELECT * FROM products WHERE title like ?");
+        $query->execute(["%$search%"]);
+    } else if ($typesearch) {
+        $query = $db->prepare("SELECT * FROM products WHERE product_type = ?");
+        $query->execute([$typesearch]);
+    } else {
+    //Query DB to find all products.
+    $query = $db->prepare("SELECT * FROM products");
+    $query->execute();
+    }
+}
+catch(PDOException $ex) {
+    echo("Failed to connect to the database.<br>");
+    echo("error reported: " . $ex->getMessage());
+    exit;
+}
+
+// fetch the results row 
+if ($query->rowCount()>0){  // matching products
+    $rows=$query->fetchAll();
+} else {
+    $rows  = NULL;
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -39,83 +69,43 @@ require_once 'connectdb.php';
             <!-- filters n search -->
             <div class="filters">
                 <div class="filters">
-                    <label for="categoryFilter">Category</label>
-                    <select id="categoryFilter">
-                        <option value="all">All Categories</option>
-                        <option value="Dresses">Dresses</option>
-                        <option value="Suits">Suits</option>
-                        <option value="Accessories">Accessories</option>
-                        <option value="Jackets">Jackets</option>
-                        <option value="Shoes">Shoes</option>
+                    <form method="GET" action="productsPage.php">
+                    <!-- Filter by name field -->
+                    
+                    <!-- Filter by type field -->
+                    <select id="dropdown" name="typesearch" placeholder="Search by product type">
+                    <option value="">All Categories</option>
+                    <option value="Dresses">Dresses</option>
+                    <option value="Suits">Suits</option>
+                    <option value="Accessories">Accessories</option>
+                    <option value="Jackets">Jackets</option>
+                    <option value="Shoes">Shoes</option>
                     </select>
+                    <input type="text" name="search" placeholder="Search by product name"><br>
+                    <button type="submit">Search</button>
+                    </form>
                 </div>
-
-                <div class="filters">
-                    <label for="searchFilter">Search</label>
-                    <input type="text" id="searchFilter" placeholder="Search...">
-                </div>
-                
-                <button type="button" id="resetBtn">Reset</button>
             </div>
         </section>
 
         <!--products -->
         <div id="productGrid" class="productGrid">
-            <div class="products">
-              <div class="category">example</div>
-                <h3>example</h3>
-                <div class="price">£example</div>
-                <button onclick="showDetail('product1')">View Details</button>
+                <?php
+                    if ($rows) {
+                        foreach ($rows as $row) {
+                            echo "<div class='product'>";
+                            echo "<div class='category'>" . htmlspecialchars($row['product_type']) . "</div>";
+                            echo "<div class='title'> <h3>" . htmlspecialchars($row['title']) . "</h3></div>";
+                            echo '<img src="images/' . htmlspecialchars($row['image']) . '" alt="Product Image" width="250" height="200">';
+                            echo "<div class='price'> £" . htmlspecialchars($row['price']) . "</h3></div>";
+                            echo "<button>View Details</button>";
+                            echo "</div>";
+                        }
+                    } else {
+                        echo "<p> No products fit the criteria! </p>";
+                    }
+                ?>
             </div>
-
-            <div class="products">
-            <div class="catagory">example</div>
-                <h3>example</h3>
-                    <div class="price">£example</div>
-                <button onclick="showDetail('product2')" >View Details</button>
-            </div>
-
-            <div class="products"><div class="category">example</div>
-                <h3>example</h3>
-                <div class="price">£example</div>
-                <button onclick = "showDetail('product3')">View Details</button>
-        </div>
-
-            <div class="product">
-                <div class="category">example</div>
-                <h3>example</h3>
-                    <div class="price">£example</div>
-                <button onclick="showDetail('product4')">View Details</button>
-
-            </div>
-
-            <div class="products">
-                <div class="category">example</div>
-                <h3>example</h3>
-<div class="price">£example</div>
-                <button onclick="showDetail('product5')">View Details</button>
-            </div>
-
-            <div class="products">
-                <div class="categry">example</div><h3>example</h3>
-                <div class="price">£example</div>
-                <button onclick="showDetail('product6')">View Details</button>
-            </div>
-
-        <div class="products">
-                <div class="category">example</div>
-                <h3>example</h3>
-                <div class="price">£example</div>
-                <button onclick="showDetail('product7')">View Details</button>
-            </div>
-
-            <div class="products">
-                <div class="category">example</div>
-                <h3>example</h3>
-                <div class="price">£example</div>
-                <button onclick="showDetail('product8')">View Details</button></div>
-        </div>
-        </div>
 
         <!-- products view -->
         <div id="productView" class="hiddenProducts">
