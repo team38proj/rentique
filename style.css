@@ -16,6 +16,17 @@ body {
     overflow: hidden;
 }
 
+body.dark-mode {
+    --bg-color: #1e1e1e;
+    --text-color: #ffffff;
+    --card-bg: var(--card-bg);
+    --section-bg: var(--section-bg);
+    --border-color: var(--border-color);
+    --accent-color: #a3ff00;
+    --input-bg: var(--input-bg);
+
+}
+
 *{
     margin: 0;
     padding: 0;
@@ -30,7 +41,7 @@ html{
 
 .login-container{
     box-sizing: border-box;
-    background-color:var(--base-color);
+    background-color: var(--base-color);
     height:100vh;                     /* keep full screen height */
     width:max(40%,600px);
     padding:16px 24px;                /* smaller padding so everything fits */
