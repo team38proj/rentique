@@ -1,13 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
-:root {
-    --bg-color: #ffffff;
+    :root{
+    --accent-color: #008000;
+    --base-color: white;
     --text-color: #000000;
+    --input-color: white;
+    --error-color: #f06272;
 }
 
 body.dark-mode {
     --bg-color: #1e1e1e;
     --text-color: #ffffff;
+    --base-color: #121212;
+    --input-color: #222222;
 }
 
 body {
@@ -17,29 +22,23 @@ body {
     font-family: Arial, sans-serif;
 }
 
-/* Toggle Button Style */
 #theme-toggle {
     cursor: pointer;
     padding: 10px 15px;
     border: none;
-    background: #000; /* ← PURE BLACK BUTTON */
+    background: #000;
     color: #fff;
     border-radius: 5px;
     margin: 15px;
 }
 
-/* Optional cleaner hover effect */
 #theme-toggle:hover {
-    background: #222; /* dark grey so hover is visible */
+    background: #222;
 }
-
-
-    :root{
-    --accent-color: #008000;
-    --base-color: white;
-    --text-color: #000000;
-    --input-color: white;
-    --error-color: #f06272;
+    
+body.dark-mode #theme-toggle {
+    background: #fff;
+    color: #000;
 }
 
 *{
