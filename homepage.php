@@ -2,7 +2,6 @@
 // Rentique Homepage [Krish Backend] Start session and load database connection
 session_start();
 require_once 'connectdb.php';
-<?php
 
 <!DOCTYPE html>
 <html lang="en">
@@ -35,6 +34,7 @@ require_once 'connectdb.php';
                 <li><a href="login.php" class="btn login">Login</a></li>
                 <li><a href="signup.php" class="btn signup">Sign Up</a></li>
             <?php endif; ?>
+    <li><button id="theme-toggle" class="black-btn" aria-pressed="false">Light / Dark</button></li>
     </ul>
 </nav>
 </head>
@@ -195,25 +195,30 @@ if (isset($_GET['logout'])) {
 </script>
 
 <script>
-    const toggleBtn = document.getElementById('theme-toggle');
-    const body = document.body;
+    document.addEventListener('DOMContentLoaded', function () {
+        const toggleBtn = document.getElementById('theme-toggle');
+        const body = document.body;
 
-    // Load saved theme
-    if (localStorage.getItem('theme') === 'dark') {
-        body.classList.add('dark-mode');
-    }
+        // If button not present, nothing to do
+        if (!toggleBtn) return;
 
-    toggleBtn.addEventListener('click', () => {
-        body.classList.toggle('dark-mode');
-
-        // Save mode
-        if (body.classList.contains('dark-mode')) {
-            localStorage.setItem('theme', 'dark');
+        // Initialize state from localStorage
+        const saved = localStorage.getItem('theme');
+        if (saved === 'dark') {
+            body.classList.add('dark-mode');
+            toggleBtn.setAttribute('aria-pressed', 'true');
         } else {
-            localStorage.setItem('theme', 'light');
+            toggleBtn.setAttribute('aria-pressed', 'false');
         }
+
+        toggleBtn.addEventListener('click', function () {
+            const isDark = body.classList.toggle('dark-mode');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            toggleBtn.setAttribute('aria-pressed', isDark ? 'true' : 'false');
+        });
     });
-</script>
+    </script>
+
 
 
 
