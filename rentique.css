@@ -701,7 +701,7 @@ footer {
     padding: 10px 15px;
     background-color: var(--bg-color);
     color: var(--text-color);
-    border: 1px solid var(--border-color);
+    border: 1px solid :#a3ff00;
     border-radius: 5px;
     margin-bottom: 20px;
 }
