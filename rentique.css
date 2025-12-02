@@ -11,6 +11,34 @@ body {
     font-family: Arial, sans-serif;
 }
 
+body.dark-mode {
+    --bg-color: #1e1e1e;
+    --text-color: #ffffff;
+    --base-color: #121212;
+    --input-color: #222222;
+}
+
+
+
+#theme-toggle {
+    cursor: pointer;
+    padding: 10px 15px;
+    border: none;
+    background: #000;
+    color: #fff;
+    border-radius: 5px;
+    margin: 15px;
+}
+
+#theme-toggle:hover {
+    background: #222;
+}
+    
+body.dark-mode #theme-toggle {
+    background: #fff;
+    color: #000;
+}
+
 /* Navigation Bar */
 .navbar {
     display: flex;
