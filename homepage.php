@@ -6,39 +6,63 @@ require_once 'connectdb.php';
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rentique.</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<script>
+    // Rentique Homepage [Krish Backend] Pass user data to JS
+    window.userData = <?= json_encode($userData) ?>;
+    
+    // Rentique Homepage [Krish Backend] Pass featured products to JS
+    window.featuredProducts = <?= json_encode($featuredProducts) ?>;
+    
+    // Rentique Homepage [Krish Backend] Pass search results to JS
+    window.searchResults = <?= json_encode($searchResults) ?>;
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const toggleBtn = document.getElementById('theme-toggle');
+        const body = document.body;
+
+        // If button not present, nothing to do
+        if (!toggleBtn) return;
+
+        // Initialize state from localStorage
+        const saved = localStorage.getItem('theme');
+        if (saved === 'dark') {
+            body.classList.add('dark-mode');
+            toggleBtn.setAttribute('aria-pressed', 'true');
+        } else {
+            toggleBtn.setAttribute('aria-pressed', 'false');
+        }
+
+        toggleBtn.addEventListener('click', function () {
+            const isDark = body.classList.toggle('dark-mode');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            toggleBtn.setAttribute('aria-pressed', isDark ? 'true' : 'false');
+        });
+    });
+    </script>
+    
+<body>
     <nav class="navbar">
     <div class="logo">
         <img src="rentique_logo.png" alt="Rentique logo">
         <span>rentique.</span>
     </div>
-
     <ul class="nav-links">
         <li><a href="homepage.php">Home</a></li>
         <li><a href="index.php">Shop</a></li>
         <li><a href="#">About</a></li>
-        <li><a href="#">Contact</a></li>
+        <li><a href="contact.html">Contact</a></li>
         <li><a href="login.html">Login</a></li>
         <li><a href="signup.html">Sign Up</a></li>
         <li><button id="theme-toggle" class="black-btn" aria-pressed="false">Light/Dark</button></li>
-
-         <?php if (!empty($_SESSION['uid'])): ?>
-                <li class="dropdown" id="profileDropdown">
-                    <button type="button" class="profile-btn" id="profileBtn" aria-haspopup="true" aria-expanded="false">
-                        <?= htmlspecialchars($_SESSION['first_name'] ?? $_SESSION['email'] ?? 'Profile'); ?> ▾
-                    </button>
-                    <div class="dropdown-menu" role="menu" aria-labelledby="profileBtn">
-                        <a href="profile.php" role="menuitem">My Profile</a>
-                        <a href="?logout=1" role="menuitem">Logout</a>
-                    </div>
-                </li>
-            <?php else: ?>
-                <li><a href="login.php" class="btn login">Login</a></li>
-                <li><a href="signup.php" class="btn signup">Sign Up</a></li>
-            <?php endif; ?>
-    
     </ul>
 </nav>
-</head>
+</body>
 
 // Rentique Homepage [Krish Backend] Check if user is logged in and obtain user data
 $userData = null;
@@ -183,39 +207,8 @@ if (isset($_GET['logout'])) {
 
 // Rentique Homepage [Krish Backend] Sends data to frontend
 ?>
-<script>
-    // Rentique Homepage [Krish Backend] Pass user data to JS
-    window.userData = <?= json_encode($userData) ?>;
-    
-    // Rentique Homepage [Krish Backend] Pass featured products to JS
-    window.featuredProducts = <?= json_encode($featuredProducts) ?>;
-    
-    // Rentique Homepage [Krish Backend] Pass search results to JS
-    window.searchResults = <?= json_encode($searchResults) ?>;
 
-    document.addEventListener('DOMContentLoaded', function () {
-        const toggleBtn = document.getElementById('theme-toggle');
-        const body = document.body;
 
-        // If button not present, nothing to do
-        if (!toggleBtn) return;
-
-        // Initialize state from localStorage
-        const saved = localStorage.getItem('theme');
-        if (saved === 'dark') {
-            body.classList.add('dark-mode');
-            toggleBtn.setAttribute('aria-pressed', 'true');
-        } else {
-            toggleBtn.setAttribute('aria-pressed', 'false');
-        }
-
-        toggleBtn.addEventListener('click', function () {
-            const isDark = body.classList.toggle('dark-mode');
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-            toggleBtn.setAttribute('aria-pressed', isDark ? 'true' : 'false');
-        });
-    });
-    </script>
 
 
 
