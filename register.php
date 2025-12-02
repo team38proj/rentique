@@ -27,9 +27,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($username)) {
         $errors[] = "Username field is required";
     } 
-    //elseif (strlen($username) < 3 || strlen($username) > 50) {
-        //$errors[] = "Username must be more than 3 and 50 characters";
-    //}
+    elseif (strlen($username) < 3 || strlen($username) > 50) {
+        $errors[] = "Username must be more than 3 and 50 characters";
+    }
 
     if (empty($email)) {
         $errors[] = "Email field is required";
@@ -41,15 +41,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($password)) {
         $errors[] = "Password is required";
     } 
-    //elseif (strlen($password) < 8) {
-        //$errors[] = "Password must be at least 8 characters";
-    //}
+    elseif (strlen($password) < 8) {
+        $errors[] = "Password must be at least 8 characters";
+    }
     
     /*
     Saja (backend) - check for existing user
     */
-    $stmt = $pdo->query("SELECT * FROM users WHERE username = '$username' OR email = '$email'");
-    $existing_user = $stmt->fetch();
+        //prepared statement to protect from sql injection
+        $stmt = $pdo->prepare("SELECT username, email FROM users WHERE username = ? OR email = ?");
+        $stmt->execute([$username, $email]);
+        $existing_user = $stmt->fetch();
 
     if ($existing_user) {
         // username,email and input are identical
