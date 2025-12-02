@@ -16,11 +16,6 @@ body.dark-mode {
 }
 
 body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    transition: 0.3s ease-in-out;
-    font-family: Arial, sans-serif;
-    
     min-height:100vh;
     background-image: url(background.jpg);
     background-size:cover;
