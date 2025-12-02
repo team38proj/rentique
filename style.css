@@ -17,7 +17,7 @@ body {
 }
 
 body.dark-mode {
-    --bg-color: #1e1e1e;
+    --base-color: #1e1e1e;
     --text-color: #ffffff;
     --card-bg: var(--card-bg);
     --section-bg: var(--section-bg);
