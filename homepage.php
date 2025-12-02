@@ -2,7 +2,7 @@
 // Rentique Homepage [Krish Backend] Start session and load database connection
 session_start();
 require_once 'connectdb.php';
-
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -216,6 +216,7 @@ if (isset($_GET['logout'])) {
         });
     });
     </script>
+
 
 
 
