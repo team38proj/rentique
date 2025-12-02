@@ -23,7 +23,7 @@ body.dark-mode {
     --section-bg: var(--section-bg);
     --border-color: var(--border-color);
     --accent-color: #a3ff00;
-    --input-bg: var(--input-bg);
+    --input-color: var(--input-bg);
 
 }
 
