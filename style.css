@@ -1,32 +1,38 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 :root {
-        --bg-color: #ffffff;
-        --text-color: #000000;
-    }
+    --bg-color: #ffffff;
+    --text-color: #000000;
+}
 
-    body.dark-mode {
-        --bg-color: #1e1e1e;
-        --text-color: #ffffff;
-    }
+body.dark-mode {
+    --bg-color: #1e1e1e;
+    --text-color: #ffffff;
+}
 
-    body {
-        background-color: var(--bg-color);
-        color: var(--text-color);
-        transition: 0.3s ease-in-out;
-        font-family: Arial, sans-serif;
-    }
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: 0.3s ease-in-out;
+    font-family: Arial, sans-serif;
+}
 
-    /* Toggle Button Style */
-    #theme-toggle {
-        cursor: pointer;
-        padding: 10px 15px;
-        border: none;
-        background: #444;
-        color: #fff;
-        border-radius: 5px;
-        margin: 15px;
-    }
+/* Toggle Button Style */
+#theme-toggle {
+    cursor: pointer;
+    padding: 10px 15px;
+    border: none;
+    background: #000; /* ← PURE BLACK BUTTON */
+    color: #fff;
+    border-radius: 5px;
+    margin: 15px;
+}
+
+/* Optional cleaner hover effect */
+#theme-toggle:hover {
+    background: #222; /* dark grey so hover is visible */
+}
+
 
     :root
     --accent-color: #008000;
