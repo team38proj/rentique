@@ -17,16 +17,18 @@ require_once 'connectdb.php';
     <header>
         <nav class="navbar">
             <div class="logo">
-                <img src="rentique_logo.png">
+                <a href="productsPage.php">
+                <img src="rentique_logo.png" alt="Rentique Logo">
+                </a>
                 <span>rentique.</span>
             </div>
             <ul class="nav-links">
                 <li><a href="Homepage.html">Home</a></li>
-                <li><a href="index.html">Shop</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="Contact.html">Contact</a></li>
-                <li><a href="#" class="btn login">Login</a></li>
-                <li><a href="#" class="btn signup">Sign Up</a></li>
+                <li><a href="productsPage.php">Shop</a></li>
+                <li><a href="AboutUs.php">About</a></li>
+                <li><a href="Contact.php">Contact</a></li>
+                <li><a href="login.php" class="btn login">Login</a></li>
+                <li><a href="signup.html" class="btn signup">Sign Up</a></li>
             </ul>
         </nav>
     </header>
