@@ -1,1 +1,193 @@
 
+<?php
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Rentique | User Dashboard</title>
+    <link rel="stylesheet" href="rentique.css">
+</head>
+
+<body>
+
+    <!-- ROLE ACCESS PROTECTION -->
+    <script>
+        if (localStorage.getItem("rentique_role") !== "user") {
+            window.location.href = "login.html";
+        }
+    </script>
+
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <img src="rentique_logo.png">
+                <span>rentique.</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#shop">Shop</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="auth_login.html" class="btn logout">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="dashboard-container">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <h2>User Menu</h2>
+
+            <a href="#overview" class="side-link">Dashboard Overview</a>
+            <a href="#orders" class="side-link">My Orders</a>
+            <a href="#messages" class="side-link">Messages</a>
+            <a href="#settings" class="side-link">Settings</a>
+            <a href="#cashout" class="side-link">Cash Out</a>
+            <a href="../seller/dashboard.html" class="side-link">Switch to Seller Mode</a>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <section class="main-content">
+
+            <!-- OVERVIEW -->
+            <div id="overview" class="section-block">
+                <h2>Welcome Back!</h2>
+
+                <div class="overview-grid">
+                    <div class="overview-card">
+                        <h3>Active Orders</h3>
+                        <p class="green">3</p>
+                    </div>
+
+                    <div class="overview-card">
+                        <h3>Messages</h3>
+                        <p class="green">2 New</p>
+                    </div>
+
+                    <div class="overview-card">
+                        <h3>Balance</h3>
+                        <p class="green">£92.50</p>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- ORDERS -->
+            <div id="orders" class="section-block">
+                <h2>My Orders</h2>
+
+                <table class="main-table">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Order Type</th>
+                            <th>Status</th>
+                            <th>Return By</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>Black Satin Dress</td>
+                            <td>Rental</td>
+                            <td class="green">Delivered</td>
+                            <td>25 Feb 2025</td>
+                        </tr>
+
+                        <tr>
+                            <td>Men's Blazer</td>
+                            <td>Rental</td>
+                            <td class="green">In Transit</td>
+                            <td>--- </td>
+                        </tr>
+
+                        <tr>
+                            <td>Gold Necklace</td>
+                            <td>Purchase</td>
+                            <td class="green">Completed</td>
+                            <td>---</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+            <!-- MESSAGES -->
+            <div id="messages" class="section-block">
+                <h2>Messages</h2>
+
+                <div class="message-card">
+                    <h3>Seller: Olivia Johnson</h3>
+                    <p>Your rental return has been confirmed. Thank you!</p>
+                    <button class="btn primary small">View Conversation</button>
+                </div>
+
+                <div class="message-card">
+                    <h3>Customer Service</h3>
+                    <p>Your refund request is being reviewed.</p>
+                    <button class="btn primary small">Open Chat</button>
+                </div>
+            </div>
+
+
+            <!-- SETTINGS -->
+            <div id="settings" class="section-block">
+                <h2>Settings</h2>
+
+                <form class="settings-form">
+
+                    <h3>Personal Information</h3>
+
+                    <label>Full Name</label>
+                    <input type="text" placeholder="John Doe">
+
+                    <label>Email</label>
+                    <input type="email" placeholder="john@example.com">
+
+                    <label>Address</label>
+                    <input type="text" placeholder="123 London Road">
+
+                    <hr>
+
+                    <h3>Payment Cards</h3>
+                    <input type="text" placeholder="Card Number">
+                    <input type="text" placeholder="Expiry Date (MM/YY)">
+                    <input type="text" placeholder="CVV">
+
+                    <button class="btn primary">Save Changes</button>
+                </form>
+            </div>
+
+
+            <!-- CASH OUT -->
+            <div id="cashout" class="section-block">
+                <h2>Cash Out Balance</h2>
+
+                <form class="settings-form">
+                    <label>Account Holder Name</label>
+                    <input type="text" placeholder="John Doe (Same as profile)" disabled>
+
+                    <label>Bank Sort Code</label>
+                    <input type="text" placeholder="00-00-00">
+
+                    <label>Account Number</label>
+                    <input type="text" placeholder="12345678">
+
+                    <label>Amount to Withdraw</label>
+                    <input type="text" placeholder="£92.50">
+
+                    <button class="btn primary">Withdraw</button>
+                </form>
+            </div>
+
+        </section>
+    </div>
+
+    <script src="../js/auth.js"></script>
+
+</body>
+
+</html>
