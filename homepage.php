@@ -11,6 +11,23 @@ require_once 'connectdb.php';
     <title>Rentique.</title>
     <link rel="stylesheet" href="style.css">
 </head>
+    
+<body>
+    <nav class="navbar">
+    <div class="logo">
+        <img src="rentique_logo.png" alt="Rentique logo">
+        <span>rentique.</span>
+    </div>
+    <ul class="nav-links">
+        <li><a href="homepage.php">Home</a></li>
+        <li><a href="index.php">Shop</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="login.html">Login</a></li>
+        <li><a href="signup.html">Sign Up</a></li>
+        <li><button id="theme-toggle" class="black-btn" aria-pressed="false">Light/Dark</button></li>
+    </ul>
+</nav>
 
 <script>
     // Rentique Homepage [Krish Backend] Pass user data to JS
@@ -45,23 +62,6 @@ require_once 'connectdb.php';
         });
     });
     </script>
-    
-<body>
-    <nav class="navbar">
-    <div class="logo">
-        <img src="rentique_logo.png" alt="Rentique logo">
-        <span>rentique.</span>
-    </div>
-    <ul class="nav-links">
-        <li><a href="homepage.php">Home</a></li>
-        <li><a href="index.php">Shop</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="contact.html">Contact</a></li>
-        <li><a href="login.html">Login</a></li>
-        <li><a href="signup.html">Sign Up</a></li>
-        <li><button id="theme-toggle" class="black-btn" aria-pressed="false">Light/Dark</button></li>
-    </ul>
-</nav>
 </body>
 
 // Rentique Homepage [Krish Backend] Check if user is logged in and obtain user data
@@ -207,6 +207,7 @@ if (isset($_GET['logout'])) {
 
 // Rentique Homepage [Krish Backend] Sends data to frontend
 ?>
+
 
 
 
