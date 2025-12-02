@@ -19,7 +19,7 @@ require_once 'connectdb.php';
         <li><a href="#">Contact</a></li>
         <li><a href="login.html">Login</a></li>
         <li><a href="signup.html">Sign Up</a></li>
-        <li><button id="theme-toggle" class="black-btn" aria-pressed="false">Light / Dark</button></li>
+        <li><button id="theme-toggle" class="black-btn" aria-pressed="false">Light/Dark</button></li>
 
          <?php if (!empty($_SESSION['uid'])): ?>
                 <li class="dropdown" id="profileDropdown">
@@ -193,9 +193,6 @@ if (isset($_GET['logout'])) {
     // Rentique Homepage [Krish Backend] Pass search results to JS
     window.searchResults = <?= json_encode($searchResults) ?>;
 
-</script>
-
-<script>
     document.addEventListener('DOMContentLoaded', function () {
         const toggleBtn = document.getElementById('theme-toggle');
         const body = document.body;
@@ -219,6 +216,7 @@ if (isset($_GET['logout'])) {
         });
     });
     </script>
+
 
 
 
