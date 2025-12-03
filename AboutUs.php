@@ -24,6 +24,8 @@
                 <li><a href="Contact.php">Contact</a></li>
                 <li><a href="login.php" class="btn login">Login</a></li>
                 <li><a href="signup.html" class="btn signup">Sign Up</a></li>
+				<li><a href="basketPage.php" class="cart-icon"><img src="basket.png" alt="Basket"></a></li>
+
             </ul>
         </nav>
 
