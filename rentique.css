@@ -1493,3 +1493,9 @@ footer {
     color: #a3ff00;
 }
 
+.cart-icon img {
+    width: 60px;
+    height: 60px;
+    vertical-align: middle;
+    margin-top: -20px;
+}
