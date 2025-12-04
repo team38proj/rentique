@@ -103,21 +103,22 @@ body.dark-mode #theme-toggle {
 
 .btn.login {
     border: 1px solid #a3ff00;
-    color: #a3ff00;
+    color: var(--text-color);
 }
 
 .btn.login:hover {
     background-color: #a3ff00;
-    color: #000;
+    color: var(--text-color);
 }
 
 .btn.signup {
     background-color: #a3ff00;
-    color: #000;
+    color: var(--text-color);
 }
 
 .btn.signup:hover {
     background-color: #d2ff4c;
+	color: var(--text-color);
 }
 
 .cart-icon {
@@ -1536,7 +1537,7 @@ footer {
 }
 
     .nav-links li a {
-        color: #eaeaea;
+    	color: var(--text-color);
         text-decoration: none;
         font-weight: 500;
         transition: color 0.3s;
