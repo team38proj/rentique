@@ -47,8 +47,8 @@ body.dark-mode {
 }
 
 body.dark-mode #theme-toggle {
-    background: var(--text-color);
-    color: var(--bg-color);
+    background: var(--bg-color);
+    color: var(--text-color);
 }
 
 /* Navigation Bar */
