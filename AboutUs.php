@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rentique | About Us</title>
     <link rel="stylesheet" href="rentique.css">
-    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="icon" type="image/png" href="logo4.png">
 </head>
 <body id="aboutPage">
 
@@ -68,7 +68,7 @@
             </div>
 
             <div class="mission-image">
-                <img src="map.png" alt="Map">
+                <img src="map4.png" alt="Map">
             </div>
 
         </div>
