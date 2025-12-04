@@ -153,7 +153,6 @@ if (isset($_GET['logout'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rentique.</title>
-    <link rel="stylesheet" href="style.css">
 
 <!--Saja - backend (toggleable theme)-->
 <script>
@@ -165,6 +164,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
     
+    <link rel="stylesheet" href="style.css">
 </head>
     
 <body>
@@ -221,3 +221,4 @@ document.addEventListener("DOMContentLoaded", () => {
     </script>
 </body>
 </html>
+
