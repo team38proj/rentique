@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rentique | About Us</title>
-    <link rel="stylesheet" href="rentique.css">
-    <link rel="icon" type="image/png" href="logo4.png">
 
 <!--Saja - backend (toggleable theme)-->
 <script>
@@ -17,9 +15,12 @@
 });
 </script>
 	
+    <link rel="stylesheet" href="rentique.css">
+    <link rel="icon" type="image/png" href="logo4.png">
+	
 </head>
+	
 <body id="aboutPage">
-
 <header>
     <nav class="navbar">
         <div class="logo">
