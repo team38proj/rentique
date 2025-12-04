@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="rentique.css">
     <link rel="icon" type="image/png" href="logo4.png">
 
-	/*(theme) script*/
 	<script>
 document.addEventListener("DOMContentLoaded", () => {
     const currentTheme = localStorage.getItem("theme") || "light";
