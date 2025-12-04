@@ -107,7 +107,7 @@ body.dark-mode #theme-toggle {
 }
 
 .btn.login:hover {
-    background-color: #a3ff00;
+    background-color: #d2ff4c;
     color: var(--text-color);
 }
 
@@ -1692,5 +1692,5 @@ footer {
     height: 60px;
     vertical-align: middle;
     margin-top: -20px;
-	border: 1px solid var(--border-color);
+    color: #a3ff00;
 }
