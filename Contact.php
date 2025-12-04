@@ -9,9 +9,6 @@ require_once 'connectdb.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rentique | Contact Us</title>
-    <link rel="stylesheet" href="rentique.css">
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/png" href="rentique_logo.png">
 
 <!--Saja - backend (toggleable theme)-->
 <script>
@@ -22,6 +19,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 </script>
+    
+    <link rel="stylesheet" href="rentique.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="rentique_logo.png">
     
 </head>
 <body>
