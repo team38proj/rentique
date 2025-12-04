@@ -28,7 +28,7 @@
 </header>
 
 	<div class="full-banner">
-		<img src="banner.png" alt="Banner">
+		<img src="banner4.png" alt="Banner">
 		</div>
 
 	
