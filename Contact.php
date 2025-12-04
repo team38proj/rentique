@@ -8,13 +8,14 @@ require_once 'connectdb.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rentique Contact Us</title>
+    <title>Rentique | Contact Us</title>
     <link rel="stylesheet" href="rentique.css">
+    <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/png" href="rentique_logo.png">
 
 <!--Saja - backend (toggleable theme)-->
 <script>
-    document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
     const currentTheme = localStorage.getItem("theme") || "light";
     if (currentTheme === "dark") {
         document.body.classList.add("dark-mode");
