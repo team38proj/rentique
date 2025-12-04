@@ -34,6 +34,7 @@
                 <li><a href="login.html" class="btn login">Login</a></li>
                 <li><a href="signup.html" class="btn signup">Sign Up</a></li>
                 <li><a href="basketPage.php" class="cart-icon"><img src="basket.png" alt="Basket"></a></li>
+                <li><button id="theme-toggle" class="black-btn">Light/Dark</button></li>
         </ul>
     </nav>
 </header>
@@ -125,5 +126,27 @@
     <p>© 2025 Rentique. All rights reserved.</p>
 </footer>
 
+<!--Saja - backend (toggleable theme)-->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const currentTheme = localStorage.getItem("theme") || "light";
+    if (currentTheme === "dark") {
+        document.body.classList.add("dark-mode");
+    }
+});
+
+const toggleBtn = document.getElementById("theme-toggle");
+if (toggleBtn) {
+    toggleBtn.addEventListener("click", () => {
+        document.body.classList.toggle("dark-mode");
+
+        if (document.body.classList.contains("dark-mode")) {
+            localStorage.setItem("theme", "dark");
+        } else {
+            localStorage.setItem("theme", "light");
+        }
+    });
+}
+</script>
 </body>
 </html>
