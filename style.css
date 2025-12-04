@@ -8,6 +8,25 @@
     --error-color: #f06272;
 }
 
+body {
+    min-height:100vh;
+    background-image: url(background.jpg);
+    background-size:cover;
+    background-position:right;
+    overflow: hidden;
+}
+
+body.dark-mode {
+    --base-color: #1e1e1e;
+    --text-color: #ffffff;
+    --card-bg: var(--card-bg);
+    --section-bg: var(--section-bg);
+    --border-color: var(--border-color);
+    --accent-color: #a3ff00;
+    --input-color: var(--input-bg);
+
+}
+
 *{
     margin: 0;
     padding: 0;
@@ -19,13 +38,6 @@ html{
     color:var(--text-color);
     text-align:center;
 }
-
-body {
-    min-height: 100vh;
-    background-color: #000;
-    overflow: hidden;
-}
-
 
 .auth-wrapper {
     display: flex;
@@ -59,7 +71,7 @@ body {
 
 .login-container{
     box-sizing: border-box;
-    background-color:#0d0d0d;     
+    background-color: var(--base-color);  
     height:100vh;
     width:max(40%,600px);
     padding:16px 24px;
