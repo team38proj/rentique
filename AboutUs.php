@@ -8,73 +8,110 @@
     <link rel="icon" type="image/png" href="logo.png">
 </head>
 <body id="aboutPage">
-<body>
-    <header>
-         <nav class="navbar">
-            <div class="logo">
-                <a href="productsPage.php">
-                <img src="rentique_logo.png" alt="Rentique Logo">
-                </a>
-                <span>rentique.</span>
-            </div>
-            <ul class="nav-links">
-                <li><a href="Homepage.html">Home</a></li>
-                <li><a href="productsPage.php">Shop</a></li>
-                <li><a href="AboutUs.php">About</a></li>
-                <li><a href="Contact.php">Contact</a></li>
-                <li><a href="login.php" class="btn login">Login</a></li>
-                <li><a href="signup.html" class="btn signup">Sign Up</a></li>
-				<li><a href="basketPage.php" class="cart-icon"><img src="basket.png" alt="Basket"></a></li>
 
-            </ul>
-        </nav>
+<header>
+    <nav class="navbar">
+        <div class="logo">
+            <span>rentique.</span>
+        </div>
 
+        <ul class="nav-links">
+            <li><a href="Homepage.html">Home</a></li>
+            <li><a href="index.html">Shop</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#" class="btn login">Login</a></li>
+            <li><a href="#" class="btn signup">Sign Up</a></li>
+        </ul>
+    </nav>
+</header>
 
-    </header>
-
-    <img src="rentiquebanner2.png" width= "1255">
-
-	<div class= "about-us">
-	<div class= "about-text">
-		<h2>About Us</h2>
-		<h3>Welcome to Rentique</h3>
-	
-		
-		<p>Rentique: Project Dakar
-		
-		<br> 
-		<br>
-		At Rentique we hold the belief that style must not be sacrificed at the cost of our environment or society. Located in Dakar, Senegal, among one 
-of the globe’s most contaminated urban areas. Our goal is to combat the ecological damage inflicted by fast fashion by providing an eco-friendly 
-option. 
-<br>
-<br>
-Rentique is an fashion rental service aimed at minimizing waste by prolonging the durability of clothes and providing access, to premium 
-fashion for all. Rather than purchasing clothes for single use, clients have the option to rent items and then return them with ease. Rentique 
-handles everything, from shipping to expert cleaning, ensuring fashion is hassle-free.Our website offers a range of designer clothes, vintage finds,
-standout accessories and footwear. Through category filters and tailored user profiles, Rentique simplifies the process of dressing stylishly while
- supporting ethical decisions. 
- <br>
- <br>
- Fast fashion is responsible, for 8–10% of carbon emissions and Dakar experiences this effect firsthand. As Group 38 
- we chose the name Rentique to honor Dakar's pollution status and emphasize our dedication to helping resolve the issue. 
- <br>
- <br>
- Moreover our efforts extend beyond sustainability.
-To support communities impacted by damage Rentique contributes 5% of all earnings to organizations that help to minimize waste and enhance social 
-welfare. Each rental not only lessens fashion waste but also contributes to beneficial transformation in Dakar.
-</p>
-	</div>
-		<div class= "about-image">
-		<img src= "map.png">
+	<div class="full-banner">
+		<img src="banner.png" alt="Banner">
 		</div>
-	</div>	
-		
+
 	
+<section class="mission-section right-section">
+    <div class="container">
+        <div class="mission-content">
+            <h3>Our Beginning</h3>
+            <p>Project Dakar: Rentique began as a simple concept to address the significance about the current direction fashion is going and its impact on the world. An example is Dakar, Senegal, where  we experienced first-hand the effects of pollution created by fast fashion. After seeing the extreme impact, members of Rentique felt that change was needed</p>
+            <p>What began as an idea swiftly developed into a platform with a clear message to spread awareness, accessibility, and sustainability. Our mission was always clear and that is to produce fashion that helps people look good while doing good. </p>
+        </div>
+    </div>
+</section>
+
+<section class="mission-section left-section">
+    <div class="container">
+        <div class="mission-layout">
+
+            <div class="mission-content">
+                <h3>Our Mission</h3>
+                <p>Rentique is an online fashion rental service with the goal to reduce waste by extending the life of clothing and accessories. Not only does this promote recycling of unwanted clothing but gives everyone access to high-end fashion.</p>
+                <p>From shipment to expert cleaning, Rentique takes care of all processes ensuring that appearance is never at the expense of morality.</p>
+
+                <div class="mission-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">5%</div>
+                        <div class="stat-label">Of Earnings Donated</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">6-10%</div>
+                        <div class="stat-label">Fast Fashion Emissions</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">100%</div>
+                        <div class="stat-label">Eco-Conscious</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mission-image">
+                <img src="map.png" alt="Map">
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+
+<section class="container">
+    <div class="section-header">
+        <h2>Our Values</h2>
+        <p>At Rentique, we stand by our values, they influence every decision we make.</p>
+    </div>
+        
+    <div class="values-section">
+        <div class="value-card">
+            <div class="value-icon">
+                <i class="fas fa-recycle"></i>
+            </div>
+            <h4>Sustainable Fashion</h4>
+            <p>We extend cloth lifecycles through our rental model, drastically lowering waste and the carbon footprint from fast fashion.</p>
+        </div>
+            
+        <div class="value-card">
+            <div class="value-icon">
+                <i class="fas fa-hands-helping"></i>
+            </div>
+            <h4>Community Investment</h4>
+            <p>5% of all earnings go towards charitable organisation who strive to eliminate waste and increase social welfare across communities.</p>
+        </div>
+            
+        <div class="value-card">
+            <div class="value-icon">
+                <i class="fas fa-tshirt"></i>
+            </div>
+            <h4>Accessible Luxury</h4>
+            <p>We think everyone should be able to afford high-end fashion, not just a select few. At Rentique, our approach makes designer pieces affordable from anyone and anywhere.</p>
+        </div>
+    </div>
+</section>
 	
-	
-    <footer>
-        <p>© 2025 Rentique. All rights reserved.</p>
-    </footer>
+<footer>
+    <p>© 2025 Rentique. All rights reserved.</p>
+</footer>
+
 </body>
 </html>
