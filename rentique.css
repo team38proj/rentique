@@ -1691,4 +1691,5 @@ footer {
     height: 60px;
     vertical-align: middle;
     margin-top: -20px;
+	border: 1px solid var(--border-color);
 }
