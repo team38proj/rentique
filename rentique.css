@@ -623,75 +623,186 @@ footer {
     transition: 0.5s;
 }
 
+
+
 #aboutPage {
-	margin:0px;
-	padding:0px;
-	box-sizing: border-box;
-	font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+    background-color: black;
 }
 
-#aboutPage .about-us {
-	width: 85%;
-	display: flex;
-	justify-content: space-between;
-	margin: 50px auto;
+#aboutPage .full-banner {
+    width: 100%;
+    overflow: hidden;
+}
+
+#aboutPage .full-banner img {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+    display: block;
 }
 
 #aboutPage .about-text {
-	max-width: 45%;
-	margin:0px 20px;	
+    text-align: left;
+    margin: 25px 0 15px;
 }
 
-#aboutPage .about-image img{
-	max-width: 80%;
-	height: auto;
-	border-radius: 15px;
-	box-shadow: 1px, 8px, 16px, rgba(0, 0, 0, 0.1);
+#aboutPage .mission-section {
+    padding: 55px 0;
 }
 
-#aboutPage .about-text h2{
-	font-size: 45px;
-	color:#A3FF00;
-	margin-bottom: 20px;
+#aboutPage .container {
+    width: 85%;
+    margin: auto;
 }
 
-#aboutPage .about-text h3{
-	font-size: 25px;
-	margin-bottom: 5px;
-	color:#5E9900;
+#aboutPage .mission-content {
+    max-width: 700px;
+    margin: auto;
+    text-align: centre;
 }
 
-#aboutPage .about-text p{
-	font-size: 17px;
-	color:#666;
-	line-height: 1.6;
-	margin-bottom: 20px;
+#aboutPage .right-section .mission-content {
+    margin-left: 0;
 }
 
-#aboutPage .button{
-	text-decoration: none;
-	font-size: 17px;
-	display: inline-block;
-	padding: 10px 20px;
-	background-color: #007bff;
-	color:#fff;
-	border-radius: 5px;
-	transition: 0.3s ease;
+#aboutPage .mission-content h3 {
+    color: #A3FF00;
+    font-size: 30px;
+    margin-bottom: 15px;
+	font-family: 'Playfair Display', serif;
 }
 
-#aboutPage .button:hover{
-	background-color: #0056b3;
+#aboutPage .mission-content p {
+    font-size: 17px;
+    color: white;
+    line-height: 1.6;
+    margin-bottom: 15px;
 }
 
-@media screen and (max-width:768px) {
-	.about-us{
-		flex-direction: column;
-	}
-	
-	.about-text{
-		max-width: 100%;
-		margin:50px 0px;
-	}
+#aboutPage .mission-stats {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+#aboutPage .stat-item {
+    text-align: center;
+    padding: 15px;
+    border-radius: 10px;
+    width: 30%;
+}
+
+#aboutPage .stat-number {
+    font-size: 26px;
+    color: #A3FF00;
+    font-weight: bold;
+}
+
+#aboutPage .stat-label {
+    font-size: 14px;
+    color: #ccc;
+    margin-top: 5px;
+}
+
+#aboutPage .section-header {
+    text-align: center;
+    margin: 55px 0 30px;
+}
+
+#aboutPage .section-header h2 {
+    font-size: 35px;
+    color: #A3FF00;
+	font-family: 'Playfair Display', serif;
+    margin-bottom: 10px;
+}
+
+#aboutPage .section-header p {
+    color: white;
+    font-size: 17px;
+}
+
+#aboutPage .values-section {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+#aboutPage .value-card {
+    width: 30%;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+#aboutPage .value-card h4 {
+    margin-top: 10px;
+    font-size: 20px;
+    color: #A3FF00;
+}
+
+#aboutPage .value-card p {
+    font-size: 16px;
+    color: #ccc;
+    line-height: 1.5;
+}
+
+#aboutPage .value-icon {
+    font-size: 30px;
+    color: #A3FF00;
+    margin-bottom: 10px;
+}
+
+#aboutPage footer {
+    text-align: center;
+    background-color: #111;
+    color: white;
+    padding: 12px;
+    margin-top: 15px;
+}
+
+@media screen and (max-width: 768px) {
+
+#aboutPage .mission-stats,
+#aboutPage .values-section {
+    flex-direction: column;
+}
+
+#aboutPage .stat-item,
+#aboutPage .value-card {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+#aboutPage .mission-content {
+    max-width: 100%;
+}
+}
+
+#aboutPage .mission-layout {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 40px;
+}
+
+#aboutPage .mission-layout .mission-content {
+    margin: 0;
+}
+
+#aboutPage .mission-image {
+    flex-shrink: 0;
+}
+
+#aboutPage .mission-image img {
+    max-width: 350px;
+    width: 100%;
+    height: auto;
+    margin: 0;
+    border-radius: 15px;
 }
 
 
