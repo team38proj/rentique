@@ -455,30 +455,27 @@ footer {
     background-size: cover;
     background-position: center;
     color: #013220;
-    height: 100vh;
-    overflow: hidden;
+    min-height: 100vh;
+    overflow-x: hidden;
+	overflow-y: auto;
     display: flex;
     flex-direction: column;
 }
 
 #checkoutPage header {
-    background-color: #000000;
-    padding: 2px 20px;
+    background-color: #000;
+    padding: 20px 60px;
     display: flex;
     align-items: center;
-    gap: 20px;
-}
-
-#checkoutPage .header-logo {
-    height: 120px;
-    width: auto;
+    border-bottom: 2px solid #a3ff00;
 }
 
 #checkoutPage .brand-name {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #ffffff;
-    letter-spacing: 0.08rem;
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: #a3ff00;
+    text-transform: lowercase;
+    letter-spacing: 0.03rem;
 }
 
 #checkoutPage h1 {
@@ -518,18 +515,23 @@ footer {
 #checkoutPage .card {
     width: 90%;
     max-width: 1000px;
-    height: 80vh;
+    height: 70vh;
     background: #ffffff;
     align-self: center;
-    box-shadow: 4px 3px 28px #3535358c;
+    box-shadow: 0px 15px 40px rgba(0,0,0,0.2);
     display: flex;
     flex-direction: row;
-    border-radius: 0rem;
+    border-radius: 12px;
     overflow: hidden;
+    transition: 0.3s ease;
+}
+
+#checkoutPage .card:hover {
+    transform: scale(1.01);
 }
 
 #checkoutPage .left-side {
-    background: #000000;
+    background: #000;
     flex: 1;
     display: flex;
     align-items: center;
@@ -543,6 +545,7 @@ footer {
     background: rgba(0,0,0,0.6);
     border: 1px solid #ffffff;
     padding: 1.8rem 1.4rem;
+    border-radius: 8px;
 }
 
 #checkoutPage .order-summary h3 {
@@ -580,22 +583,32 @@ footer {
 #checkoutPage .right-side {
     flex: 1;
     background-color: #ffffff;
-    padding: 2rem;
+    padding: 3rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
     overflow-y: auto;
 }
 
+#checkoutPage form {
+    margin-top: 20rem;
+}
+
 #checkoutPage .inputbox {
     width: 100%;
-    padding: 0.5rem;
-    border: none;
-    border-bottom: 1.5px solid #ccc;
+    padding: 0.75rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
     margin-bottom: 1rem;
     color: #615a5a;
-    font-size: 1.1rem;
+    font-size: 1rem;
+    transition: 0.2s ease;
+}
+
+#checkoutPage .inputbox:focus {
+    border-color: #013220;
     outline: none;
+    box-shadow: 0 0 5px rgba(1,50,32,0.2);
 }
 
 #checkoutPage .expcvv {
@@ -606,21 +619,40 @@ footer {
 }
 
 #checkoutPage .button {
-    background: #013220;
-    padding: 15px;
-    border: none;
+    background-color: #013220;
     color: #ffffff;
-    font-size: 1.2rem;
-    margin-top: 10px;
-    width: 100%;
-    letter-spacing: 0.11rem;
+    border: none;
+    padding: 0.9rem;
+    font-size: 1.1rem;
+    border-radius: 6px;
     cursor: pointer;
+    margin-top: 1rem;
+    transition: 0.3s ease;
 }
 
 #checkoutPage .button:hover {
-    transform: scale(1.05) translateY(-3px);
-    box-shadow: 3px 3px 6px #38373785;
-    transition: 0.5s;
+    background-color: #025a3a;
+}
+
+#checkoutPage #orderItems,
+#checkoutPage #orderDelivery,
+#checkoutPage #orderTotal {
+    margin-top: 0.8rem;
+    font-size: 1rem;
+}
+
+#checkoutPage footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #000;
+    color: #666;
+    border-top: 1px solid #1f1f1f;
+    margin-top: auto;
+    font-size: 0.9rem;
+}
+
+#checkoutPage footer p {
+    color: #666;
 }
 
 
