@@ -149,29 +149,7 @@ if (isset($_GET['logout'])) {
     window.userData = <?= json_encode($userData) ?>;
     window.featuredProducts = <?= json_encode($featuredProducts) ?>;
     window.searchResults = <?= json_encode($searchResults) ?>;
-
-        document.addEventListener('DOMContentLoaded', function () {
-        const toggleBtn = document.getElementById('theme-toggle');
-        const body = document.body;
-
-        // If button not present, nothing to do
-        if (!toggleBtn) return;
-
-        // Initialize state from localStorage
-        const saved = localStorage.getItem('theme');
-        if (saved === 'dark') {
-            body.classList.add('dark-mode');
-            toggleBtn.setAttribute('aria-pressed', 'true');
-        } else {
-            toggleBtn.setAttribute('aria-pressed', 'false');
-        }
-
-        toggleBtn.addEventListener('click', function () {
-            const isDark = body.classList.toggle('dark-mode');
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-            toggleBtn.setAttribute('aria-pressed', isDark ? 'true' : 'false');
-        });
-    });
 </script>
+
 
 
