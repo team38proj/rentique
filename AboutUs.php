@@ -6,6 +6,17 @@
     <title>Rentique | About Us</title>
     <link rel="stylesheet" href="rentique.css">
     <link rel="icon" type="image/png" href="logo4.png">
+
+	/*(theme) script*/
+	<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const currentTheme = localStorage.getItem("theme") || "light";
+    if (currentTheme === "dark") {
+        document.body.classList.add("dark-mode");
+    }
+});
+</script>
+	
 </head>
 <body id="aboutPage">
 
@@ -20,7 +31,7 @@
                 <li><a href="productsPage.php">Shop</a></li>
                 <li><a href="AboutUs.php">About</a></li>
                 <li><a href="Contact.php">Contact</a></li>
-                <li><a href="login.php" class="btn login">Login</a></li>
+                <li><a href="login.html" class="btn login">Login</a></li>
                 <li><a href="signup.html" class="btn signup">Sign Up</a></li>
                 <li><a href="basketPage.php" class="cart-icon"><img src="basket.png" alt="Basket"></a></li>
         </ul>
