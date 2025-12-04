@@ -7,8 +7,9 @@
     <link rel="stylesheet" href="rentique.css">
     <link rel="icon" type="image/png" href="logo4.png">
 
-	<script>
-document.addEventListener("DOMContentLoaded", () => {
+<!--Saja - backend (toggleable theme)-->
+<script>
+	document.addEventListener("DOMContentLoaded", () => {
     const currentTheme = localStorage.getItem("theme") || "light";
     if (currentTheme === "dark") {
         document.body.classList.add("dark-mode");
