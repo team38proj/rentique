@@ -1,8 +1,71 @@
 <?php
+// Rentique Homepage [Krish Backend] Start session and load database connection
 session_start();
 require_once 'connectdb.php';
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rentique.</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+    
+<body>
+    <nav class="navbar">
+    <div class="logo">
+        <img src="rentique_logo.png" alt="Rentique logo">
+        <span>rentique.</span>
+    </div>
+    <ul class="nav-links">
+        <li><a href="homepage.php">Home</a></li>
+        <li><a href="index.php">Shop</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="login.html">Login</a></li>
+        <li><a href="signup.html">Sign Up</a></li>
+        <li><button id="theme-toggle" class="black-btn" aria-pressed="false">Light/Dark</button></li>
+    </ul>
+</nav>
 
-// Rentique Homepage [Krish Backend] checks if user's logged in and obtains their data
+<script>
+    // Rentique Homepage [Krish Backend] Pass user data to JS
+    window.userData = <?= json_encode($userData) ?>;
+    
+    // Rentique Homepage [Krish Backend] Pass featured products to JS
+    window.featuredProducts = <?= json_encode($featuredProducts) ?>;
+    
+    // Rentique Homepage [Krish Backend] Pass search results to JS
+    window.searchResults = <?= json_encode($searchResults) ?>;
+
+    // Saja - backend (toggleable theme)
+    document.addEventListener('DOMContentLoaded', function () {
+        const toggleBtn = document.getElementById('theme-toggle');
+        const body = document.body;
+
+        // If button not present, nothing to do
+        if (!toggleBtn) return;
+
+        // Initialize state from localStorage
+        const saved = localStorage.getItem('theme');
+        if (saved === 'dark') {
+            body.classList.add('dark-mode');
+            toggleBtn.setAttribute('aria-pressed', 'true');
+        } else {
+            toggleBtn.setAttribute('aria-pressed', 'false');
+        }
+
+        toggleBtn.addEventListener('click', function () {
+            const isDark = body.classList.toggle('dark-mode');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            toggleBtn.setAttribute('aria-pressed', isDark ? 'true' : 'false');
+        });
+    });
+    </script>
+</body>
+
+// Rentique Homepage [Krish Backend] Check if user is logged in and obtain user data
 $userData = null;
 if (isset($_SESSION['uid'])) {
     try {
@@ -15,7 +78,7 @@ if (isset($_SESSION['uid'])) {
     }
 }
 
-// Rentique Homepage [Krish Backend] fetches featured products in the shop section
+// Rentique Homepage [Krish Backend] Fetch featured products for the shop section
 $featuredProducts = [];
 try {
     $stmt = $db->prepare("SELECT id, name, description, category, rental_price, image_url, size, color FROM products WHERE featured = 1 AND available = 1 LIMIT 8");
@@ -25,7 +88,7 @@ try {
     error_log("Database error fetching featured products: " . $e->getMessage());
 }
 
-// Rentique Homepage [Krish Backend] search functionality
+// Rentique Homepage [Krish Backend] Handles search functionality
 $searchResults = [];
 if (isset($_GET['search']) || isset($_GET['category']) || isset($_GET['price_range'])) {
     $search = trim($_GET['search'] ?? '');
@@ -77,7 +140,7 @@ if (isset($_GET['search']) || isset($_GET['category']) || isset($_GET['price_ran
     }
 }
 
-// Rentique Homepage[Krish Backend] login form submission
+// Rentique Homepage[Krish Backend] Handles login form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     $email = trim($_POST['email'] ?? '');
     $password = trim($_POST['password'] ?? '');
@@ -92,7 +155,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
             $_SESSION['email'] = $user['email'];
             $_SESSION['first_name'] = $user['first_name'];
             
-            // redirection to prevent resubmission 
+            // Redirects to prevent form resubmission
             header("Location: " . $_SERVER['PHP_SELF']);
             exit;
         } else {
@@ -103,7 +166,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     }
 }
 
-// Rentique Homepage [Krish Backend] signup form submission
+// Rentique Homepage [Krish Backend] Handle signup form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signup'])) {
     $email = trim($_POST['email'] ?? '');
     $password = trim($_POST['password'] ?? '');
@@ -111,7 +174,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signup'])) {
     $last_name = trim($_POST['last_name'] ?? '');
     
     try {
-        // checks if email already exists
+        // Check if email already exists
         $stmt = $db->prepare("SELECT uid FROM users WHERE email = ?");
         $stmt->execute([$email]);
         
@@ -127,7 +190,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signup'])) {
             $_SESSION['email'] = $email;
             $_SESSION['first_name'] = $first_name;
             
-            // redirection to prevent resubmission
+            // Redirect to prevent form resubmission
             header("Location: " . $_SERVER['PHP_SELF']);
             exit;
         }
@@ -136,20 +199,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signup'])) {
     }
 }
 
-// Rentique Homepage [Krish Backend] manages logout 
+// Rentique Homepage [Krish Backend] Handle logout
 if (isset($_GET['logout'])) {
     session_destroy();
     header("Location: " . $_SERVER['PHP_SELF']);
     exit;
 }
 
-// Rentique Homepage [Krish Backend] data sends to frontend 
+// Rentique Homepage [Krish Backend] Sends data to frontend
 ?>
-<script>
-    window.userData = <?= json_encode($userData) ?>;
-    window.featuredProducts = <?= json_encode($featuredProducts) ?>;
-    window.searchResults = <?= json_encode($searchResults) ?>;
-</script>
-
-
-
