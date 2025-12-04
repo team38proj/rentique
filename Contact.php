@@ -13,7 +13,6 @@ require_once 'connectdb.php';
     <link rel="stylesheet" href="rentique.css">
     <link rel="icon" type="image/png" href="rentique_logo.png">
 
-    /*(theme) script*/
     <script>
 document.addEventListener("DOMContentLoaded", () => {
     const currentTheme = localStorage.getItem("theme") || "light";
