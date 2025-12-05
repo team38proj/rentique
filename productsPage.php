@@ -41,7 +41,7 @@ if ($query->rowCount()>0){  // matching products
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>rentique - Browse Attire</title>
     <link rel="stylesheet" href="rentique.css">
-    <link rel="icon" type="image/png" href="rentique_logo.png">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     <!--Saja - backend (toggleable theme)-->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
@@ -57,7 +57,7 @@ if ($query->rowCount()>0){  // matching products
      <nav class="navbar">
             <div class="logo">
                 <a href="productsPage.php">
-                <img src="rentique_logo.png" alt="Rentique Logo">
+                <img src="images/rentique_logo.png" alt="Rentique Logo">
                 </a>
                 <span>rentique.</span>
             </div>

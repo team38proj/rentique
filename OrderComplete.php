@@ -39,13 +39,13 @@ $cardLast4 = $_GET['card'] ?? 'XXXX';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Complete</title>
     <link rel="stylesheet" href="rentique.css">
-    <link rel="icon" type="image/png" href="rentique_logo.png">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
 </head>
 <body>
 <header>
     <nav class="navbar">
         <div class="logo">
-            <img src="rentique_logo.png">
+            <img src="images/rentique_logo.png">
             <span>rentique.</span>
         </div>
         <ul class="nav-links">

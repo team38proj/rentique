@@ -185,15 +185,15 @@ document.addEventListener("DOMContentLoaded", () => {
     
     <link rel="stylesheet" href="rentique.css">
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/png" href="rentique_logo.png">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     
 </head>
 <body>
     <header>
         <nav class="navbar">
             <div class="logo">
-                <a href="productsPage.php">
-                <img src="rentique_logo.png" alt="Rentique Logo">
+                <a href="Homepage.php">
+                <img src="images/rentique_logo.png" alt="Rentique Logo">
                 </a>
                 <span>rentique.</span>
             </div>
@@ -204,7 +204,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <li><a href="Contact.php">Contact</a></li>
                 <li><a href="login.php" class="btn login">Login</a></li>
                 <li><a href="signup.php" class="btn signup">Sign Up</a></li>
-                <li><a href="basketPage.php" class="cart-icon"><img src="basket.png" alt="Basket"></a></li>
+                <li><a href="basketPage.php" class="cart-icon"><img src="images/basket.png" alt="Basket"></a></li>
                 <li><button id="theme-toggle" class="black-btn">Light/Dark</button></li>
             </ul>
         </nav>
@@ -236,13 +236,13 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
         </section>
         -->
-
     </header>
-
-    <img src="rentiquebanner2.png" width= "1255">
-
+    <section class="banner">
+        <img src="images/rentiquebanner2.png">
+    </section>
     <section class="hero">
         <div class="hero-content">
+            
             <h1>Style That Moves With You</h1>
             <p>Rent. Wear. Return. Experience fashion freedom with Rentique – the modern way to shop sustainably.</p>
             <div class="hero-buttons">

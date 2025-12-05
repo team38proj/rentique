@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
     <link rel="stylesheet" href="rentique.css">
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/png" href="rentique_logo.png">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     
 </head>
 <body>
@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <nav class="navbar">
             <div class="logo">
                 <a href="productsPage.php">
-                <img src="rentique_logo.png" alt="Rentique Logo">
+                <img src="images/rentique_logo.png" alt="Rentique Logo">
                 </a>
                 <span>rentique.</span>
             </div>
@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <li><a href="Contact.php">Contact</a></li>
                 <li><a href="login.php" class="btn login">Login</a></li>
                 <li><a href="signup.php" class="btn signup">Sign Up</a></li>
-                <li><a href="basketPage.php" class="cart-icon"><img src="basket.png" alt="Basket"></a></li>
+                <li><a href="basketPage.php" class="cart-icon"><img src="images/basket.png" alt="Basket"></a></li>
                 <li><button id="theme-toggle" class="black-btn">Light/Dark</button></li>
             </ul>
         </nav>

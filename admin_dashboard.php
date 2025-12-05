@@ -7,6 +7,7 @@
     <meta charset="UTF-8">
     <title>Rentique | Admin Dashboard</title>
     <link rel="stylesheet" href="rentique.css">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
 </head>
 
 <body>
@@ -21,7 +22,7 @@
     <header>
         <nav class="navbar">
             <div class="logo">
-                <img src="rentique_logo.png">
+                <img src="images/rentique_logo.png">
                 <span>rentique.</span>
             </div>
             <ul class="nav-links">

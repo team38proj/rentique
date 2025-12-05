@@ -14,17 +14,19 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 	
     <link rel="stylesheet" href="rentique.css">
-    <link rel="icon" type="image/png" href="logo4.png">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
 	
 </head>
 	
 <body id="aboutPage">
 <header>
     <nav class="navbar">
-        <div class="logo">
-            <span>rentique.</span>
-        </div>
-
+            <div class="logo">
+                <a href="Homepage.php">
+                <img src="images/rentique_logo.png" alt="Rentique Logo">
+                </a>
+                <span>rentique.</span>
+            </div>
         <ul class="nav-links">
                 <li><a href="Homepage.php">Home</a></li>
                 <li><a href="productsPage.php">Shop</a></li>
@@ -32,14 +34,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 <li><a href="Contact.php">Contact</a></li>
                 <li><a href="login.php" class="btn login">Login</a></li>
                 <li><a href="signup.php" class="btn signup">Sign Up</a></li>
-                <li><a href="basketPage.php" class="cart-icon"><img src="basket.png" alt="Basket"></a></li>
+                <li><a href="basketPage.php" class="cart-icon"><img src="images/basket.png" alt="Basket"></a></li>
                 <li><button id="theme-toggle" class="black-btn">Light/Dark</button></li>
         </ul>
     </nav>
 </header>
 
 	<div class="full-banner">
-		<img src="banner4.png" alt="Banner">
+		<img src="images/banner4.png" alt="Banner">
 		</div>
 
 	
@@ -79,7 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
 
             <div class="mission-image">
-                <img src="map4.png" alt="Map">
+                <img src="images/map4.png" alt="Map">
             </div>
 
         </div>

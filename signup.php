@@ -12,6 +12,7 @@ require_once 'connectdb.php';
     <link rel="stylesheet" href="rentique.css">
     <link rel="stylesheet" href="style.css">
     <script src="register.php" defer></script>
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
 
 <!--Saja - backend (toggleable theme)-->
 <script>
@@ -22,7 +23,14 @@ require_once 'connectdb.php';
     }
 });
 </script>
-    
+        <style>
+    body {
+      background-image: url("images/dakar1.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    </style>
 </head>
 <body class="dark-mode">
     <div class="auth-wrapper">

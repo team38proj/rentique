@@ -49,7 +49,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-
 <!--Saja - backend (toggleable theme)-->
 <script>
 document.addEventListener("DOMContentLoaded", () => {
@@ -61,6 +60,15 @@ document.addEventListener("DOMContentLoaded", () => {
     <link rel="stylesheet" href="rentique.css">    
     <link rel="stylesheet" href="style.css">
     <script src="login.php" defer></script>
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+        <style>
+    body {
+      background-image: url("images/dakar1.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    </style>
     
 </head>
 <body>

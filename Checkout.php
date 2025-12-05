@@ -11,6 +11,7 @@
         window.basket = <?= json_encode($basket) ?>;
     </script>
     <script src="script.js" defer></script>
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
 </head>
 <body id="checkoutPage">
 

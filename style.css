@@ -13,7 +13,7 @@ body {
     background-image: url(background.jpg);
     background-size:cover;
     background-position:right;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
 body.dark-mode {
@@ -203,6 +203,20 @@ form div.incorrect .icon{
 form div.incorrect input{
     border-color:var(--error-color);
 }
+
+.banner {
+    width: 100%;
+    overflow: hidden;
+}
+
+.banner img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-width: 1255px;
+    margin: 0 auto;
+}
+
 
 #error-message {
     color:#f06272;

@@ -7,6 +7,7 @@
     <meta charset="UTF-8">
     <title>Rentique | Seller Dashboard</title>
     <link rel="stylesheet" href="rentique.css">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
 </head>
 
 <body>
@@ -21,7 +22,7 @@
     <header>
         <nav class="navbar">
             <div class="logo">
-                <img src="rentique_logo.png">
+                <img src="images/rentique_logo.png">
                 <span>rentique.</span>
             </div>
             <ul class="nav-links">
@@ -32,7 +33,7 @@
                 <li><a href="AboutUs.php">About</a></li>
                 <li><a href="Contact.php">Contact</a></li>
                 <li><a href="auth_login.php" class="btn logout">Logout</a></li>
-                <li><a href="basketPage.php" class="cart-icon"><img src="basket.png" alt="Basket"></a></li> 
+                <li><a href="basketPage.php" class="cart-icon"><img src="images/basket.png" alt="Basket"></a></li> 
             </ul>
         </nav>
     </header>
