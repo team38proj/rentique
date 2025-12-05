@@ -145,7 +145,7 @@ form input{
     border-radius: 0 10px 10px 0;
     border: 2px solid var(--accent-color);      
     background-color: var(--input-bg);
-    color: var(--text-color);
+    color: var(--input-bg);
     transition: 150ms;
 }
 
