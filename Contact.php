@@ -13,10 +13,8 @@ require_once 'connectdb.php';
 <!--Saja - backend (toggleable theme)-->
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-    const currentTheme = localStorage.getItem("theme") || "light";
-    if (currentTheme === "dark") {
-        document.body.classList.add("dark-mode");
-    }
+    const theme = localStorage.getItem("theme") || "light";
+    if (theme === "dark") document.body.classList.add("dark-mode");
 });
 </script>
     
