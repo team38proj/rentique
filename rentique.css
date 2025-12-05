@@ -47,8 +47,8 @@ body.dark-mode {
 }
 
 body.dark-mode #theme-toggle {
-    background: var(--text-color);
-    color: var(--bg-color);
+    background: var(--bg-color);
+    color: var(--text-color);
 }
 
 /* Navigation Bar */
@@ -103,12 +103,12 @@ body.dark-mode #theme-toggle {
 
 .btn.login {
     border: 1px solid #a3ff00;
-    color: #a3ff00;
+    color: #000;
 }
 
 .btn.login:hover {
-    background-color: #a3ff00;
-    color: #000;
+    background-color: #d2ff4c;
+    color: var(--text-color);
 }
 
 .btn.signup {
@@ -118,6 +118,7 @@ body.dark-mode #theme-toggle {
 
 .btn.signup:hover {
     background-color: #d2ff4c;
+	color: var(--text-color);
 }
 
 .cart-icon {
@@ -152,7 +153,7 @@ body.dark-mode #theme-toggle {
 }
 
 .hero p {
-    color: #cccccc;
+    color: var(--text-color);
     font-size: 1.1rem;
     margin-bottom: 30px;
 }
@@ -1511,8 +1512,8 @@ footer {
     justify-content: space-between;
     align-items: center;
     padding: 20px 60px;
-    background-color: #000;
-    border-bottom: 1px solid #1f1f1f;
+    background-color: var(--bg-color);
+    border-bottom: 1px solid var(--border-color);
 }
 
 .logo {
@@ -1536,7 +1537,7 @@ footer {
 }
 
     .nav-links li a {
-        color: #eaeaea;
+    	color: solid #000;
         text-decoration: none;
         font-weight: 500;
         transition: color 0.3s;
@@ -1691,4 +1692,5 @@ footer {
     height: 60px;
     vertical-align: middle;
     margin-top: -20px;
+    color: #a3ff00;
 }
