@@ -49,7 +49,7 @@ html{
 .auth-wrapper .login-container {
     flex: 0 0 40%;
     max-width: 600px;
-    background-color: #0d0d0d;
+    background-color: var(--base-color); 
     z-index: 2;
 }
 
