@@ -1537,7 +1537,7 @@ footer {
 }
 
     .nav-links li a {
-    	color: #000;
+    	color: var(--text-color);
         text-decoration: none;
         font-weight: 500;
         transition: color 0.3s;
