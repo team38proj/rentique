@@ -88,6 +88,15 @@ h2{
     margin: 4px 0 10px;
 }
 
+p {
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    unicode-bidi: isolate;
+    color: var(--input-color);
+}
 
 form{
     width:min(400px, 100%);
