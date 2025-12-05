@@ -145,7 +145,7 @@ form input{
     font: inherit;
     border-radius: 0 10px 10px 0;
     border: 2px solid var(--accent-color);      
-    background-color: var(--text-color);
+    background-color: var(--input-color);
     color: var(--input-color);
     transition: 150ms;
 }
