@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rentique | About Us</title>
+    <link rel="stylesheet" href="rentique.css">
+    <link rel="icon" type="image/png" href="logo4.png">
 
 <!--Saja - backend (toggleable theme)-->
 <script>
@@ -15,12 +17,9 @@
 });
 </script>
 	
-    <link rel="stylesheet" href="rentique.css">
-    <link rel="icon" type="image/png" href="logo4.png">
-	
 </head>
-	
 <body id="aboutPage">
+
 <header>
     <nav class="navbar">
         <div class="logo">
@@ -28,12 +27,12 @@
         </div>
 
         <ul class="nav-links">
-                <li><a href="Homepage.html">Home</a></li>
+                <li><a href="Homepage.php">Home</a></li>
                 <li><a href="productsPage.php">Shop</a></li>
                 <li><a href="AboutUs.php">About</a></li>
                 <li><a href="Contact.php">Contact</a></li>
-                <li><a href="login.html" class="btn login">Login</a></li>
-                <li><a href="signup.html" class="btn signup">Sign Up</a></li>
+                <li><a href="login.php" class="btn login">Login</a></li>
+                <li><a href="signup.php" class="btn signup">Sign Up</a></li>
                 <li><a href="basketPage.php" class="cart-icon"><img src="basket.png" alt="Basket"></a></li>
                 <li><button id="theme-toggle" class="black-btn">Light/Dark</button></li>
         </ul>

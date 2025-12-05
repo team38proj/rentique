@@ -1,16 +1,21 @@
+<?php
+session_start();
+require_once 'connectdb.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="rentique.css">    
+    <title>Signup</title>
+    <link rel="stylesheet" href="rentique.css">
     <link rel="stylesheet" href="style.css">
-    <script src="login.php" defer></script>
+    <script src="register.php" defer></script>
 
 <!--Saja - backend (toggleable theme)-->
 <script>
-document.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener("DOMContentLoaded", () => {
     const currentTheme = localStorage.getItem("theme") || "light";
     if (currentTheme === "dark") {
         document.body.classList.add("dark-mode");
@@ -22,10 +27,19 @@ document.addEventListener("DOMContentLoaded", () => {
 <body class="dark-mode">
     <div class="auth-wrapper">
 <div class="login-container">
-    
-    <h2>Login</h2>
+    <h2>Signup</h2>
 
     <form id="loginform" novalidate>
+        
+        
+        <div class="field">
+            <div class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
+                    <path d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Z"/>
+                </svg>
+            </div>
+            <input type="text" id="username" placeholder="Username">
+        </div>
 
         
         <div class="field">
@@ -38,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <input type="email" id="email" placeholder="Email">
         </div>
 
-        
+       
         <div class="field">
             <div class="icon">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
@@ -48,12 +62,22 @@ document.addEventListener("DOMContentLoaded", () => {
             <input type="password" id="password" placeholder="Password">
         </div>
 
+        
+        <div class="field">
+            <div class="icon">
+                
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
+                    <path d="M240-80q-33 0-56.5-23.5T160-160v-400q0-33 23.5-56.5T240-640h40v-80q0-83 58.5-141.5T480-920q83 0 141.5 58.5T680-720v80h40q33 0 56.5 23.5T800-560v400q0 33-23.5 56.5T720-80H240Zm240-200q33 0 56.5-23.5T560-360q0-33-23.5-56.5T480-440q-33 0-56.5 23.5T400-360q0 33 23.5 56.5T480-280ZM360-640h240v-80q0-50-35-85t-85-35q-50 0-85 35t-35 85v80Z"/>
+                </svg>
+            </div>
+            <input type="password" id="confirm-password" placeholder="Repeat password">
+        </div>
 
-        <button type="submit" class="btn">Login</button>
+        <button type="submit" class="btn">Signup</button>
     </form>
 
     <p id="error-message"></p>
-    <p>New here? <a href="signup.html">Create an Account</a></p>
+    <p>Already have an account? <a href="login.php">login</a></p>
 
 </div>
 </div>
