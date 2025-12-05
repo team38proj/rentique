@@ -14,7 +14,7 @@
     <!-- ROLE PROTECTION -->
     <script>
         if (localStorage.getItem("rentique_role") !== "admin") {
-            window.location.href = "login.html";
+            window.location.href = "login.php";
         }
     </script>
 
@@ -29,7 +29,7 @@
                 <li><a href="#shop">Shop</a></li>
                 <li><a href="#">About</a></li>
                 <li><a href="#">Contact</a></li>
-                <li><a href="auth_login.html" class="btn logout">Logout</a></li>
+                <li><a href="auth_login.php" class="btn logout">Logout</a></li>
             </ul>
         </nav>
     </header>

@@ -14,12 +14,12 @@
                 <img src="rentique_logo.png">
                 <span>rentique.</span>
             </div>
-                <li><a href="Homepage.html">Home</a></li>
+                <li><a href="Homepage.php">Home</a></li>
                 <li><a href="productsPage.php">Shop</a></li>
                 <li><a href="AboutUs.php">About</a></li>
                 <li><a href="Contact.php">Contact</a></li>
                 <li><a href="login.php" class="btn login">Login</a></li>
-                <li><a href="signup.html" class="btn signup">Sign Up</a></li>
+                <li><a href="signup.php" class="btn signup">Sign Up</a></li>
                 <li><a href="basketPage.php" class="cart-icon"><img src="basket.png" alt="Basket"></a></li>
         </nav>
     </header>

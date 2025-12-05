@@ -9,6 +9,9 @@ require_once 'connectdb.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rentique | Contact Us</title>
+    <link rel="stylesheet" href="rentique.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="rentique_logo.png">
 
 <!--Saja - backend (toggleable theme)-->
 <script>
@@ -19,10 +22,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 </script>
-    
-    <link rel="stylesheet" href="rentique.css">
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/png" href="rentique_logo.png">
     
 </head>
 <body>
@@ -35,12 +34,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 <span>rentique.</span>
             </div>
             <ul class="nav-links">
-                <li><a href="Homepage.html">Home</a></li>
+                <li><a href="Homepage.php">Home</a></li>
                 <li><a href="productsPage.php">Shop</a></li>
                 <li><a href="AboutUs.php">About</a></li>
                 <li><a href="Contact.php">Contact</a></li>
-                <li><a href="login.html" class="btn login">Login</a></li>
-                <li><a href="signup.html" class="btn signup">Sign Up</a></li>
+                <li><a href="login.php" class="btn login">Login</a></li>
+                <li><a href="signup.php" class="btn signup">Sign Up</a></li>
                 <li><a href="basketPage.php" class="cart-icon"><img src="basket.png" alt="Basket"></a></li>
                 <li><button id="theme-toggle" class="black-btn">Light/Dark</button></li>
             </ul>
