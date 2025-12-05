@@ -19,14 +19,13 @@ body {
 }
 
 body.dark-mode {
-    --base-color: #1e1e1e;
+    --bg-color: #000000;
     --text-color: #ffffff;
+    --input-bg: #1a1a1a;
     --card-bg: var(--card-bg);
     --section-bg: var(--section-bg);
     --border-color: var(--border-color);
     --accent-color: #a3ff00;
-    --input-color: var(--input-bg);
-
 }
 
 *{
