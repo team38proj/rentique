@@ -1,10 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 :root{
-    --accent-color: #a3ff00;     
-    --base-color: #000000;       
-    --text-color: #eaeaea;       
-    --input-color: #1a1a1a;     
+    --bg-color: #000000;
+    --text-color: #eaeaea;
+    --input-bg: #1a1a1a;
+    --accent-color: #a3ff00;
     --error-color: #f06272;
 }
 
@@ -67,8 +67,8 @@ html{
 
 .login-container{
     box-sizing: border-box;
-    background-color:var(--base-color);
-    background-color: var(--base-color);
+    background-color:var(--bg-color);
+    background-color: var(--bg-color);
     height:100vh;         
     width:max(40%,600px);
     padding:16px 24px;           
