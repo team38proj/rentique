@@ -134,11 +134,11 @@ body.dark-mode #theme-toggle {
 
 /* Hero Section */
 .hero {
-    height: 40vh;
+	height: 40vh;
     display: flex;
     align-items: center;
     justify-content: center;
-	background: linear-gradient(to bottom right, var(--input-bg), var(--card-bg));
+    background: linear-gradient(to bottom right, var(--input-bg), var(--card-bg));
     text-align: center;
     padding: 40px;
 }
