@@ -151,7 +151,7 @@ form input:focus{
 }
 
 form input::placeholder{
-    color:#aaaaaa;
+    color: var(--input-color);
     opacity:1;
 }
 
