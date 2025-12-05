@@ -118,7 +118,7 @@ form .icon{
     flex-shrink: 0;
     height: 42px;
     width: 42px;
-    background-color: var(--accent-color);
+    background-color: var(--base-color);  
     fill: #000;
     color: #000;
     border-radius: 10px 0 0 10px;
