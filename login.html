@@ -7,10 +7,11 @@
 
 <!--Saja - backend (toggleable theme)-->
 <script>
-        if (localStorage.getItem("theme") === "dark") {
-            document.documentElement.classList.add("dark-mode");
-        }
-    </script>
+document.addEventListener("DOMContentLoaded", () => {
+    const theme = localStorage.getItem("theme") || "light";
+    if (theme === "dark") document.body.classList.add("dark-mode");
+});
+</script>
     
     <link rel="stylesheet" href="rentique.css">    
     <link rel="stylesheet" href="style.css">
