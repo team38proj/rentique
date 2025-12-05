@@ -15,7 +15,7 @@
     <!-- ROLE ACCESS PROTECTION -->
     <script>
         if (localStorage.getItem("rentique_role") !== "user") {
-            window.location.href = "login.html";
+            window.location.href = "login.php";
         }
     </script>
 
@@ -30,7 +30,7 @@
                 <li><a href="#shop">Shop</a></li>
                 <li><a href="#">About</a></li>
                 <li><a href="#">Contact</a></li>
-                <li><a href="auth_login.html" class="btn logout">Logout</a></li>
+                <li><a href="auth_login.php" class="btn logout">Logout</a></li>
             </ul>
         </nav>
     </header>
@@ -46,7 +46,7 @@
             <a href="#messages" class="side-link">Messages</a>
             <a href="#settings" class="side-link">Settings</a>
             <a href="#cashout" class="side-link">Cash Out</a>
-            <a href="../seller/dashboard.html" class="side-link">Switch to Seller Mode</a>
+            <a href="../seller/dashboard.php" class="side-link">Switch to Seller Mode</a>
         </aside>
 
         <!-- MAIN CONTENT -->

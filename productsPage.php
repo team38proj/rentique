@@ -42,6 +42,15 @@ if ($query->rowCount()>0){  // matching products
     <title>rentique - Browse Attire</title>
     <link rel="stylesheet" href="rentique.css">
     <link rel="icon" type="image/png" href="rentique_logo.png">
+    <!--Saja - backend (toggleable theme)-->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+        const currentTheme = localStorage.getItem("theme") || "light";
+        if (currentTheme === "dark") {
+            document.body.classList.add("dark-mode");
+        }
+    });
+    </script>
 </head>
 <body>
     <header>
@@ -53,13 +62,14 @@ if ($query->rowCount()>0){  // matching products
                 <span>rentique.</span>
             </div>
             <ul class="nav-links">
-                <li><a href="Homepage.html">Home</a></li>
+                <li><a href="Homepage.php">Home</a></li>
                 <li><a href="productsPage.php">Shop</a></li>
                 <li><a href="AboutUs.php">About</a></li>
                 <li><a href="Contact.php">Contact</a></li>
                 <li><a href="login.php" class="btn login">Login</a></li>
-                <li><a href="signup.html" class="btn signup">Sign Up</a></li>
+                <li><a href="signup.php" class="btn signup">Sign Up</a></li>
                 <li><a href="basketPage.php" class="cart-icon"><img src="basket.png" alt="Basket"></a></li>
+                <li><button id="theme-toggle" class="black-btn">Light/Dark</button></li>
             </ul>
         </nav>
     </header>
@@ -147,5 +157,20 @@ if ($query->rowCount()>0){  // matching products
     </main>
 
     <script src="script.js"></script>
+
+<!--Saja - backend (toggleable theme)-->
+<script>
+const toggleBtn = document.getElementById("theme-toggle");
+
+if (toggleBtn) {
+    toggleBtn.addEventListener("click", () => {
+        document.body.classList.toggle("dark-mode");
+        localStorage.setItem("theme", 
+            document.body.classList.contains("dark-mode") ? "dark" : "light"
+        );
+    });
+}
+
+</script>
 </body>
 </html>

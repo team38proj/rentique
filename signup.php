@@ -1,24 +1,30 @@
+<?php
+session_start();
+require_once 'connectdb.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Signup</title>
-
-<!--Saja - backend (toggleable theme)-->
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-    const theme = localStorage.getItem("theme");
-    if (theme === "dark") document.body.classList.add("dark-mode");
-});
-</script>
-    
     <link rel="stylesheet" href="rentique.css">
     <link rel="stylesheet" href="style.css">
     <script src="register.php" defer></script>
+
+<!--Saja - backend (toggleable theme)-->
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+    const currentTheme = localStorage.getItem("theme") || "light";
+    if (currentTheme === "dark") {
+        document.body.classList.add("dark-mode");
+    }
+});
+</script>
     
 </head>
-<body>
+<body class="dark-mode">
     <div class="auth-wrapper">
 <div class="login-container">
     <h2>Signup</h2>
@@ -78,17 +84,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
 <!--Saja - backend (toggleable theme)-->
 <script>
-const toggleBtn = document.getElementById("theme-toggle");
+document.addEventListener("DOMContentLoaded", () => {
+    const currentTheme = localStorage.getItem("theme") || "light";
+    if (currentTheme === "dark") {
+        document.body.classList.add("dark-mode");
+    }
+});
 
+const toggleBtn = document.getElementById("theme-toggle");
 if (toggleBtn) {
     toggleBtn.addEventListener("click", () => {
         document.body.classList.toggle("dark-mode");
-        localStorage.setItem("theme", 
-            document.body.classList.contains("dark-mode") ? "dark" : "light"
-        );
+
+        if (document.body.classList.contains("dark-mode")) {
+            localStorage.setItem("theme", "dark");
+        } else {
+            localStorage.setItem("theme", "light");
+        }
     });
 }
 </script>
-    
+
 </body>
 </html>
