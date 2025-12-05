@@ -68,7 +68,6 @@ html{
 .login-container{
     box-sizing: border-box;
     background-color:var(--bg-color);
-    background-color: var(--bg-color);
     height:100vh;         
     width:max(40%,600px);
     padding:16px 24px;           
@@ -95,7 +94,7 @@ p {
     margin-inline-start: 0px;
     margin-inline-end: 0px;
     unicode-bidi: isolate;
-    color: var(--input-color);
+    color: var(--input-bg);
 }
 
 form{
@@ -145,8 +144,8 @@ form input{
     font: inherit;
     border-radius: 0 10px 10px 0;
     border: 2px solid var(--accent-color);      
-    background-color: var(--text-color);
-    color: var(--input-color);
+    background-color: var(--input-bg);
+    color: var(--text-color);
     transition: 150ms;
 }
 
@@ -160,7 +159,7 @@ form input:focus{
 }
 
 form input::placeholder{
-    color: var(--input-color);
+    color: var(--input-bg);
     opacity:1;
 }
 
