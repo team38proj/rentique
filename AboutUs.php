@@ -1,8 +1,7 @@
 <?php
 session_start();
-require_once 'connectdb.php';   // FIX: ensure $db exists before using it
+require_once 'connectdb.php';
 
-// Check login state
 $userData = null;
 
 if (isset($_SESSION['uid'])) {
@@ -14,7 +13,6 @@ if (isset($_SESSION['uid'])) {
         error_log("Homepage user fetch error: " . $e->getMessage());
     }
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,7 +20,6 @@ if (isset($_SESSION['uid'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rentique | About Us</title>
-
     <link rel="stylesheet" href="css/rentique.css">
     <link rel="icon" type="image/png" href="images/rentique_logo.png">
     <script src="js/theme.js" defer></script>
@@ -44,20 +41,16 @@ if (isset($_SESSION['uid'])) {
             <li><a href="productsPage.php">Shop</a></li>
             <li><a href="AboutUs.php">About</a></li>
             <li><a href="Contact.php">Contact</a></li>
-            <li>
-                <a href="BasketPage.php" class="cart-icon">Basket</a>
-            </li>
+            <li><a href="BasketPage.php" class="cart-icon">Basket</a></li>
             <button id="themeToggle">Theme</button>
 
             <?php if (isset($userData['role']) && $userData['role'] === 'customer'): ?>
                 <li><a href="seller_dashboard.php">Sell</a></li>
                 <li><a href="user_dashboard.php"><?= htmlspecialchars($userData['billing_fullname'] ?? "Account") ?></a></li>
                 <li><a href="index.php?logout=1" class="btn login">Logout</a></li>
-
             <?php elseif (isset($userData['role']) && $userData['role'] === 'admin'): ?>
                 <li><a href="admin_dashboard.php">Admin</a></li>
                 <li><a href="index.php?logout=1" class="btn login">Logout</a></li>
-
             <?php else: ?>
                 <li><a href="login.php" class="btn login">Login</a></li>
                 <li><a href="signup.php" class="btn signup">Sign Up</a></li>
@@ -70,25 +63,27 @@ if (isset($_SESSION['uid'])) {
     <img src="images/Dakar1.png" alt="Banner">
 </div>
 
-<section class="mission-section right-section">
+<section class="mission-section">
     <div class="container">
-        <div class="mission-content">
-            <h3>Our Beginning</h3>
-            <p>
-                Project Dakar: Rentique began as a simple concept to address the significance about the 
-                current direction fashion is going and its impact on the world. An example is Dakar, Senegal, 
-                where we experienced first-hand the effects of pollution created by fast fashion.
-            </p>
-            <p>
-                What began as an idea swiftly developed into a platform with a clear message to spread 
-                awareness, accessibility, and sustainability. Our mission was always clear — produce fashion 
-                that helps people look good while doing good.
-            </p>
+        <div class="mission-layout">
+            <div class="mission-content">
+                <h3>Our Beginning</h3>
+                <p>
+                    Project Dakar: Rentique began as a simple concept to address the significance about the 
+                    current direction fashion is going and its impact on the world. An example is Dakar, Senegal, 
+                    where we experienced first-hand the effects of pollution created by fast fashion.
+                </p>
+                <p>
+                    What began as an idea swiftly developed into a platform with a clear message to spread 
+                    awareness, accessibility, and sustainability. Our mission was always clear — produce fashion 
+                    that helps people look good while doing good.
+                </p>
+            </div>
         </div>
     </div>
 </section>
 
-<section class="mission-section left-section">
+<section class="mission-section">
     <div class="container">
         <div class="mission-layout">
 
@@ -128,42 +123,43 @@ if (isset($_SESSION['uid'])) {
     </div>
 </section>
 
-<section class="container">
-    <div class="section-header">
-        <h2>Our Values</h2>
-        <p>At Rentique, we stand by our values — they influence every decision we make.</p>
-    </div>
+<section>
+    <div class="container">
 
-    <div class="values-section">
-
-        <div class="value-card">
-            <h4>Sustainable Fashion</h4>
-            <p>
-                We extend clothing lifecycles through our rental model, drastically lowering waste 
-                and the carbon footprint from fast fashion.
-            </p>
+        <div class="section-header">
+            <h2>Our Values</h2>
+            <p>At Rentique, we stand by our values — they influence every decision we make.</p>
         </div>
 
-        <div class="value-card">
-            <h4>Community Investment</h4>
-            <p>
-                5% of all earnings go towards charitable organisations striving to eliminate waste 
-                and improve social welfare.
-            </p>
-        </div>
+        <div class="values-section">
 
-        <div class="value-card">
-            <h4>Accessible Luxury</h4>
-            <p>
-                Everyone deserves access to premium fashion. We make designer clothing affordable 
-                for anyone, anywhere.
-            </p>
-        </div>
+            <div class="value-card">
+                <h4>Sustainable Fashion</h4>
+                <p>
+                    We extend clothing lifecycles through our rental model, drastically lowering waste 
+                    and the carbon footprint from fast fashion.
+                </p>
+            </div>
 
+            <div class="value-card">
+                <h4>Community Investment</h4>
+                <p>
+                    5% of all earnings go towards charitable organisations striving to eliminate waste 
+                    and improve social welfare.
+                </p>
+            </div>
+
+            <div class="value-card">
+                <h4>Accessible Luxury</h4>
+                <p>
+                    Everyone deserves access to premium fashion. We make designer clothing affordable 
+                    for anyone, anywhere.
+                </p>
+            </div>
+
+        </div>
     </div>
 </section>
-
-
 
 <footer>
     <p>© 2025 Rentique. All rights reserved.</p>
