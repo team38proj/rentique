@@ -1111,17 +1111,16 @@ cursor: pointer;
 font-weight: 600;
 }
 
-/* About page simple layout */
+
 
 #aboutPage {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: sans-serif;
+    font-family: 'Poppins', Arial, sans-serif;
     background-color: black;
 }
 
-/* Banner */
 #aboutPage .full-banner {
     width: 100%;
     overflow: hidden;
@@ -1134,23 +1133,15 @@ font-weight: 600;
     display: block;
 }
 
-/* About text */
-#aboutPage .about-text {
-    text-align: left;
-    margin: 25px 0 15px;
-}
-
-/* Mission Section */
-#aboutPage .mission-section {
-    padding: 55px 0;
-}
-
 #aboutPage .container {
     width: 85%;
     margin: auto;
 }
 
-/* Layout: text left, image right */
+#aboutPage .mission-section {
+    padding: 55px 0;
+}
+
 #aboutPage .mission-layout {
     display: flex;
     justify-content: space-between;
@@ -1158,7 +1149,6 @@ font-weight: 600;
     gap: 40px;
 }
 
-/* Mission text block */
 #aboutPage .mission-content {
     max-width: 700px;
     margin: 0;
@@ -1179,7 +1169,18 @@ font-weight: 600;
     margin-bottom: 15px;
 }
 
-/* Mission stats */
+#aboutPage .mission-image {
+    flex-shrink: 0;
+    max-width: 350px;
+}
+
+#aboutPage .mission-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 15px;
+    display: block;
+}
+
 #aboutPage .mission-stats {
     display: flex;
     justify-content: space-between;
@@ -1205,20 +1206,6 @@ font-weight: 600;
     margin-top: 5px;
 }
 
-/* Mission image right side */
-#aboutPage .about-image {
-    flex-shrink: 0;
-    max-width: 350px;
-}
-
-#aboutPage .about-image img {
-    width: 100%;
-    height: auto;
-    border-radius: 15px;
-    display: block;
-}
-
-/* Section header */
 #aboutPage .section-header {
     text-align: center;
     margin: 55px 0 30px;
@@ -1236,7 +1223,6 @@ font-weight: 600;
     font-size: 17px;
 }
 
-/* Values Section */
 #aboutPage .values-section {
     display: flex;
     justify-content: space-between;
@@ -1248,12 +1234,6 @@ font-weight: 600;
     padding: 20px;
     border-radius: 12px;
     text-align: center;
-}
-
-#aboutPage .value-icon {
-    font-size: 30px;
-    color: #A3FF00;
-    margin-bottom: 10px;
 }
 
 #aboutPage .value-card h4 {
@@ -1268,7 +1248,6 @@ font-weight: 600;
     line-height: 1.5;
 }
 
-/* Footer */
 #aboutPage footer {
     text-align: center;
     background-color: #111;
@@ -1277,15 +1256,13 @@ font-weight: 600;
     margin-top: 15px;
 }
 
-/* RESPONSIVE FIXES */
-@media screen and (max-width: 768px) {
+@media (max-width: 768px) {
 
     #aboutPage .mission-layout {
         flex-direction: column;
-        text-align: left;
     }
 
-    #aboutPage .about-image {
+    #aboutPage .mission-image {
         max-width: 100%;
         margin-top: 20px;
     }
@@ -1305,6 +1282,7 @@ font-weight: 600;
         max-width: 100%;
     }
 }
+
 /* CONTACT PAGE */
 
 .contactForm {
