@@ -1,5 +1,50 @@
-
 <?php
+session_start();
+require_once 'connectdb.php';
+
+// Validate user login
+if (!isset($_SESSION['uid'])) {
+    header("Location: login.php");
+    exit;
+}
+
+$user_uid = $_SESSION['uid'];
+
+// Fetch user information
+try {
+    $stmt = $db->prepare("
+        SELECT username, email, address
+        FROM users
+        WHERE uid = ?
+    ");
+    $stmt->execute([$user_uid]);
+    $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$userData) {
+        die("User not found.");
+    }
+} catch (PDOException $e) {
+    die("Database error: " . $e->getMessage());
+}
+
+// Fetch user orders
+try {
+    $stmt = $db->prepare("
+        SELECT t.price, t.created_at, p.title
+        FROM transactions t
+        JOIN products p ON p.pid = t.pid
+        WHERE t.paying_uid = ?
+        ORDER BY t.created_at DESC
+    ");
+    $stmt->execute([$user_uid]);
+    $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    $orders = [];
+}
+
+$activeOrders = count($orders);
+$newMessages = 0;
+$balance = 0;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -7,188 +52,122 @@
 <head>
     <meta charset="UTF-8">
     <title>Rentique | User Dashboard</title>
-    <link rel="stylesheet" href="rentique.css">
-    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="css/rentique.css">
+    <script src="js/theme.js" defer></script>
 </head>
 
 <body>
 
-    <!-- ROLE ACCESS PROTECTION -->
-    <script>
-        if (localStorage.getItem("rentique_role") !== "user") {
-            window.location.href = "login.php";
-        }
-    </script>
+<header>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="images/rentique_logo.png">
+            <span>rentique.</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.php">Home</a></li>
+            <li><a href="productsPage.php">Shop</a></li>
+            <li><a href="AboutUs.php">About</a></li>
+            <li><a href="Contact.php">Contact</a></li>
+            <li><a href="BasketPage.php" class="cart-icon">Basket</a></li>
+            <button id="themeToggle">Theme</button>
 
-    <header>
-        <nav class="navbar">
-            <div class="logo">
-                <img src="images/rentique_logo.png">
-                <span>rentique.</span>
-            </div>
-            <ul class="nav-links">
-                <li><a href="#">Home</a></li>
-                <li><a href="#shop">Shop</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Contact</a></li>
-                <li><a href="auth_login.php" class="btn logout">Logout</a></li>
-            </ul>
-        </nav>
-    </header>
+            <li><a href="user_dashboard.php"><?= htmlspecialchars($userData['username']) ?></a></li>
+            <li><a href="index.php?logout=1" class="btn login">Logout</a></li>
+        </ul>
+    </nav>
+</header>
 
-    <div class="dashboard-container">
+<div class="dashboard-container">
 
-        <!-- SIDEBAR -->
-        <aside class="sidebar">
-            <h2>User Menu</h2>
+    <aside class="sidebar">
+        <h2>User Menu</h2>
+        <a href="#overview" class="side-link">Dashboard Overview</a>
+        <a href="#orders" class="side-link">My Orders</a>
+        <a href="#messages" class="side-link">Messages</a>
+        <a href="#settings" class="side-link">Settings</a>
+    </aside>
 
-            <a href="#overview" class="side-link">Dashboard Overview</a>
-            <a href="#orders" class="side-link">My Orders</a>
-            <a href="#messages" class="side-link">Messages</a>
-            <a href="#settings" class="side-link">Settings</a>
-            <a href="#cashout" class="side-link">Cash Out</a>
-            <a href="../seller/dashboard.php" class="side-link">Switch to Seller Mode</a>
-        </aside>
+    <section class="main-content">
 
-        <!-- MAIN CONTENT -->
-        <section class="main-content">
+        <div id="overview" class="section-block">
+            <h2>Welcome Back, <?= htmlspecialchars($userData['username']) ?>!</h2>
 
-            <!-- OVERVIEW -->
-            <div id="overview" class="section-block">
-                <h2>Welcome Back!</h2>
+            <div class="overview-grid">
+                <div class="overview-card">
+                    <h3>Active Orders</h3>
+                    <p class="green"><?= $activeOrders ?></p>
+                </div>
 
-                <div class="overview-grid">
-                    <div class="overview-card">
-                        <h3>Active Orders</h3>
-                        <p class="green">3</p>
-                    </div>
+                <div class="overview-card">
+                    <h3>Messages</h3>
+                    <p class="green"><?= $newMessages ?> New</p>
+                </div>
 
-                    <div class="overview-card">
-                        <h3>Messages</h3>
-                        <p class="green">2 New</p>
-                    </div>
-
-                    <div class="overview-card">
-                        <h3>Balance</h3>
-                        <p class="green">£92.50</p>
-                    </div>
+                <div class="overview-card">
+                    <h3>Balance</h3>
+                    <p class="green">£<?= number_format($balance, 2) ?></p>
                 </div>
             </div>
+        </div>
 
+        <div id="orders" class="section-block">
+            <h2>My Orders</h2>
 
-            <!-- ORDERS -->
-            <div id="orders" class="section-block">
-                <h2>My Orders</h2>
+            <table class="main-table">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Order Type</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
 
-                <table class="main-table">
-                    <thead>
+                <tbody>
+                    <?php if (empty($orders)): ?>
+                        <tr><td colspan="4">You have no orders yet.</td></tr>
+                    <?php else: ?>
+                        <?php foreach ($orders as $order): ?>
                         <tr>
-                            <th>Item</th>
-                            <th>Order Type</th>
-                            <th>Status</th>
-                            <th>Return By</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <tr>
-                            <td>Black Satin Dress</td>
-                            <td>Rental</td>
-                            <td class="green">Delivered</td>
-                            <td>25 Feb 2025</td>
-                        </tr>
-
-                        <tr>
-                            <td>Men's Blazer</td>
-                            <td>Rental</td>
-                            <td class="green">In Transit</td>
-                            <td>--- </td>
-                        </tr>
-
-                        <tr>
-                            <td>Gold Necklace</td>
+                            <td><?= htmlspecialchars($order['title']) ?></td>
                             <td>Purchase</td>
                             <td class="green">Completed</td>
-                            <td>---</td>
+                            <td><?= $order['created_at'] ?></td>
                         </tr>
-                    </tbody>
-                </table>
-            </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
 
+        <div id="messages" class="section-block">
+            <h2>Messages</h2>
+            <p>No messages at the moment.</p>
+        </div>
 
-            <!-- MESSAGES -->
-            <div id="messages" class="section-block">
-                <h2>Messages</h2>
+        <div id="settings" class="section-block">
+            <h2>Settings</h2>
 
-                <div class="message-card">
-                    <h3>Seller: Olivia Johnson</h3>
-                    <p>Your rental return has been confirmed. Thank you!</p>
-                    <button class="btn primary small">View Conversation</button>
-                </div>
+            <form class="settings-form" method="post" action="update_user.php">
+                <label>Username</label>
+                <input type="text" name="username"
+                       value="<?= htmlspecialchars($userData['username']) ?>" required>
 
-                <div class="message-card">
-                    <h3>Customer Service</h3>
-                    <p>Your refund request is being reviewed.</p>
-                    <button class="btn primary small">Open Chat</button>
-                </div>
-            </div>
+                <label>Email</label>
+                <input type="email" name="email"
+                       value="<?= htmlspecialchars($userData['email']) ?>" required>
 
+                <label>Address</label>
+                <input type="text" name="address"
+                       value="<?= htmlspecialchars($userData['address']) ?>" required>
 
-            <!-- SETTINGS -->
-            <div id="settings" class="section-block">
-                <h2>Settings</h2>
+                <button class="btn primary" type="submit">Save Changes</button>
+            </form>
+        </div>
 
-                <form class="settings-form">
-
-                    <h3>Personal Information</h3>
-
-                    <label>Full Name</label>
-                    <input type="text" placeholder="John Doe">
-
-                    <label>Email</label>
-                    <input type="email" placeholder="john@example.com">
-
-                    <label>Address</label>
-                    <input type="text" placeholder="123 London Road">
-
-                    <hr>
-
-                    <h3>Payment Cards</h3>
-                    <input type="text" placeholder="Card Number">
-                    <input type="text" placeholder="Expiry Date (MM/YY)">
-                    <input type="text" placeholder="CVV">
-
-                    <button class="btn primary">Save Changes</button>
-                </form>
-            </div>
-
-
-            <!-- CASH OUT -->
-            <div id="cashout" class="section-block">
-                <h2>Cash Out Balance</h2>
-
-                <form class="settings-form">
-                    <label>Account Holder Name</label>
-                    <input type="text" placeholder="John Doe (Same as profile)" disabled>
-
-                    <label>Bank Sort Code</label>
-                    <input type="text" placeholder="00-00-00">
-
-                    <label>Account Number</label>
-                    <input type="text" placeholder="12345678">
-
-                    <label>Amount to Withdraw</label>
-                    <input type="text" placeholder="£92.50">
-
-                    <button class="btn primary">Withdraw</button>
-                </form>
-            </div>
-
-        </section>
-    </div>
-
-    <script src="../js/auth.js"></script>
+    </section>
+</div>
 
 </body>
-
 </html>

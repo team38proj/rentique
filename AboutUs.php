@@ -1,3 +1,21 @@
+<?php
+session_start();
+require_once 'connectdb.php';   // FIX: ensure $db exists before using it
+
+// Check login state
+$userData = null;
+
+if (isset($_SESSION['uid'])) {
+    try {
+        $stmt = $db->prepare("SELECT uid, email, billing_fullname, role FROM users WHERE uid = ?");
+        $stmt->execute([$_SESSION['uid']]);
+        $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        error_log("Homepage user fetch error: " . $e->getMessage());
+    }
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,141 +23,86 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rentique | About Us</title>
 
-<!--Saja - backend (toggleable theme)-->
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-    const theme = localStorage.getItem("theme") || "light";
-    if (theme === "dark") document.body.classList.add("dark-mode");
-});
-</script>
-	
-    <link rel="stylesheet" href="rentique.css">
-    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
-	
+    <link rel="stylesheet" href="css/rentique.css">
+    <link rel="icon" type="image/png" href="images/rentique_logo.png">
+    <script src="js/theme.js" defer></script>
 </head>
-	
+
 <body id="aboutPage">
+
 <header>
     <nav class="navbar">
-            <div class="logo">
-                <a href="Homepage.php">
+        <div class="logo">
+            <a href="index.php">
                 <img src="images/rentique_logo.png" alt="Rentique Logo">
-                </a>
-                <span>rentique.</span>
-            </div>
+            </a>
+            <span>rentique.</span>
+        </div>
+
         <ul class="nav-links">
-                <li><a href="Homepage.php">Home</a></li>
-                <li><a href="productsPage.php">Shop</a></li>
-                <li><a href="AboutUs.php">About</a></li>
-                <li><a href="Contact.php">Contact</a></li>
+            <li><a href="index.php">Home</a></li>
+            <li><a href="productsPage.php">Shop</a></li>
+            <li><a href="AboutUs.php">About</a></li>
+            <li><a href="Contact.php">Contact</a></li>
+            <li>
+                <a href="BasketPage.php" class="cart-icon">Basket</a>
+            </li>
+            <button id="themeToggle">Theme</button>
+
+            <?php if (isset($userData['role']) && $userData['role'] === 'customer'): ?>
+                <li><a href="seller_dashboard.php">Sell</a></li>
+                <li><a href="user_dashboard.php"><?= htmlspecialchars($userData['billing_fullname'] ?? "Account") ?></a></li>
+                <li><a href="index.php?logout=1" class="btn login">Logout</a></li>
+
+            <?php elseif (isset($userData['role']) && $userData['role'] === 'admin'): ?>
+                <li><a href="admin_dashboard.php">Admin</a></li>
+                <li><a href="index.php?logout=1" class="btn login">Logout</a></li>
+
+            <?php else: ?>
                 <li><a href="login.php" class="btn login">Login</a></li>
                 <li><a href="signup.php" class="btn signup">Sign Up</a></li>
-                <li><a href="basketPage.php" class="cart-icon"><img src="images/basket.png" alt="Basket"></a></li>
-                <li><button id="theme-toggle" class="black-btn">Light/Dark</button></li>
+            <?php endif; ?>
         </ul>
     </nav>
 </header>
 
-	<div class="full-banner">
-		<img src="images/banner4.png" alt="Banner">
-		</div>
+<img src="images/Dakar1.png" width="100%">
 
-	
-<section class="mission-section right-section">
-    <div class="container">
-        <div class="mission-content">
-            <h3>Our Beginning</h3>
-            <p>Project Dakar: Rentique began as a simple concept to address the significance about the current direction fashion is going and its impact on the world. An example is Dakar, Senegal, where  we experienced first-hand the effects of pollution created by fast fashion. After seeing the extreme impact, members of Rentique felt that change was needed</p>
-            <p>What began as an idea swiftly developed into a platform with a clear message to spread awareness, accessibility, and sustainability. Our mission was always clear and that is to produce fashion that helps people look good while doing good. </p>
-        </div>
+<div class="about-us">
+    <div class="about-text">
+        <h2>About Us</h2>
+        <h3>Welcome to Rentique</h3>
+
+        <p>
+            Rentique: Project Dakar
+            <br><br>
+            At Rentique we believe style should not damage the environment. Based in Dakar, Senegal, 
+            one of the most polluted cities worldwide, our mission is to reduce the environmental 
+            harm caused by fast fashion.
+            <br><br>
+            Rentique provides an eco-friendly fashion rental service. Items are cleaned, reused, and 
+            shared, extending the lifecycle of every garment. Our customers rent premium clothing 
+            without waste.
+            <br><br>
+            Our platform offers designer dresses, suits, accessories, jackets, footwear, and more. 
+            Users enjoy personalised browsing through filters and user profiles.
+            <br><br>
+            Fast fashion contributes 8–10% of global carbon emissions. Dakar suffers this impact 
+            directly. Our team chose the name Rentique to acknowledge this reality and support long-term sustainability.
+            <br><br>
+            We also give back. Rentique donates 5% of all revenue to local waste-reduction 
+            and social-welfare organisations.
+        </p>
     </div>
-</section>
 
-<section class="mission-section left-section">
-    <div class="container">
-        <div class="mission-layout">
-
-            <div class="mission-content">
-                <h3>Our Mission</h3>
-                <p>Rentique is an online fashion rental service with the goal to reduce waste by extending the life of clothing and accessories. Not only does this promote recycling of unwanted clothing but gives everyone access to high-end fashion.</p>
-                <p>From shipment to expert cleaning, Rentique takes care of all processes ensuring that appearance is never at the expense of morality.</p>
-
-                <div class="mission-stats">
-                    <div class="stat-item">
-                        <div class="stat-number">5%</div>
-                        <div class="stat-label">Of Earnings Donated</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">6-10%</div>
-                        <div class="stat-label">Fast Fashion Emissions</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">100%</div>
-                        <div class="stat-label">Eco-Conscious</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mission-image">
-                <img src="images/map4.png" alt="Map">
-            </div>
-
-        </div>
+    <div class="about-image">
+        <img src="images/map4.png" alt="Map of Dakar">
     </div>
-</section>
+</div>
 
-
-
-<section class="container">
-    <div class="section-header">
-        <h2>Our Values</h2>
-        <p>At Rentique, we stand by our values, they influence every decision we make.</p>
-    </div>
-        
-    <div class="values-section">
-        <div class="value-card">
-            <div class="value-icon">
-                <i class="fas fa-recycle"></i>
-            </div>
-            <h4>Sustainable Fashion</h4>
-            <p>We extend cloth lifecycles through our rental model, drastically lowering waste and the carbon footprint from fast fashion.</p>
-        </div>
-            
-        <div class="value-card">
-            <div class="value-icon">
-                <i class="fas fa-hands-helping"></i>
-            </div>
-            <h4>Community Investment</h4>
-            <p>5% of all earnings go towards charitable organisation who strive to eliminate waste and increase social welfare across communities.</p>
-        </div>
-            
-        <div class="value-card">
-            <div class="value-icon">
-                <i class="fas fa-tshirt"></i>
-            </div>
-            <h4>Accessible Luxury</h4>
-            <p>We think everyone should be able to afford high-end fashion, not just a select few. At Rentique, our approach makes designer pieces affordable from anyone and anywhere.</p>
-        </div>
-    </div>
-</section>
-	
 <footer>
     <p>© 2025 Rentique. All rights reserved.</p>
 </footer>
-
-<!--Saja - backend (toggleable theme)-->
-<script>
-const toggleBtn = document.getElementById("theme-toggle");
-
-if (toggleBtn) {
-    toggleBtn.addEventListener("click", () => {
-        document.body.classList.toggle("dark-mode");
-        localStorage.setItem("theme", 
-            document.body.classList.contains("dark-mode") ? "dark" : "light"
-        );
-    });
-}
-</script>
 
 </body>
 </html>

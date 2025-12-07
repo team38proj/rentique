@@ -1,176 +1,205 @@
 <?php
-// connects to database
-require_once ("connectdb.php");
-$search = htmlspecialchars($_GET['search'] ?? '');
-$typesearch = htmlspecialchars($_GET['typesearch'] ?? '');
+session_start();
+require_once 'connectdb.php';
 
-try {
-    if ($search && $typesearch) {
-        $query = $db->prepare("SELECT * FROM products WHERE title like ? and product_type = ?");
-        $query->execute(["%$search%",$typesearch]);
-    } else if ($search) {
-        $query = $db->prepare("SELECT * FROM products WHERE title like ?");
-        $query->execute(["%$search%"]);
-    } else if ($typesearch) {
-        $query = $db->prepare("SELECT * FROM products WHERE product_type = ?");
-        $query->execute([$typesearch]);
-    } else {
-    //Query DB to find all products.
-    $query = $db->prepare("SELECT * FROM products");
-    $query->execute();
+$uid = $_SESSION['uid'] ?? null;
+
+// Check login state
+$userData = null;
+
+if (isset($_SESSION['uid'])) {
+    try {
+        $stmt = $db->prepare("SELECT uid, email, billing_fullname, role FROM users WHERE uid = ?");
+        $stmt->execute([$_SESSION['uid']]);
+        $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        error_log("Homepage user fetch error: " . $e->getMessage());
     }
 }
-catch(PDOException $ex) {
-    echo("Failed to connect to the database.<br>");
-    echo("error reported: " . $ex->getMessage());
-    exit;
+
+
+/* FETCH FILTERS */
+$search = trim($_GET['search'] ?? "");
+$category = $_GET['category'] ?? "";
+$price = $_GET['price'] ?? "";
+
+$query = "SELECT pid, title, image, product_type, price FROM products WHERE 1";
+$params = [];
+
+/* SEARCH FILTER */
+if ($search !== "") {
+    $query .= " AND (title LIKE ? OR product_type LIKE ?)";
+    $params[] = "%$search%";
+    $params[] = "%$search%";
 }
 
-// fetch the results row 
-if ($query->rowCount()>0){  // matching products
-    $rows=$query->fetchAll();
-} else {
-    $rows  = NULL;
+/* CATEGORY FILTER */
+if ($category !== "" && $category !== "All") {
+    $query .= " AND product_type = ?";
+    $params[] = $category;
+}
+
+/* PRICE FILTER */
+if ($price !== "") {
+    if ($price === "10-30") {
+        $query .= " AND price BETWEEN 10 AND 30";
+    } elseif ($price === "30-70") {
+        $query .= " AND price BETWEEN 30 AND 70";
+    } elseif ($price === "70-150") {
+        $query .= " AND price BETWEEN 70 AND 150";
+    } elseif ($price === "150+") {
+        $query .= " AND price >= 150";
+    }
+}
+
+/* RUN QUERY */
+$stmt = $db->prepare($query);
+$stmt->execute($params);
+$products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+/* HANDLE ADD TO BASKET */
+if (isset($_POST['add_to_basket'])) {
+    if (!$uid) {
+        header("Location: login.php");
+        exit;
+    }
+
+    $pid = intval($_POST['pid']);
+
+    /* Retrieve product info */
+    $stmt = $db->prepare("SELECT pid, title, image, product_type, price FROM products WHERE pid = ?");
+    $stmt->execute([$pid]);
+    $p = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($p) {
+        $insert = $db->prepare("
+            INSERT INTO basket (uid, pid, title, image, product_type, price, quantity)
+            VALUES (?, ?, ?, ?, ?, ?, 1)
+        ");
+        $insert->execute([
+            $uid,
+            $p['pid'],
+            $p['title'],
+            $p['image'],
+            $p['product_type'],
+            $p['price']
+        ]);
+
+        header("Location: BasketPage.php");
+        exit;
+    }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>rentique - Browse Attire</title>
-    <link rel="stylesheet" href="rentique.css">
-    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
-    <!--Saja - backend (toggleable theme)-->
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-        const currentTheme = localStorage.getItem("theme") || "light";
-        if (currentTheme === "dark") {
-            document.body.classList.add("dark-mode");
-        }
-    });
-    </script>
+    <title>Rentique | Products</title>
+    <link rel="stylesheet" href="css/rentique.css">
+    <link rel="icon" type="image/png" href="images/rentique_logo.png">
+    <script src="js/theme.js" defer></script>
 </head>
+
 <body>
-    <header>
-     <nav class="navbar">
-            <div class="logo">
-                <a href="productsPage.php">
-                <img src="images/rentique_logo.png" alt="Rentique Logo">
-                </a>
-                <span>rentique.</span>
-            </div>
-            <ul class="nav-links">
-                <li><a href="Homepage.php">Home</a></li>
-                <li><a href="productsPage.php">Shop</a></li>
-                <li><a href="AboutUs.php">About</a></li>
-                <li><a href="Contact.php">Contact</a></li>
+
+<header>
+    <nav class="navbar">
+        <div class="logo">
+            <a href="index.php">
+                <img src="images/rentique_logo.png">
+            </a>
+            <span>rentique.</span>
+        </div>
+
+        
+        <ul class="nav-links">
+            <li><a href="index.php">Home</a></li>
+            <li><a href="productsPage.php" class="active">Shop</a></li>
+            <li><a href="AboutUs.php">About</a></li>
+            <li><a href="Contact.php">Contact</a></li>
+            <li>
+                <a href="BasketPage.php" class="cart-icon">Basket</a>
+            </li>
+            <button id="themeToggle">Theme</button>
+
+           
+            <?php if (isset($userData['role']) && $userData['role'] === 'customer'): ?>
+                <li><a href="seller_dashboard.php">Sell</a></li>
+                <li><a href="user_dashboard.php"><?= htmlspecialchars($userData['billing_fullname'] ?? "Account") ?></a></li>
+                <li><a href="index.php?logout=1" class="btn login">Logout</a></li>
+
+            <?php elseif (isset($userData['role']) && $userData['role'] === 'admin'): ?>
+            <!-- Admin logged in -->
+                <li><a href="admin_dashboard.php">Admin</a></li>
+                <li><a href="index.php?logout=1" class="btn login">Logout</a></li>
+
+            <?php else: ?>
                 <li><a href="login.php" class="btn login">Login</a></li>
                 <li><a href="signup.php" class="btn signup">Sign Up</a></li>
-                <li><a href="basketPage.php" class="cart-icon"><img src="basket.png" alt="Basket"></a></li>
-                <li><button id="theme-toggle" class="black-btn">Light/Dark</button></li>
-            </ul>
-        </nav>
-    </header>
+            <?php endif; ?>
+        </ul>
+    </nav>
+</header>
 
-    <main>
-        <section class="intro">
-            <h1>Browse Attire</h1>
-            <p class="subtitle">browse our collection of attire</p>
 
-            <!-- filters n search -->
-            <div class="filters">
-                <div class="filters">
-                    <form method="GET" action="productsPage.php">
-                    <!-- Filter by name field -->
-                    
-                    <!-- Filter by type field -->
-                    <select id="dropdown" name="typesearch" placeholder="Search by product type">
-                    <option value="">All Categories</option>
-                    <option value="Dresses">Dresses</option>
-                    <option value="Suits">Suits</option>
-                    <option value="Accessories">Accessories</option>
-                    <option value="Jackets">Jackets</option>
-                    <option value="Shoes">Shoes</option>
-                    </select>
-                    <input type="text" name="search" placeholder="Search by product name"><br>
-                    <button type="submit">Search</button>
-                    </form>
-                </div>
+<section class="search-section">
+    <form class="search-container" method="GET" action="productsPage.php">
+
+        <input type="text" name="search" placeholder="Search outfits, jackets, accessories..."
+               value="<?= htmlspecialchars($search) ?>">
+
+        <select name="category">
+            <option value="All">All Categories</option>
+            <option value="Dresses" <?= $category === "Dresses" ? "selected" : "" ?>>Dresses</option>
+            <option value="Menswear" <?= $category === "Menswear" ? "selected" : "" ?>>Menswear</option>
+            <option value="Accessories" <?= $category === "Accessories" ? "selected" : "" ?>>Accessories</option>
+            <option value="Formal" <?= $category === "Formal" ? "selected" : "" ?>>Formal Wear</option>
+        </select>
+
+        <select name="price">
+            <option value="">Price Range</option>
+            <option value="10-30" <?= $price === "10-30" ? "selected" : "" ?>>£10 - £30</option>
+            <option value="30-70" <?= $price === "30-70" ? "selected" : "" ?>>£30 - £70</option>
+            <option value="70-150" <?= $price === "70-150" ? "selected" : "" ?>>£70 - £150</option>
+            <option value="150+" <?= $price === "150+" ? "selected" : "" ?>>£150+</option>
+        </select>
+
+        <button class="search-btn">Search</button>
+
+    </form>
+</section>
+
+
+<section class="products-grid">
+
+    <?php if (empty($products)): ?>
+        <p class="noResults">No products found.</p>
+    <?php else: ?>
+
+        <?php foreach ($products as $p): ?>
+            <div class="product-card">
+                <img src="images/<?= htmlspecialchars($p['image']) ?>" alt="<?= htmlspecialchars($p['title']) ?>">
+
+                <h3><?= htmlspecialchars($p['title']) ?></h3>
+                <p><?= htmlspecialchars($p['product_type']) ?></p>
+                <p class="price">£<?= number_format($p['price'], 2) ?></p>
+
+                <form method="POST">
+                    <input type="hidden" name="pid" value="<?= $p['pid'] ?>">
+                    <button type="submit" name="add_to_basket" class="btn primary">
+                        Add to Basket
+                    </button>
+                </form>
             </div>
-        </section>
+        <?php endforeach; ?>
 
-        <!--products -->
-        <div id="productGrid" class="productGrid">
-                <?php
-                    if ($rows) {
-                        foreach ($rows as $row) {
-                            echo "<div class='product'>";
-                            echo "<div class='category'>" . htmlspecialchars($row['product_type']) . "</div>";
-                            echo "<div class='title'> <h3>" . htmlspecialchars($row['title']) . "</h3></div>";
-                            echo '<img src="images/' . htmlspecialchars($row['image']) . '" alt="Product Image" width="250" height="200">';
-                            echo "<div class='price'> £" . htmlspecialchars($row['price']) . "</h3></div>";
-                            echo "<button>View Details</button>";
-                            echo "</div>";
-                        }
-                    } else {
-                        echo "<p> No products fit the criteria! </p>";
-                    }
-                ?>
-            </div>
+    <?php endif; ?>
 
-        <!-- products view -->
-        <div id="productView" class="hiddenProducts">
-            <button class="backBtn" onclick="goBack()">← Back</button>
-            
-            <div class="productContent">
-                <div class="productImage">
-                    <img id="productImg" src="" alt="product image">
-                </div>
-                
-                <div class="productInfo">
-                    <div id="productCategory" class="category">example</div>
-                    <h2 id="productName">example</h2>
-                    <div id="productPrice" class="price">£example</div>
-                    
-                    <!-- product details -->
-                    <div class="productSpec">
-                        <div class="productLine">
-                            <span class="productLabel">Condition:</span>
-                            <span id="productCondition" class="productValue">example</span>
-                        </div>
-                        <div class="productLine">
-                            <span class="productLabel">Size:</span>
-                            <span id="productSize" class="productValue">example</span>
-                        </div>
-                        <div class="productLine">
-                            <span class="productLabel">Material:</span>
-                            <span id="productMaterial" class="productValue">example</span>
-                        </div>
-                    </div>
-                    
-                    <button class="rentBtn" onclick="alert('coming soon')">Rent Now</button>
-                </div>
-            </div>
-        </div>
-    </main>
+</section>
 
-    <script src="script.js"></script>
+<footer>
+    <p>© 2025 Rentique. All rights reserved.</p>
+</footer>
 
-<!--Saja - backend (toggleable theme)-->
-<script>
-const toggleBtn = document.getElementById("theme-toggle");
-
-if (toggleBtn) {
-    toggleBtn.addEventListener("click", () => {
-        document.body.classList.toggle("dark-mode");
-        localStorage.setItem("theme", 
-            document.body.classList.contains("dark-mode") ? "dark" : "light"
-        );
-    });
-}
-
-</script>
 </body>
 </html>
