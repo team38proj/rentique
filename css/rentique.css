@@ -1111,13 +1111,11 @@ cursor: pointer;
 font-weight: 600;
 }
 
-
-
 #aboutPage {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', Arial, sans-serif;
+    font-family: sans-serif;
     background-color: black;
 }
 
@@ -1133,19 +1131,19 @@ font-weight: 600;
     display: block;
 }
 
+#aboutPage .mission-section {
+    padding: 55px 0;
+}
+
 #aboutPage .container {
     width: 85%;
     margin: auto;
 }
 
-#aboutPage .mission-section {
-    padding: 55px 0;
-}
-
 #aboutPage .mission-layout {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
     gap: 40px;
 }
 
@@ -1167,18 +1165,6 @@ font-weight: 600;
     color: white;
     line-height: 1.6;
     margin-bottom: 15px;
-}
-
-#aboutPage .mission-image {
-    flex-shrink: 0;
-    max-width: 350px;
-}
-
-#aboutPage .mission-image img {
-    width: 100%;
-    height: auto;
-    border-radius: 15px;
-    display: block;
 }
 
 #aboutPage .mission-stats {
@@ -1206,6 +1192,19 @@ font-weight: 600;
     margin-top: 5px;
 }
 
+#aboutPage .mission-image {
+    max-width: 400px;
+    flex-shrink: 0;
+}
+
+#aboutPage .mission-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 16px;
+    object-fit: cover;
+    box-shadow: 0 14px 30px rgba(0,0,0,0.4);
+}
+
 #aboutPage .section-header {
     text-align: center;
     margin: 55px 0 30px;
@@ -1226,14 +1225,28 @@ font-weight: 600;
 #aboutPage .values-section {
     display: flex;
     justify-content: space-between;
+    gap: 25px;
     margin-bottom: 30px;
 }
 
 #aboutPage .value-card {
     width: 30%;
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     padding: 20px;
     border-radius: 12px;
     text-align: center;
+    background: #111;
+    border: 1px solid #2a2a2a;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+#aboutPage .value-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 0 25px rgba(163,255,0,0.35);
+    background: #1a1a1a;
 }
 
 #aboutPage .value-card h4 {
@@ -1248,6 +1261,14 @@ font-weight: 600;
     line-height: 1.5;
 }
 
+#aboutPage .value-card:hover h4 {
+    color: #d2ff4c;
+}
+
+#aboutPage .value-card:hover p {
+    color: #ffffff;
+}
+
 #aboutPage footer {
     text-align: center;
     background-color: #111;
@@ -1256,15 +1277,15 @@ font-weight: 600;
     margin-top: 15px;
 }
 
-@media (max-width: 768px) {
-
+@media screen and (max-width: 768px) {
     #aboutPage .mission-layout {
         flex-direction: column;
+        text-align: left;
     }
 
     #aboutPage .mission-image {
         max-width: 100%;
-        margin-top: 20px;
+        margin: 0 auto;
     }
 
     #aboutPage .mission-stats,
