@@ -137,7 +137,6 @@ if (isset($_SESSION['uid'])) {
     <div class="values-section">
 
         <div class="value-card">
-            <div class="value-icon">♻</div>
             <h4>Sustainable Fashion</h4>
             <p>
                 We extend clothing lifecycles through our rental model, drastically lowering waste 
@@ -146,7 +145,6 @@ if (isset($_SESSION['uid'])) {
         </div>
 
         <div class="value-card">
-            <div class="value-icon">🤝</div>
             <h4>Community Investment</h4>
             <p>
                 5% of all earnings go towards charitable organisations striving to eliminate waste 
@@ -155,7 +153,6 @@ if (isset($_SESSION['uid'])) {
         </div>
 
         <div class="value-card">
-            <div class="value-icon">👕</div>
             <h4>Accessible Luxury</h4>
             <p>
                 Everyone deserves access to premium fashion. We make designer clothing affordable 
@@ -165,6 +162,7 @@ if (isset($_SESSION['uid'])) {
 
     </div>
 </section>
+
 
 
 <footer>
