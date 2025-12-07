@@ -1111,198 +1111,63 @@ cursor: pointer;
 font-weight: 600;
 }
 
-/* About page simple layout */
-
-#aboutPage {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: sans-serif;
-    background-color: black;
-}
-
-/* Banner */
-#aboutPage .full-banner {
-    width: 100%;
-    overflow: hidden;
-}
-
-#aboutPage .full-banner img {
-    width: 100%;
-    height: 350px;
-    object-fit: cover;
-    display: block;
-}
-
-/* About text */
-#aboutPage .about-text {
-    text-align: left;
-    margin: 25px 0 15px;
-}
-
-/* Mission Section */
-#aboutPage .mission-section {
-    padding: 55px 0;
-}
-
-#aboutPage .container {
-    width: 85%;
-    margin: auto;
-}
-
-/* Layout: text left, image right */
 #aboutPage .mission-layout {
-    display: flex;
+    display: flex !important;
     justify-content: space-between;
     align-items: flex-start;
     gap: 40px;
 }
 
-/* Mission text block */
 #aboutPage .mission-content {
-    max-width: 700px;
-    margin: 0;
-    text-align: left;
+    flex: 1;
+    max-width: 650px;
 }
 
-#aboutPage .mission-content h3 {
-    color: #A3FF00;
-    font-size: 30px;
-    margin-bottom: 15px;
-    font-family: 'Playfair Display', serif;
-}
-
-#aboutPage .mission-content p {
-    font-size: 17px;
-    color: white;
-    line-height: 1.6;
-    margin-bottom: 15px;
-}
-
-/* Mission stats */
-#aboutPage .mission-stats {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-}
-
-#aboutPage .stat-item {
-    text-align: center;
-    padding: 15px;
-    border-radius: 10px;
-    width: 30%;
-}
-
-#aboutPage .stat-number {
-    font-size: 26px;
-    color: #A3FF00;
-    font-weight: bold;
-}
-
-#aboutPage .stat-label {
-    font-size: 14px;
-    color: #ccc;
-    margin-top: 5px;
-}
-
-/* Mission image right side */
+#aboutPage .mission-image,
 #aboutPage .about-image {
+    width: 350px;
     flex-shrink: 0;
-    max-width: 350px;
 }
 
+#aboutPage .mission-image img,
 #aboutPage .about-image img {
     width: 100%;
     height: auto;
     border-radius: 15px;
-    display: block;
 }
 
-/* Section header */
-#aboutPage .section-header {
-    text-align: center;
-    margin: 55px 0 30px;
+#aboutPage .mission-stats {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
 }
 
-#aboutPage .section-header h2 {
-    font-size: 35px;
-    color: #A3FF00;
-    font-family: 'Playfair Display', serif;
-    margin-bottom: 10px;
+#aboutPage .stat-item {
+    width: 100% !important;
 }
 
-#aboutPage .section-header p {
-    color: white;
-    font-size: 17px;
-}
-
-/* Values Section */
 #aboutPage .values-section {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 30px;
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
 }
 
 #aboutPage .value-card {
-    width: 30%;
-    padding: 20px;
-    border-radius: 12px;
-    text-align: center;
+    width: 100% !important;
 }
 
-#aboutPage .value-icon {
-    font-size: 30px;
-    color: #A3FF00;
-    margin-bottom: 10px;
-}
-
-#aboutPage .value-card h4 {
-    margin-top: 10px;
-    font-size: 20px;
-    color: #A3FF00;
-}
-
-#aboutPage .value-card p {
-    font-size: 16px;
-    color: #ccc;
-    line-height: 1.5;
-}
-
-/* Footer */
-#aboutPage footer {
-    text-align: center;
-    background-color: #111;
-    color: white;
-    padding: 12px;
-    margin-top: 15px;
-}
-
-/* RESPONSIVE FIXES */
 @media screen and (max-width: 768px) {
-
     #aboutPage .mission-layout {
         flex-direction: column;
-        text-align: left;
     }
-
+    #aboutPage .mission-image,
     #aboutPage .about-image {
+        width: 100%;
         max-width: 100%;
-        margin-top: 20px;
     }
-
     #aboutPage .mission-stats,
     #aboutPage .values-section {
-        flex-direction: column;
-    }
-
-    #aboutPage .stat-item,
-    #aboutPage .value-card {
-        width: 100%;
-        margin-bottom: 15px;
-    }
-
-    #aboutPage .mission-content {
-        max-width: 100%;
+        grid-template-columns: 1fr !important;
     }
 }
 /* CONTACT PAGE */
