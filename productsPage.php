@@ -160,13 +160,13 @@ if (isset($_POST['add_to_basket'])) {
         <select name="category">
             <option value="All">All Categories</option>
             <option value="Dresses" <?= $category === "Dresses" ? "selected" : "" ?>>Dresses</option>
-            <option value="Menswear" <?= $category === "Menswear" ? "selected" : "" ?>>Menswear</option>
+            <option value="Shoes" <?= $category === "Shoes" ? "selected" : "" ?>>Shoes</option>
             <option value="Accessories" <?= $category === "Accessories" ? "selected" : "" ?>>Accessories</option>
-            <option value="Formal" <?= $category === "Formal" ? "selected" : "" ?>>Formal Wear</option>
+            <option value="Suits" <?= $category === "Suits" ? "selected" : "" ?>>Suits</option>
         </select>
 
         <select name="price">
-            <option value="">Price Range</option>
+            <option value="">All Prices</option>
             <option value="10-30" <?= $price === "10-30" ? "selected" : "" ?>>£10 - £30</option>
             <option value="30-70" <?= $price === "30-70" ? "selected" : "" ?>>£30 - £70</option>
             <option value="70-150" <?= $price === "70-150" ? "selected" : "" ?>>£70 - £150</option>
