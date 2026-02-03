@@ -154,7 +154,7 @@ if (isset($_POST['add_to_basket'])) {
 <section class="search-section">
     <form class="search-container" method="GET" action="productsPage.php">
 
-        <input type="text" name="search" placeholder="Search outfits, jackets, accessories..."
+        <input type="text" name="search" placeholder="Search by name"
                value="<?= htmlspecialchars($search) ?>">
 
         <select name="category">
