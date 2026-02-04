@@ -3,8 +3,8 @@
 /* Database connection */
 $db_host = 'localhost';
 $db_name = 'cs2team38_db';
-$db_user = 'cs2team38';
-$db_pass = 'A9BLN1Yz5VXDDF3ewpaDXNNEb';
+$db_user = 'root';
+$db_pass = '';
 
 try {
     $db = new PDO(
