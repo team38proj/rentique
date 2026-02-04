@@ -157,12 +157,14 @@ if (isset($_POST['add_to_basket'])) {
         <input type="text" name="search" placeholder="Search by name"
                value="<?= htmlspecialchars($search) ?>">
 
+
         <select name="category">
             <option value="All">All Categories</option>
             <option value="Dresses" <?= $category === "Dresses" ? "selected" : "" ?>>Dresses</option>
             <option value="Shoes" <?= $category === "Shoes" ? "selected" : "" ?>>Shoes</option>
             <option value="Accessories" <?= $category === "Accessories" ? "selected" : "" ?>>Accessories</option>
             <option value="Suits" <?= $category === "Suits" ? "selected" : "" ?>>Suits</option>
+            <option value="Outerwear" <?= $category === "Outerwear" ? "selected" : "" ?>>Outerwear</option>
         </select>
 
         <select name="price">
