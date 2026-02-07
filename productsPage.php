@@ -165,6 +165,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <option value="Shoes" <?= $category === "Shoes" ? "selected" : "" ?>>Shoes</option>
             <option value="Accessories" <?= $category === "Accessories" ? "selected" : "" ?>>Accessories</option>
             <option value="Suits" <?= $category === "Suits" ? "selected" : "" ?>>Suits</option>
+            <option value="Outerwear" <?= $category === "Outerwear" ? "selected" : "" ?>>Outerwear</option>
         </select>
 
         <select name="price">
