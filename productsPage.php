@@ -21,7 +21,7 @@ function h($v) {
 
 $addError = "";
 
-/* ADD TO BASKET WITH RENTAL DAYS (BLOCK SELLER ADDING OWN ITEM) */
+/* ADD TO BASKET WITH RENTAL DAYS */
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_to_basket'])) {
     if (!$uid) {
         header("Location: login.php");
@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_to_basket'])) {
                 (int)$rentalDays
             ]);
 
-            header("Location: BasketPage.php");
+            header("Location: basketPage.php");
             exit;
         }
     }
@@ -77,7 +77,7 @@ $category = $_GET['category'] ?? "All";
 $price = $_GET['price'] ?? "";
 
 $sql = "
-    SELECT p.pid, p.title, p.image, p.product_type, p.price, p.description, u.username, u.email, p.uid AS seller_uid
+    SELECT p.pid, p.title, p.image, p.product_type, p.price, p.description, u.username, p.uid AS seller_uid
     FROM products p
     JOIN users u ON p.uid = u.uid
     WHERE p.is_available = 1
@@ -131,7 +131,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <li><a href="productsPage.php" class="active">Shop</a></li>
             <li><a href="AboutUs.php">About</a></li>
             <li><a href="Contact.php">Contact</a></li>
-            <li><a href="BasketPage.php" class="cart-icon">Basket</a></li>
+            <li><a href="basketPage.php" class="cart-icon">Basket</a></li>
             <button id="themeToggle">Theme</button>
 
             <?php if (($userData['role'] ?? '') === 'customer'): ?>
@@ -207,8 +207,6 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <br>
                 <p>Product Listed by:</p>
                 <p><?= h($p['username']) ?></p>
-                <p>Contact Seller:</p>
-                <a href="mailto:<?= h($p['email']) ?>"><?= h($p['email']) ?></a>
             </div>
 
             <form method="POST">
@@ -265,4 +263,3 @@ document.addEventListener("DOMContentLoaded", function() {
 
 </body>
 </html>
-
