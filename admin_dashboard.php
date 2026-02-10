@@ -129,6 +129,9 @@ $uidParam = isset($_GET['uid']) ? (int)$_GET['uid'] : 0;
 $pidParam = isset($_GET['pid']) ? (int)$_GET['pid'] : 0;
 $oiParam  = isset($_GET['oi'])  ? (int)$_GET['oi']  : 0;
 
+// Log the parameters for debugging
+error_log("Admin Dashboard - View: {$view}, UID: {$uidParam}, PID: {$pidParam}, OI: {$oiParam}");
+
 /* Schema detection */
 
 $hasProducts = tableExists($db, 'products');
@@ -141,6 +144,10 @@ $hasShipments = tableExists($db, 'order_shipments');
 $hasAdminConversations = tableExists($db, 'admin_conversations');
 
 $productsHasIsAvailable = $hasProducts && columnExists($db, 'products', 'is_available');
+$productsHasProductType = $hasProducts && columnExists($db, 'products', 'product_type');
+$productsHasImage = $hasProducts && columnExists($db, 'products', 'image');
+$productsHasDescription = $hasProducts && columnExists($db, 'products', 'description');
+
 $usersHasPayout = $hasUsers && columnExists($db, 'users', 'pay_sortcode') && columnExists($db, 'users', 'pay_banknumber');
 $usersHasAddress = $hasUsers && columnExists($db, 'users', 'address');
 $usersHasBilling = $hasUsers && columnExists($db, 'users', 'billing_fullname');
@@ -189,7 +196,7 @@ if ($hasProducts) {
         SELECT
             p.pid,
             p.title,
-            p.product_type,
+            " . ($productsHasProductType ? "p.product_type" : "'' AS product_type") . ",
             p.price,
             p.uid AS seller_uid,
             u.username AS seller_name,
@@ -260,7 +267,9 @@ if ($view === 'user' && $uidParam > 0 && $hasUsers) {
 
     if ($hasProducts) {
         $userListings = getList($db,
-            "SELECT pid, title, product_type, price, " . ($productsHasIsAvailable ? "is_available" : "1") . " AS is_available
+            "SELECT pid, title, " 
+            . ($productsHasProductType ? "product_type" : "'' AS product_type") . ", "
+            . "price, " . ($productsHasIsAvailable ? "is_available" : "1") . " AS is_available
              FROM products
              WHERE uid = ?
              ORDER BY pid DESC
@@ -322,7 +331,9 @@ if ($view === 'seller' && $uidParam > 0 && $hasUsers) {
 
     if ($hasProducts) {
         $userListings = getList($db,
-            "SELECT pid, title, product_type, price, " . ($productsHasIsAvailable ? "is_available" : "1") . " AS is_available
+            "SELECT pid, title, " 
+            . ($productsHasProductType ? "product_type" : "'' AS product_type") . ", "
+            . "price, " . ($productsHasIsAvailable ? "is_available" : "1") . " AS is_available
              FROM products
              WHERE uid = ?
              ORDER BY pid DESC
@@ -354,9 +365,16 @@ if ($view === 'seller' && $uidParam > 0 && $hasUsers) {
 }
 
 if ($view === 'item' && $pidParam > 0 && $hasProducts) {
+    error_log("Fetching item details for PID: {$pidParam}");
+    
     $itemDetail = getRow($db,
         "SELECT
-            p.pid, p.title, p.image, p.product_type, p.price, p.description,
+            p.pid, 
+            p.title, 
+            " . ($productsHasImage ? "p.image" : "'' AS image") . ", 
+            " . ($productsHasProductType ? "p.product_type" : "'' AS product_type") . ", 
+            p.price, 
+            " . ($productsHasDescription ? "p.description" : "'' AS description") . ",
             p.uid AS seller_uid,
             u.username AS seller_name,
             u.email AS seller_email,
@@ -366,8 +384,10 @@ if ($view === 'item' && $pidParam > 0 && $hasProducts) {
          WHERE p.pid = ? LIMIT 1",
         [$pidParam]
     );
+    
+    error_log("Item detail fetched: " . ($itemDetail ? "YES (PID: {$itemDetail['pid']})" : "NO"));
 
-    if ($hasOrders && $hasOrderItems) {
+    if ($itemDetail && $hasOrders && $hasOrderItems) {
         $itemOrderHistory = getList($db, "
             SELECT
                 oi.id AS order_item_id,
@@ -546,6 +566,77 @@ if ($view === 'order' && $oiParam > 0 && $hasOrders && $hasOrderItems) {
             </div>
         <?php endif; ?>
 
+        <?php if ($view === 'item' && $itemDetail): ?>
+            <div class="section-block">
+                <h2>Item Details</h2>
+                <div class="summaryBox">
+                    <?= renderSummaryLine('PID', $itemDetail['pid']) ?>
+                    <?= renderSummaryLine('Title', $itemDetail['title']) ?>
+                    <?php if (!empty($itemDetail['product_type'])): ?>
+                        <?= renderSummaryLine('Type', $itemDetail['product_type']) ?>
+                    <?php endif; ?>
+                    <?= renderSummaryLine('Price per day', '£' . number_format((float)$itemDetail['price'], 2)) ?>
+                    <?php if (!empty($itemDetail['description'])): ?>
+                        <?= renderSummaryLine('Description', $itemDetail['description']) ?>
+                    <?php endif; ?>
+                    <?= renderSummaryLine('Available', ((int)$itemDetail['is_available'] === 1) ? 'Yes' : 'No') ?>
+                    <?= renderSummaryLine('Seller', ($itemDetail['seller_name'] ?? 'Unknown') . ' (UID: ' . (int)$itemDetail['seller_uid'] . ')') ?>
+                    <?= renderSummaryLine('Seller email', $itemDetail['seller_email'] ?? '') ?>
+                </div>
+
+                <?php if (!empty($itemDetail['image'])): ?>
+                    <h3 style="margin-top:18px;">Image</h3>
+                    <?php
+                    // Handle different image path formats
+                    $imagePath = $itemDetail['image'];
+                    // If path doesn't already have a directory prefix, prepend 'images/'
+                    if (!preg_match('/^(uploads\/|images\/|products\/|assets\/|https?:\/\/)/i', $imagePath)) {
+                        $imagePath = 'images/' . $imagePath;
+                    }
+                    ?>
+                    <img src="<?= h($imagePath) ?>" alt="<?= h($itemDetail['title']) ?>" style="max-width: 400px; height: auto; border-radius: 8px; display: block; margin-top: 10px;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <p style="display:none; color: #d9534f; background: #f8d7da; padding: 10px; border-radius: 4px; margin-top: 10px;">Image not found at path: <strong><?= h($imagePath) ?></strong><br>Original filename: <?= h($itemDetail['image']) ?></p>
+                <?php endif; ?>
+
+                <h3 style="margin-top:18px;">Order History</h3>
+                <table class="main-table">
+                    <thead><?= renderTableRow(['Order', 'Order item', 'Buyer', 'Seller', 'Days', 'Per day', 'Fee', 'Total', 'Date', 'Actions'], true) ?></thead>
+                    <tbody>
+                        <?php if (empty($itemOrderHistory)): ?>
+                            <?= renderEmptyRow(10, 'No orders for this item.') ?>
+                        <?php else: for ($i = 0; $i < count($itemOrderHistory); $i++): $oh = $itemOrderHistory[$i]; ?>
+                            <?= renderTableRow([
+                                h($oh['order_public_id']),
+                                (int)$oh['order_item_id'],
+                                h($oh['buyer_name'] ?? ''),
+                                h($oh['seller_name'] ?? ''),
+                                (int)$oh['rental_days'],
+                                '£' . number_format((float)$oh['per_day_price'], 2),
+                                '£' . number_format((float)$oh['platform_fee'], 2),
+                                '£' . number_format((float)$oh['line_total'], 2),
+                                h($oh['created_at']),
+                                '<a href="admin_dashboard.php?view=order&oi=' . (int)$oh['order_item_id'] . '" class="btn small">View</a>'
+                            ]) ?>
+                        <?php endfor; endif; ?>
+                    </tbody>
+                </table>
+
+                <div style="margin-top:15px;">
+                    <a href="admin_dashboard.php?view=seller&uid=<?= (int)$itemDetail['seller_uid'] ?>" class="btn primary">View Seller</a>
+                </div>
+            </div>
+        <?php elseif ($view === 'item' && $pidParam > 0): ?>
+            <div class="section-block">
+                <h2>Item Details</h2>
+                <p>Item not found (PID: <?= (int)$pidParam ?>). This could mean:</p>
+                <ul>
+                    <li>The product doesn't exist in the database</li>
+                    <li>There was a database error (check error logs)</li>
+                    <li>The products table schema differs from expected</li>
+                </ul>
+            </div>
+        <?php endif; ?>
+
         <?php if ($view === 'user' && $userDetail): ?>
             <div class="section-block">
                 <h2>User Details</h2>
@@ -637,6 +728,45 @@ if ($view === 'order' && $oiParam > 0 && $hasOrders && $hasOrderItems) {
                     <?= renderSummaryLine('Sort code', $sellerDetail['pay_sortcode'] ?? '') ?>
                     <?= renderSummaryLine('Account number', $sellerDetail['pay_banknumber'] ?? '') ?>
                 </div>
+
+                <h3 style="margin-top:18px;">Listings</h3>
+                <table class="main-table">
+                    <thead><?= renderTableRow(['PID', 'Title', 'Type', 'Price', 'Available', 'Actions'], true) ?></thead>
+                    <tbody>
+                        <?php if (empty($userListings)): ?>
+                            <?= renderEmptyRow(6, 'No listings.') ?>
+                        <?php else: for ($i = 0; $i < count($userListings); $i++): $p = $userListings[$i]; ?>
+                            <?= renderTableRow([
+                                (int)$p['pid'],
+                                h($p['title']),
+                                h($p['product_type']),
+                                '£' . number_format((float)$p['price'], 2),
+                                ((int)$p['is_available'] === 1) ? 'Yes' : 'No',
+                                '<a href="admin_dashboard.php?view=item&pid=' . (int)$p['pid'] . '" class="btn small">View</a>'
+                            ]) ?>
+                        <?php endfor; endif; ?>
+                    </tbody>
+                </table>
+
+                <h3 style="margin-top:18px;">Orders as Seller</h3>
+                <table class="main-table">
+                    <thead><?= renderTableRow(['Order', 'Order item', 'Item', 'Buyer', 'Total', 'Date', 'Actions'], true) ?></thead>
+                    <tbody>
+                        <?php if (empty($userOrdersAsSeller)): ?>
+                            <?= renderEmptyRow(7, 'No orders.') ?>
+                        <?php else: for ($i = 0; $i < count($userOrdersAsSeller); $i++): $t = $userOrdersAsSeller[$i]; ?>
+                            <?= renderTableRow([
+                                h($t['order_public_id']),
+                                (int)$t['order_item_id'],
+                                h($t['title']) . ' (PID: ' . (int)$t['pid'] . ')',
+                                h($t['buyer_name'] ?? ''),
+                                '£' . number_format((float)$t['line_total'], 2),
+                                h($t['created_at']),
+                                '<a href="admin_dashboard.php?view=order&oi=' . (int)$t['order_item_id'] . '" class="btn small">View</a>'
+                            ]) ?>
+                        <?php endfor; endif; ?>
+                    </tbody>
+                </table>
             </div>
         <?php elseif ($view === 'seller' && $uidParam > 0): ?>
             <div class="section-block">
