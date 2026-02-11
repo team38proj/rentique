@@ -32,10 +32,16 @@ $stmt = $db->prepare("SELECT * FROM basket WHERE uid=?");
 $stmt->execute([$uid]);
 $basket = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+$platformFeePerItem = 4.99;
+
+function safe_str($v) {
+    $v = trim((string)$v);
+    return $v === '' ? null : $v;
+}
+
 /* PROCESS CHECKOUT */
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    /* Reload basket safely */
     $stmt = $db->prepare("SELECT * FROM basket WHERE uid=?");
     $stmt->execute([$uid]);
     $basketItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -48,7 +54,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if (!$errorMessage) {
 
-        /* CARD SELECTION */
         $usingSaved = !empty($_POST['use_saved_card']);
 
         if ($usingSaved) {
@@ -65,7 +70,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         } else {
 
-            /* NEW CARD */
             $name   = trim($_POST['cardholder_name']);
             $number = trim($_POST['card_number_real']);
             $type   = trim($_POST['card_type']);
@@ -79,7 +83,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $masked = str_repeat("*", 12) . substr($number, -4);
             $cardLast4 = substr($number, -4);
 
-            /* Save new card */
             $stmt = $db->prepare("
                 INSERT INTO saved_cards (uid, cardholder_name, card_type, masked_card_number)
                 VALUES (?,?,?,?)
@@ -87,39 +90,148 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $stmt->execute([$uid, $name, $type, $masked]);
         }
 
-        /* CREATE ORDER ID */
-        $order_id = time() . rand(1000, 9999);
+        $orderPublicId = time() . rand(1000, 9999);
 
-        /* INSERT TRANSACTIONS */
-        foreach ($basketItems as $item) {
+        $buyerAddr1 = safe_str($_POST['buyer_address_line1'] ?? '');
+        $buyerAddr2 = safe_str($_POST['buyer_address_line2'] ?? '');
+        $buyerCity = safe_str($_POST['buyer_city'] ?? '');
+        $buyerPostcode = safe_str($_POST['buyer_postcode'] ?? '');
+        $buyerCountry = safe_str($_POST['buyer_country'] ?? '');
 
-            $receiving_uid = $item['uid'];
+        $shipBy = (new DateTime('now'))->modify('+3 days')->format('Y-m-d H:i:s');
+
+        $minDays = null;
+        foreach ($basketItems as $bi) {
+            $d = max(1, intval($bi['rental_days'] ?? 1));
+            if ($minDays === null || $d < $minDays) $minDays = $d;
+        }
+        if ($minDays === null) $minDays = 1;
+
+        $rentalStart = (new DateTime('today'))->format('Y-m-d');
+        $rentalEnd = (new DateTime('today'))->modify('+' . $minDays . ' days')->format('Y-m-d');
+        $returnDeadline = (new DateTime($rentalEnd . ' 10:00:00'))->modify('+3 days')->format('Y-m-d H:i:s');
+
+        try {
+            $db->beginTransaction();
 
             $stmt = $db->prepare("
-                INSERT INTO transactions 
-                (pid, paying_uid, receiving_uid, price, order_id, created_at)
-                VALUES (?, ?, ?, ?, ?, NOW())
+                INSERT INTO orders
+                (order_id, buyer_uid, status, created_at, ship_by, rental_start, rental_end, return_deadline,
+                 buyer_address_line1, buyer_address_line2, buyer_city, buyer_postcode, buyer_country)
+                VALUES (?, ?, 'paid', NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ");
-
             $stmt->execute([
-                $item['pid'],
+                $orderPublicId,
                 $uid,
-                $receiving_uid,
-                $item['price'],
-                $order_id
+                $shipBy,
+                $rentalStart,
+                $rentalEnd,
+                $returnDeadline,
+                $buyerAddr1,
+                $buyerAddr2,
+                $buyerCity,
+                $buyerPostcode,
+                $buyerCountry
             ]);
+
+            $orderIdFk = (int)$db->lastInsertId();
+
+            foreach ($basketItems as $item) {
+
+                $sellerUid = intval($item['seller_uid'] ?? 0);
+                if ($sellerUid <= 0) {
+                    throw new Exception("Missing seller for basket item.");
+                }
+
+                $qty = max(1, intval($item['quantity'] ?? 1));
+                $days = max(1, intval($item['rental_days'] ?? 1));
+
+                $perDay = floatval($item['price']);
+                $lineTotal = $perDay * $days * $qty;
+
+                $stmt = $db->prepare("
+                    INSERT INTO order_items
+                    (order_id_fk, pid, seller_uid, title, image, product_type, per_day_price, rental_days, quantity, line_total, platform_fee, created_at)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
+                ");
+                $stmt->execute([
+                    $orderIdFk,
+                    $item['pid'],
+                    $sellerUid,
+                    $item['title'],
+                    $item['image'],
+                    $item['product_type'],
+                    $perDay,
+                    $days,
+                    $qty,
+                    $lineTotal,
+                    $platformFeePerItem
+                ]);
+
+                $orderItemId = (int)$db->lastInsertId();
+
+                $stmt = $db->prepare("INSERT INTO order_shipments (order_item_id) VALUES (?)");
+                $stmt->execute([$orderItemId]);
+
+                $stmt = $db->prepare("UPDATE products SET is_available = 0 WHERE pid = ?");
+                $stmt->execute([$item['pid']]);
+
+                $stmt = $db->prepare("
+                    SELECT id FROM conversations
+                    WHERE order_id_fk = ? AND buyer_uid = ? AND seller_uid = ?
+                    LIMIT 1
+                ");
+                $stmt->execute([$orderIdFk, $uid, $sellerUid]);
+                $conv = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                if (!$conv) {
+                    $stmt = $db->prepare("
+                        INSERT INTO conversations (order_id_fk, buyer_uid, seller_uid, created_at)
+                        VALUES (?, ?, ?, NOW())
+                    ");
+                    $stmt->execute([$orderIdFk, $uid, $sellerUid]);
+                    $conversationId = (int)$db->lastInsertId();
+                } else {
+                    $conversationId = (int)$conv['id'];
+                }
+
+                $stmt = $db->prepare("
+                    INSERT INTO messages (conversation_id, sender_role, sender_uid, body, created_at)
+                    VALUES (?, 'system', NULL, ?, NOW())
+                ");
+                $stmt->execute([
+                    $conversationId,
+                    "Order placed. Order ID: " . $orderPublicId . ". Rental days: " . $days . "."
+                ]);
+
+                $addrText = "Buyer address: "
+                    . ($buyerAddr1 ? $buyerAddr1 : '') . " "
+                    . ($buyerAddr2 ? $buyerAddr2 : '') . " "
+                    . ($buyerCity ? $buyerCity : '') . " "
+                    . ($buyerPostcode ? $buyerPostcode : '') . " "
+                    . ($buyerCountry ? $buyerCountry : '');
+
+                $stmt->execute([
+                    $conversationId,
+                    "Order received. Ship by: " . $shipBy . ". " . trim($addrText)
+                ]);
+            }
+
+            $stmt = $db->prepare("DELETE FROM basket WHERE uid=?");
+            $stmt->execute([$uid]);
+
+            $_SESSION['last_card4'] = $cardLast4;
+            $_SESSION['last_order_id'] = $orderPublicId;
+
+            $db->commit();
+
+            header("Location: OrderComplete.php");
+            exit;
+
+        } catch (Exception $ex) {
+            $db->rollBack();
+            $errorMessage = "Checkout failed. " . $ex->getMessage();
         }
-
-        /* CLEAR BASKET */
-        $stmt = $db->prepare("DELETE FROM basket WHERE uid=?");
-        $stmt->execute([$uid]);
-
-        /* STORE LAST 4 FOR ORDER COMPLETE */
-        $_SESSION['last_card4'] = $cardLast4;
-
-        /* REDIRECT */
-        header("Location: OrderComplete.php");
-        exit;
     }
 }
 ?>
@@ -132,6 +244,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <script>
         window.userBillingName = <?= json_encode($billingFullName) ?>;
         window.basket = <?= json_encode($basket) ?>;
+        window.platformFeePerItem = <?= json_encode($platformFeePerItem) ?>;
     </script>
 
     <script src="js/Checkout.js" defer></script>
@@ -144,7 +257,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <img src="images/logo4.png" class="header-logo">
     <span class="brand-name">Checkout</span>
     <button id="themeToggle">Theme</button>
-
 </header>
 
 <?php if ($errorMessage): ?>
@@ -161,6 +273,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <h3>Order Summary</h3>
                 <div id="orderItems"></div>
                 <div id="orderDelivery"></div>
+                <div id="orderPlatformFee"></div>
                 <div id="orderTotal"></div>
             </div>
         </div>
@@ -171,6 +284,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                 <h1>Checkout</h1>
                 <h2>Enter your card details</h2>
+
+                <p>Shipping address</p>
+                <input type="text" class="inputbox" name="buyer_address_line1" placeholder="Address line 1" required>
+                <input type="text" class="inputbox" name="buyer_address_line2" placeholder="Address line 2">
+                <input type="text" class="inputbox" name="buyer_city" placeholder="City" required>
+                <input type="text" class="inputbox" name="buyer_postcode" placeholder="Postcode" required>
+                <input type="text" class="inputbox" name="buyer_country" placeholder="Country" required>
 
                 <?php if ($savedCards): ?>
                     <p>Use Saved Card</p>

@@ -77,11 +77,17 @@ $category = $_GET['category'] ?? "All";
 $price = $_GET['price'] ?? "";
 
 $sql = "
-    SELECT p.pid, p.title, p.image, p.product_type, p.price, p.description, u.username, p.uid AS seller_uid
+    SELECT
+        p.pid, p.title, p.image, p.product_type, p.price, p.description,
+        u.username, p.uid AS seller_uid,
+        COALESCE(AVG(r.stars), 0) AS avg_rating,
+        COUNT(r.id) AS rating_count
     FROM products p
     JOIN users u ON p.uid = u.uid
+    LEFT JOIN product_ratings r ON r.pid = p.pid
     WHERE p.is_available = 1
 ";
+
 $params = [];
 
 if ($search !== "") {
@@ -101,6 +107,7 @@ if ($price !== "") {
     if ($price === "70-150") $sql .= " AND p.price BETWEEN 70 AND 150";
     if ($price === "150+") $sql .= " AND p.price >= 150";
 }
+$sql .= " GROUP BY p.pid ";
 
 $stmt = $db->prepare($sql);
 $stmt->execute($params);
@@ -196,6 +203,11 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <h3><?= h($p['title']) ?></h3>
             <p><?= h($p['product_type']) ?></p>
             <p class="price">£<?= number_format((float)$p['price'], 2) ?> per day</p>
+
+
+            <p style="margin-top:6px;">
+        <?= number_format((float)$p['avg_rating'], 1) ?> ★ (<?= (int)$p['rating_count'] ?>)
+            </p>
 
             <button type="button" class="btn secondary toggle-desc" data-target="desc-<?= (int)$p['pid'] ?>">
                 PRODUCT INFO

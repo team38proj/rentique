@@ -7,7 +7,41 @@ if (!isset($_SESSION['uid'])) {
     exit;
 }
 
+
 $user_uid = (int)$_SESSION['uid'];
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_rating'])) {
+    $orderItemId = (int)($_POST['order_item_id'] ?? 0);
+    $stars = (int)($_POST['stars'] ?? 0);
+    $comment = trim($_POST['comment'] ?? '');
+
+    if ($stars < 1 || $stars > 5) {
+        die("Invalid rating.");
+    }
+    // Must belong to this buyer AND seller confirmed return
+    $row = getRow($db, "
+        SELECT oi.id, oi.pid, o.buyer_uid, s.seller_marked_received_at
+        FROM order_items oi
+        JOIN orders o ON o.id = oi.order_id_fk
+        JOIN order_shipments s ON s.order_item_id = oi.id
+        WHERE oi.id = ? AND o.buyer_uid = ?
+        LIMIT 1
+    ", [$orderItemId, $user_uid]);
+
+    if (!$row || empty($row['seller_marked_received_at'])) {
+        die("You can only rate after the return is confirmed.");
+    }
+
+    $stmt = $db->prepare("
+        INSERT INTO product_ratings (order_item_id, pid, buyer_uid, stars, comment)
+        VALUES (?, ?, ?, ?, ?)
+        ON DUPLICATE KEY UPDATE stars = VALUES(stars), comment = VALUES(comment)
+    ");
+    $stmt->execute([$orderItemId, (int)$row['pid'], $user_uid, $stars, $comment]);
+
+    header("Location: user_dashboard.php");
+    exit;
+}
 
 $view = trim($_GET['view'] ?? '');
 $order_item_id = isset($_GET['order_item_id']) ? (int)$_GET['order_item_id'] : 0;
@@ -61,10 +95,14 @@ $buyingOrders = getList($db, "
         oi.pid,
         oi.image,
         oi.seller_uid,
-        us.username AS seller_name
+        us.username AS seller_name,
+        s.seller_marked_received_at,
+        pr.stars AS my_stars
     FROM order_items oi
     JOIN orders o ON o.id = oi.order_id_fk
     LEFT JOIN users us ON us.uid = oi.seller_uid
+    LEFT JOIN order_shipments s ON s.order_item_id = oi.id
+    LEFT JOIN product_ratings pr ON pr.order_item_id = oi.id AND pr.buyer_uid = o.buyer_uid
     WHERE o.buyer_uid = ?
     ORDER BY o.created_at DESC, oi.id DESC
 ", [$user_uid]);
@@ -403,22 +441,62 @@ $menuItems = [
                             <th>Order Date</th>
                             <th>Status</th>
                             <th>Actions</th>
+                            <th>Rating</th>
                         </tr>
                     </thead>
 
                     <tbody>
                         <?php if (empty($buyingOrders)): ?>
-                            <tr><td colspan="6">You haven't purchased any items yet.</td></tr>
+                            <tr><td colspan="7">You haven't purchased any items yet.</td></tr>
                         <?php else: foreach ($buyingOrders as $order): ?>
                             <tr>
-                                <td><?= h($order['title']) ?></td>
-                                <td><?= h($order['seller_name'] ?? '') ?></td>
-                                <td><?= h($order['order_public_id']) ?></td>
-                                <td><?= h($order['created_at']) ?></td>
-                                <td><span class="green">Active</span></td>
-                                <td>
-                                    <a href="user_dashboard.php?view=order&order_item_id=<?= (int)$order['order_item_id'] ?>" class="btn small">View Details</a>
-                                </td>
+                                <tr>
+    <td><?= h($order['title']) ?></td>
+    <td><?= h($order['seller_name'] ?? '') ?></td>
+    <td><?= h($order['order_public_id']) ?></td>
+    <td><?= h($order['created_at']) ?></td>
+
+    <td>
+        <?php if (!empty($order['seller_marked_received_at'])): ?>
+            <span class="green">Returned</span>
+        <?php else: ?>
+            <span class="green">Active</span>
+        <?php endif; ?>
+    </td>
+
+    <td>
+        <a href="user_dashboard.php?view=order&order_item_id=<?= (int)$order['order_item_id'] ?>" class="btn small">View Details</a>
+    </td>
+
+    <!--RATING COLUMN CELL -->
+    <td>
+        <?php if (!empty($order['seller_marked_received_at'])): ?>
+
+            <?php if (!empty($order['my_stars'])): ?>
+                <span><?= (int)$order['my_stars'] ?> ★</span>
+            <?php else: ?>
+                <form method="POST" style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
+                    <input type="hidden" name="order_item_id" value="<?= (int)$order['order_item_id'] ?>">
+
+                    <select name="stars" required>
+                        <option value="5">★★★★★</option>
+                        <option value="4">★★★★</option>
+                        <option value="3">★★★</option>
+                        <option value="2">★★</option>
+                        <option value="1">★</option>
+                    </select>
+
+                    <input type="text" name="comment" placeholder="Optional" style="width:120px;">
+                    <button type="submit" name="submit_rating" class="btn small">Rate</button>
+                </form>
+            <?php endif; ?>
+
+        <?php else: ?>
+            <span style="opacity:.7;">Return not confirmed</span>
+        <?php endif; ?>
+    </td>
+</tr>
+
                             </tr>
                         <?php endforeach; endif; ?>
                     </tbody>

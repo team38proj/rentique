@@ -96,6 +96,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             "Seller confirmed item received back and relisted."
         );
 
+         add_system_message($db, $orderIdFk, $buyerUid, $sellerUid,
+        "Your return has been confirmed. Please leave a star rating for this product in your dashboard."
+    );
+
         header("Location: seller_orders.php");
         exit;
     }
