@@ -88,6 +88,7 @@ $stmt = $db->prepare("
 $stmt->execute([$activeId]);
 $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -559,8 +560,7 @@ $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <li><a href="admin_dashboard.php">Admin</a></li>
                 <li><a href="index.php?logout=1" class="btn login">Logout</a></li>
             <?php else: ?>
-                <li><a href="login.php" class="btn login">Login</a></li>
-                <li><a href="signup.php" class="btn signup">Sign Up</a></li>
+                <li><a href="logout.php" class="btn logout">Logout</a></li>
             <?php endif; ?>
         </ul>
     </nav>
@@ -597,7 +597,7 @@ $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
 
         <div class="chat-header">
-            <h2>Support Chat</h2>
+            <h2>Chat Support</h2>
             <p>Conversation with support team</p>
         </div>
 
