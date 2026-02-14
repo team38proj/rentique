@@ -560,7 +560,7 @@ $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <li><a href="admin_dashboard.php">Admin</a></li>
                 <li><a href="index.php?logout=1" class="btn login">Logout</a></li>
             <?php else: ?>
-                <li><a href="logout.php" class="btn logout">Logout</a></li>
+                <li><a href="index.php" class="btn logout">Logout</a></li>
             <?php endif; ?>
         </ul>
     </nav>
@@ -656,4 +656,5 @@ if (container) {
 </script>
 
 </body>
+
 </html>
