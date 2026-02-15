@@ -26,7 +26,6 @@ if (isset($_SESSION['uid'])) {
         function toggleTheme() {
             const body = document.body;
             const themeToggle = document.getElementById('themeToggle');
-            const header = document.querySelector('header');
             
             if (body.classList.contains('light-mode')) {
                 body.classList.remove('light-mode');
@@ -276,7 +275,7 @@ if (isset($_SESSION['uid'])) {
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            justify-content: left;
+            justify-content: center;
             padding: 0;
         }
 
@@ -379,7 +378,7 @@ if (isset($_SESSION['uid'])) {
 
         .faq-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 0.8rem;
         }
 
@@ -466,16 +465,20 @@ if (isset($_SESSION['uid'])) {
         .testimonials-carousel {
             position: relative;
             padding: 1rem 0;
+            width: 100%;
+            overflow: visible;
         }
 
         .carousel-container {
             overflow: hidden;
             border-radius: 20px;
+            width: 100%;
         }
 
         .carousel-track {
             display: flex;
             transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            width: 100%;
         }
 
         .testimonial-card {
@@ -489,6 +492,11 @@ if (isset($_SESSION['uid'])) {
             isolation: isolate;
             border: 1px solid rgba(0, 255, 0, 0.2);
             backdrop-filter: blur(10px);
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
         body.light-mode .testimonial-card {
@@ -940,6 +948,64 @@ if (isset($_SESSION['uid'])) {
                     
                     <div class="testimonial-card">
                         <div class="testimonial-avatar">J</div>
-                        <div class="testimonial-text">"Rented a puffer jacket for a ski trip — warm, stylish, incomplete.
+                        <div class="testimonial-text">"Rented a puffer jacket for a ski trip — warm, stylish, and saved me buying expensive gear I'd rarely use. Will definitely rent again! The quality exceeded my expectations."</div>
+                        <div class="testimonial-author">James T.</div>
+                        <div class="testimonial-location">Manchester</div>
+                        <div class="testimonial-rating">★★★★★</div>
+                    </div>
+                    
+                    <div class="testimonial-card">
+                        <div class="testimonial-avatar">P</div>
+                        <div class="testimonial-text">"As a bridesmaid, I needed a one-time elegant outfit. Rentique delivered perfection. So many compliments and zero commitment. The fit was perfect and the return was effortless."</div>
+                        <div class="testimonial-author">Priya K.</div>
+                        <div class="testimonial-location">Birmingham</div>
+                        <div class="testimonial-rating">★★★★★</div>
+                    </div>
+                    
+                    <div class="testimonial-card">
+                        <div class="testimonial-avatar">A</div>
+                        <div class="testimonial-text">"The denim jacket was exactly as pictured. Quick delivery, easy return. Sustainable fashion at its best! I love that I can wear designer pieces without the environmental guilt."</div>
+                        <div class="testimonial-author">Alex M.</div>
+                        <div class="testimonial-location">Brighton</div>
+                        <div class="testimonial-rating">★★★★★</div>
+                    </div>
+                </div>
+            </div>
 
+            <div class="carousel-dots" id="carouselDots"></div>
+            
+            <div class="carousel-controls">
+                <button class="carousel-btn" id="prevBtn" aria-label="Previous">←</button>
+                <button class="carousel-btn" id="nextBtn" aria-label="Next">→</button>
+            </div>
+        </div>
 
+        <div class="stats-container">
+            <div class="stat-item">
+                <div class="stat-number">67,000+</div>
+                <div class="stat-label">Happy Renters</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">4.9/5</div>
+                <div class="stat-label">Average Rating</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">98%</div>
+                <div class="stat-label">Would Recommend</div>
+            </div>
+        </div>
+
+        <div class="contact-prompt">
+            <h3>Still have questions?</h3>
+            <p>Our support team is here to help you 24/7</p>
+            <a href="Contact.php" class="contact-btn">Contact Us →</a>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <p>© 2025 Rentique — All Rights Reserved.</p>
+</footer>
+
+</body>
+</html>
