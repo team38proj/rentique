@@ -498,55 +498,55 @@ if (isset($_SESSION['uid'])) {
         
         <div class="faq-grid">
             <div class="faq-item">
-                <div class="faq-question">
+                <div class="faq-question" data-faq="1">
                     How does renting work? <span>▼</span>
                 </div>
-                <div class="faq-answer">
+                <div class="faq-answer" data-answer="1">
                     Simply browse our collection, choose your favourite items, select rental dates, and proceed to checkout. We'll deliver the pieces to your doorstep, and you return them after use — dry cleaning included. All rentals come with free shipping both ways and a 24-hour grace period for returns.
                 </div>
             </div>
             
             <div class="faq-item">
-                <div class="faq-question">
+                <div class="faq-question" data-faq="2">
                     What if the item doesn't fit? <span>▼</span>
                 </div>
-                <div class="faq-answer">
+                <div class="faq-answer" data-answer="2">
                     We offer one free size exchange per rental, subject to availability. Contact us within 24h of receiving your order to arrange a swap. We'll ship the new size immediately and cover all return shipping costs. Our size guide and virtual fitting tool can help you choose the perfect fit first time.
                 </div>
             </div>
             
             <div class="faq-item">
-                <div class="faq-question">
+                <div class="faq-question" data-faq="3">
                     How are items cleaned? <span>▼</span>
                 </div>
-                <div class="faq-answer">
+                <div class="faq-answer" data-answer="3">
                     Every returned piece is professionally dry-cleaned and sanitised by our eco-friendly partner using sustainable methods. Quality and hygiene are our top priorities. Each item undergoes a 15-point inspection checklist before being rented again, ensuring you receive nothing less than perfection.
                 </div>
             </div>
             
             <div class="faq-item">
-                <div class="faq-question">
+                <div class="faq-question" data-faq="4">
                     What if I damage an item? <span>▼</span>
                 </div>
-                <div class="faq-answer">
+                <div class="faq-answer" data-answer="4">
                     Minor wear is expected. For significant damage, a repair fee may apply — but we offer a damage waiver option at checkout for complete peace of mind. With the waiver, you're covered for accidental damage up to £500. Without it, repair costs are capped at 40% of the retail value.
                 </div>
             </div>
             
             <div class="faq-item">
-                <div class="faq-question">
+                <div class="faq-question" data-faq="5">
                     Can I extend my rental period? <span>▼</span>
                 </div>
-                <div class="faq-answer">
+                <div class="faq-answer" data-answer="5">
                     Yes! Log in to your dashboard and request an extension before the return date. Extensions are subject to availability and an additional daily fee at 30% of the original daily rate. You can extend up to twice per rental, with a maximum total rental period of 30 days.
                 </div>
             </div>
             
             <div class="faq-item">
-                <div class="faq-question">
+                <div class="faq-question" data-faq="6">
                     What about shipping times? <span>▼</span>
                 </div>
-                <div class="faq-answer">
+                <div class="faq-answer" data-answer="6">
                     We offer free next-day delivery on all orders placed before 2pm Monday-Friday. Saturday delivery is available for a small fee. Returns are just as easy — use the prepaid label in your package, drop off at any Collect+ point, and we'll handle the rest.
                 </div>
             </div>
@@ -633,30 +633,32 @@ if (isset($_SESSION['uid'])) {
 
 <script>
     (function() {
-        const faqItems = document.querySelectorAll('.faq-item');
-        faqItems.forEach(item => {
-            const question = item.querySelector('.faq-question');
-            const answer = item.querySelector('.faq-answer');
-            const arrow = question.querySelector('span');
-
-            question.addEventListener('click', () => {
-                const isActive = question.classList.contains('active');
+        const faqQuestions = document.querySelectorAll('.faq-question');
+        
+        faqQuestions.forEach((question) => {
+            question.addEventListener('click', function() {
+                const faqItem = this.closest('.faq-item');
+                const answer = faqItem.querySelector('.faq-answer');
+                const arrow = this.querySelector('span');
+                const isActive = this.classList.contains('active');
                 
-                document.querySelectorAll('.faq-question').forEach(q => {
-                    if (q !== question) {
-                        q.classList.remove('active');
-                        q.nextElementSibling.classList.remove('show');
-                        const otherArrow = q.querySelector('span');
+                document.querySelectorAll('.faq-item').forEach((item) => {
+                    if (item !== faqItem) {
+                        const otherQuestion = item.querySelector('.faq-question');
+                        const otherAnswer = item.querySelector('.faq-answer');
+                        const otherArrow = otherQuestion.querySelector('span');
+                        otherQuestion.classList.remove('active');
+                        otherAnswer.classList.remove('show');
                         if (otherArrow) otherArrow.innerHTML = '▼';
                     }
                 });
-
+                
                 if (!isActive) {
-                    question.classList.add('active');
+                    this.classList.add('active');
                     answer.classList.add('show');
                     arrow.innerHTML = '▲';
                 } else {
-                    question.classList.remove('active');
+                    this.classList.remove('active');
                     answer.classList.remove('show');
                     arrow.innerHTML = '▼';
                 }
