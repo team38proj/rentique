@@ -118,6 +118,7 @@ if (isset($_SESSION['uid'])) {
             background: rgba(15, 15, 15, 0.95);
             transition: all 0.3s ease;
             color: #ffffff;
+            pointer-events: auto;
         }
 
         .faq-question.active {
@@ -437,7 +438,7 @@ if (isset($_SESSION['uid'])) {
         }
 
         ::-webkit-scrollbar {
-            width: 8px;
+            width: 5px;
         }
 
         ::-webkit-scrollbar-track {
@@ -446,7 +447,7 @@ if (isset($_SESSION['uid'])) {
 
         ::-webkit-scrollbar-thumb {
             background: linear-gradient(135deg, #00ff00 0%, #32cd32 100%);
-            border-radius: 4px;
+            border-radius: 3px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
@@ -498,55 +499,55 @@ if (isset($_SESSION['uid'])) {
         
         <div class="faq-grid">
             <div class="faq-item">
-                <div class="faq-question" data-faq="1">
+                <div class="faq-question" onclick="toggleFAQ(this)">
                     How does renting work? <span>▼</span>
                 </div>
-                <div class="faq-answer" data-answer="1">
+                <div class="faq-answer">
                     Simply browse our collection, choose your favourite items, select rental dates, and proceed to checkout. We'll deliver the pieces to your doorstep, and you return them after use — dry cleaning included. All rentals come with free shipping both ways and a 24-hour grace period for returns.
                 </div>
             </div>
             
             <div class="faq-item">
-                <div class="faq-question" data-faq="2">
+                <div class="faq-question" onclick="toggleFAQ(this)">
                     What if the item doesn't fit? <span>▼</span>
                 </div>
-                <div class="faq-answer" data-answer="2">
+                <div class="faq-answer">
                     We offer one free size exchange per rental, subject to availability. Contact us within 24h of receiving your order to arrange a swap. We'll ship the new size immediately and cover all return shipping costs. Our size guide and virtual fitting tool can help you choose the perfect fit first time.
                 </div>
             </div>
             
             <div class="faq-item">
-                <div class="faq-question" data-faq="3">
+                <div class="faq-question" onclick="toggleFAQ(this)">
                     How are items cleaned? <span>▼</span>
                 </div>
-                <div class="faq-answer" data-answer="3">
+                <div class="faq-answer">
                     Every returned piece is professionally dry-cleaned and sanitised by our eco-friendly partner using sustainable methods. Quality and hygiene are our top priorities. Each item undergoes a 15-point inspection checklist before being rented again, ensuring you receive nothing less than perfection.
                 </div>
             </div>
             
             <div class="faq-item">
-                <div class="faq-question" data-faq="4">
+                <div class="faq-question" onclick="toggleFAQ(this)">
                     What if I damage an item? <span>▼</span>
                 </div>
-                <div class="faq-answer" data-answer="4">
+                <div class="faq-answer">
                     Minor wear is expected. For significant damage, a repair fee may apply — but we offer a damage waiver option at checkout for complete peace of mind. With the waiver, you're covered for accidental damage up to £500. Without it, repair costs are capped at 40% of the retail value.
                 </div>
             </div>
             
             <div class="faq-item">
-                <div class="faq-question" data-faq="5">
+                <div class="faq-question" onclick="toggleFAQ(this)">
                     Can I extend my rental period? <span>▼</span>
                 </div>
-                <div class="faq-answer" data-answer="5">
+                <div class="faq-answer">
                     Yes! Log in to your dashboard and request an extension before the return date. Extensions are subject to availability and an additional daily fee at 30% of the original daily rate. You can extend up to twice per rental, with a maximum total rental period of 30 days.
                 </div>
             </div>
             
             <div class="faq-item">
-                <div class="faq-question" data-faq="6">
+                <div class="faq-question" onclick="toggleFAQ(this)">
                     What about shipping times? <span>▼</span>
                 </div>
-                <div class="faq-answer" data-answer="6">
+                <div class="faq-answer">
                     We offer free next-day delivery on all orders placed before 2pm Monday-Friday. Saturday delivery is available for a small fee. Returns are just as easy — use the prepaid label in your package, drop off at any Collect+ point, and we'll handle the rest.
                 </div>
             </div>
@@ -606,7 +607,7 @@ if (isset($_SESSION['uid'])) {
 
         <div class="stats-container">
             <div class="stat-item">
-                <div class="stat-number">50,000+</div>
+                <div class="stat-number">67,000+</div>
                 <div class="stat-label">Happy Renters</div>
             </div>
             <div class="stat-item">
@@ -628,43 +629,40 @@ if (isset($_SESSION['uid'])) {
 </main>
 
 <footer>
-    <p>© 2025 Rentique — Sustainable Fashion, Unlimited Style</p>
+    <p>© 2025 Rentique — All Rights Reserved.</p>
 </footer>
 
 <script>
-    (function() {
-        const faqQuestions = document.querySelectorAll('.faq-question');
+    function toggleFAQ(element) {
+        const allQuestions = document.querySelectorAll('.faq-question');
+        const currentItem = element.closest('.faq-item');
+        const currentAnswer = currentItem.querySelector('.faq-answer');
+        const currentArrow = element.querySelector('span');
+        const isActive = element.classList.contains('active');
         
-        faqQuestions.forEach((question) => {
-            question.addEventListener('click', function() {
-                const faqItem = this.closest('.faq-item');
-                const answer = faqItem.querySelector('.faq-answer');
-                const arrow = this.querySelector('span');
-                const isActive = this.classList.contains('active');
-                
-                document.querySelectorAll('.faq-item').forEach((item) => {
-                    if (item !== faqItem) {
-                        const otherQuestion = item.querySelector('.faq-question');
-                        const otherAnswer = item.querySelector('.faq-answer');
-                        const otherArrow = otherQuestion.querySelector('span');
-                        otherQuestion.classList.remove('active');
-                        otherAnswer.classList.remove('show');
-                        if (otherArrow) otherArrow.innerHTML = '▼';
-                    }
-                });
-                
-                if (!isActive) {
-                    this.classList.add('active');
-                    answer.classList.add('show');
-                    arrow.innerHTML = '▲';
-                } else {
-                    this.classList.remove('active');
-                    answer.classList.remove('show');
-                    arrow.innerHTML = '▼';
-                }
-            });
+        allQuestions.forEach(question => {
+            const item = question.closest('.faq-item');
+            if (item !== currentItem) {
+                const answer = item.querySelector('.faq-answer');
+                const arrow = question.querySelector('span');
+                question.classList.remove('active');
+                answer.classList.remove('show');
+                if (arrow) arrow.innerHTML = '▼';
+            }
         });
+        
+        if (!isActive) {
+            element.classList.add('active');
+            currentAnswer.classList.add('show');
+            currentArrow.innerHTML = '▲';
+        } else {
+            element.classList.remove('active');
+            currentAnswer.classList.remove('show');
+            currentArrow.innerHTML = '▼';
+        }
+    }
 
+    (function() {
         const track = document.getElementById('carouselTrack');
         const cards = Array.from(document.querySelectorAll('.testimonial-card'));
         const prevBtn = document.getElementById('prevBtn');
