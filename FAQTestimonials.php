@@ -437,7 +437,7 @@ if (isset($_SESSION['uid'])) {
         }
 
         ::-webkit-scrollbar {
-            width: 8px;
+            width: 5px;
         }
 
         ::-webkit-scrollbar-track {
@@ -739,4 +739,5 @@ if (isset($_SESSION['uid'])) {
 
 </body>
 </html>
+
 
