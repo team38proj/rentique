@@ -563,17 +563,17 @@ if (isset($_SESSION['uid'])) {
             <div class="carousel-container">
                 <div class="carousel-track" id="carouselTrack">
                     <div class="testimonial-card">
-                        <div class="testimonial-avatar">E</div>
-                        <div class="testimonial-text">"Absolutely stunning trench coat! I felt like a movie star at the premiere. The process was seamless and the coat arrived immaculate. Already planning my next rental!"</div>
-                        <div class="testimonial-author">Emma W.</div>
-                        <div class="testimonial-location">London</div>
+                        <div class="testimonial-avatar">K</div>
+                        <div class="testimonial-text">"Rented a puffer jacket for a ski trip — warm, stylish, and saved me buying expensive gear I'd rarely use. Will definitely rent again! The quality exceeded my expectations."</div>
+                        <div class="testimonial-author">Krish S.</div>
+                        <div class="testimonial-location">Birmingham</div>
                         <div class="testimonial-rating">★★★★★</div>
                     </div>
                     
                     <div class="testimonial-card">
                         <div class="testimonial-avatar">J</div>
-                        <div class="testimonial-text">"Rented a puffer jacket for a ski trip — warm, stylish, and saved me buying expensive gear I'd rarely use. Will definitely rent again! The quality exceeded my expectations."</div>
-                        <div class="testimonial-author">James T.</div>
+                        <div class="testimonial-text">"Absolutely stunning trench coat! I felt like a movie star at the premiere. The process was seamless and the coat arrived immaculate. Already planning my next rental!"</div>
+                        <div class="testimonial-author">Jane T.</div>
                         <div class="testimonial-location">Manchester</div>
                         <div class="testimonial-rating">★★★★★</div>
                     </div>
@@ -582,7 +582,7 @@ if (isset($_SESSION['uid'])) {
                         <div class="testimonial-avatar">P</div>
                         <div class="testimonial-text">"As a bridesmaid, I needed a one-time elegant outfit. Rentique delivered perfection. So many compliments and zero commitment. The fit was perfect and the return was effortless."</div>
                         <div class="testimonial-author">Priya K.</div>
-                        <div class="testimonial-location">Birmingham</div>
+                        <div class="testimonial-location">Nottingham</div>
                         <div class="testimonial-rating">★★★★★</div>
                     </div>
                     
@@ -729,3 +729,4 @@ if (isset($_SESSION['uid'])) {
 
 </body>
 </html>
+
