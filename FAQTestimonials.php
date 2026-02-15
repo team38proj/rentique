@@ -987,7 +987,7 @@ if (isset($_SESSION['uid'])) {
                 goToSlide(currentIndex + 1);
             });
 
-            let interval = setInterval(() => goToSlide(currentIndex + 1), 5000);
+            let interval = setInterval(() => goToSlide(currentIndex + 1), 3000);
 
             const carousel = document.querySelector('.testimonials-carousel');
             carousel.addEventListener('mouseenter', () => clearInterval(interval));
@@ -1010,3 +1010,4 @@ if (isset($_SESSION['uid'])) {
 
 </body>
 </html>
+
