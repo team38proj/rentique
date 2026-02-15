@@ -22,133 +22,6 @@ if (isset($_SESSION['uid'])) {
     <title>Rentique | FAQ & Testimonials</title>
     <link rel="stylesheet" href="css/rentique.css">
     <link rel="icon" type="image/png" href="images/rentique_logo.png">
-    <script>
-        function toggleTheme() {
-            const body = document.body;
-            const themeToggle = document.getElementById('themeToggle');
-            
-            if (body.classList.contains('light-mode')) {
-                body.classList.remove('light-mode');
-                themeToggle.textContent = '🌙';
-                localStorage.setItem('theme', 'dark');
-            } else {
-                body.classList.add('light-mode');
-                themeToggle.textContent = '☀️';
-                localStorage.setItem('theme', 'light');
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const savedTheme = localStorage.getItem('theme');
-            const themeToggle = document.getElementById('themeToggle');
-            
-            if (savedTheme === 'light') {
-                document.body.classList.add('light-mode');
-                themeToggle.textContent = '☀️';
-            } else {
-                themeToggle.textContent = '🌙';
-            }
-
-            const questions = [];
-            for (let i = 1; i <= 6; i++) {
-                questions.push({
-                    question: document.getElementById(`q${i}`),
-                    answer: document.getElementById(`a${i}`),
-                    span: document.getElementById(`s${i}`)
-                });
-            }
-            
-            questions.forEach((item, index) => {
-                if (item.question) {
-                    item.question.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        
-                        const isActive = this.classList.contains('active');
-                        
-                        questions.forEach((otherItem, otherIndex) => {
-                            if (otherIndex !== index) {
-                                otherItem.question.classList.remove('active');
-                                otherItem.answer.classList.remove('show');
-                                if (otherItem.span) otherItem.span.innerHTML = '▼';
-                            }
-                        });
-                        
-                        if (!isActive) {
-                            this.classList.add('active');
-                            item.answer.classList.add('show');
-                            if (item.span) item.span.innerHTML = '▲';
-                        } else {
-                            this.classList.remove('active');
-                            item.answer.classList.remove('show');
-                            if (item.span) item.span.innerHTML = '▼';
-                        }
-                    });
-                }
-            });
-
-            const track = document.getElementById('carouselTrack');
-            const cards = Array.from(document.querySelectorAll('.testimonial-card'));
-            const prevBtn = document.getElementById('prevBtn');
-            const nextBtn = document.getElementById('nextBtn');
-            const dotsContainer = document.getElementById('carouselDots');
-
-            if (track && cards.length) {
-                let currentIndex = 0;
-                const totalSlides = cards.length;
-
-                cards.forEach((_, i) => {
-                    const dot = document.createElement('button');
-                    dot.classList.add('dot');
-                    if (i === 0) dot.classList.add('active');
-                    dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
-                    dot.addEventListener('click', () => goToSlide(i));
-                    dotsContainer.appendChild(dot);
-                });
-                
-                const dots = document.querySelectorAll('.dot');
-
-                function updateDots() {
-                    dots.forEach((dot, i) => {
-                        dot.classList.toggle('active', i === currentIndex);
-                    });
-                }
-
-                function goToSlide(index) {
-                    if (index < 0) index = totalSlides - 1;
-                    if (index >= totalSlides) index = 0;
-                    currentIndex = index;
-                    track.style.transform = `translateX(-${currentIndex * 100}%)`;
-                    updateDots();
-                }
-
-                prevBtn.addEventListener('click', () => {
-                    goToSlide(currentIndex - 1);
-                });
-
-                nextBtn.addEventListener('click', () => {
-                    goToSlide(currentIndex + 1);
-                });
-
-                let interval = setInterval(() => goToSlide(currentIndex + 1), 5000);
-
-                const carousel = document.querySelector('.testimonials-carousel');
-                carousel.addEventListener('mouseenter', () => clearInterval(interval));
-                carousel.addEventListener('mouseleave', () => {
-                    clearInterval(interval);
-                    interval = setInterval(() => goToSlide(currentIndex + 1), 5000);
-                });
-
-                goToSlide(0);
-            }
-
-            const navLinks = document.querySelectorAll('.nav-links a');
-            navLinks.forEach(link => {
-                if (link.getAttribute('href') === 'FAQTestimonials.php') {
-                    link.classList.add('faq-link-active');
-                }
-            });
-        });
-    </script>
     <style>
         * {
             margin: 0;
@@ -165,7 +38,7 @@ if (isset($_SESSION['uid'])) {
             transition: background 0.3s ease, color 0.3s ease;
         }
 
-        body.light-mode {
+        html.light-mode body {
             background: #f5f5f5;
             color: #333333;
         }
@@ -187,7 +60,7 @@ if (isset($_SESSION['uid'])) {
             width: 100%;
         }
 
-        body.light-mode .navbar {
+        html.light-mode .navbar {
             background: rgba(255, 255, 255, 0.95);
             border-bottom: 1px solid rgba(0, 255, 0, 0.2);
         }
@@ -225,7 +98,7 @@ if (isset($_SESSION['uid'])) {
             transition: all 0.3s ease;
         }
 
-        body.light-mode .nav-links a {
+        html.light-mode .nav-links a {
             color: #333333;
         }
 
@@ -250,22 +123,21 @@ if (isset($_SESSION['uid'])) {
         .cart-icon svg {
             width: 20px;
             height: 20px;
-            stroke: #ffffff;
+            stroke: #eaeaea;
             transition: all 0.3s ease;
         }
 
-        body.light-mode .cart-icon svg {
+        html.light-mode .cart-icon svg {
             stroke: #333333;
         }
 
         .cart-icon:hover svg {
-            stroke: #00ff00;
-            filter: drop-shadow(0 0 10px rgba(0, 255, 0, 0.5));
+            stroke: #00FF00;
         }
 
         #themeToggle {
             background: transparent;
-            border: 1px solid rgba(0, 255, 0, 0.3);
+            border: 1px solid #00FF00;
             color: #ffffff;
             width: 36px;
             height: 36px;
@@ -279,15 +151,15 @@ if (isset($_SESSION['uid'])) {
             padding: 0;
         }
 
-        body.light-mode #themeToggle {
+        html.light-mode #themeToggle {
             color: #333333;
-            border-color: rgba(0, 255, 0, 0.5);
+            border-color: #00FF00;
             background: transparent;
         }
 
         #themeToggle:hover {
-            background: rgba(0, 255, 0, 0.1);
-            border-color: #00ff00;
+            background: transparent;
+            border-color: #d2ff4c;
             transform: scale(1.1);
         }
 
@@ -298,21 +170,27 @@ if (isset($_SESSION['uid'])) {
         }
 
         .btn.login {
-            border: 1px solid rgba(0, 255, 0, 0.3);
+            border: 1px solid #00FF00;
+            color: #00FF00;
         }
 
-        body.light-mode .btn.login {
-            border-color: rgba(0, 255, 0, 0.5);
+        html.light-mode .btn.login {
+            border-color: #00FF00;
             color: #333333;
         }
 
-        .btn.signup {
-            background: linear-gradient(135deg, #00ff00 0%, #32cd32 100%);
-            color: #0a0a0a;
+        .btn.login:hover {
+            background-color: #00FF00;
+            color: #000;
         }
 
-        body.light-mode .btn.signup {
-            color: #0a0a0a;
+        .btn.signup {
+            background-color: #00FF00;
+            color: #000;
+        }
+
+        .btn.signup:hover {
+            background-color: #d2ff4c;
         }
 
         main {
@@ -332,8 +210,8 @@ if (isset($_SESSION['uid'])) {
             transition: all 0.3s ease;
         }
 
-        body.light-mode .faq-section, 
-        body.light-mode .testimonials-section {
+        html.light-mode .faq-section, 
+        html.light-mode .testimonials-section {
             background: rgba(255, 255, 255, 0.95);
             border-color: rgba(0, 255, 0, 0.2);
             box-shadow: 0 15px 30px -12px rgba(0, 255, 0, 0.2);
@@ -372,7 +250,7 @@ if (isset($_SESSION['uid'])) {
             line-height: 1.5;
         }
 
-        body.light-mode .section-subtitle {
+        html.light-mode .section-subtitle {
             color: #666666;
         }
 
@@ -392,7 +270,7 @@ if (isset($_SESSION['uid'])) {
             backdrop-filter: blur(10px);
         }
 
-        body.light-mode .faq-item {
+        html.light-mode .faq-item {
             background: rgba(240, 240, 240, 0.95);
             border-color: rgba(0, 255, 0, 0.3);
         }
@@ -416,7 +294,7 @@ if (isset($_SESSION['uid'])) {
             color: #ffffff;
         }
 
-        body.light-mode .faq-question {
+        html.light-mode .faq-question {
             background: rgba(230, 230, 230, 0.95);
             color: #333333;
         }
@@ -437,7 +315,7 @@ if (isset($_SESSION['uid'])) {
             transition: transform 0.3s ease;
         }
 
-        body.light-mode .faq-question span {
+        html.light-mode .faq-question span {
             color: #00aa00;
         }
 
@@ -452,7 +330,7 @@ if (isset($_SESSION['uid'])) {
             font-size: 0.85rem;
         }
 
-        body.light-mode .faq-answer {
+        html.light-mode .faq-answer {
             background: rgba(240, 240, 240, 0.95);
             color: #444444;
         }
@@ -499,7 +377,7 @@ if (isset($_SESSION['uid'])) {
             justify-content: center;
         }
 
-        body.light-mode .testimonial-card {
+        html.light-mode .testimonial-card {
             background: linear-gradient(135deg, rgba(0, 255, 0, 0.05) 0%, rgba(50, 205, 50, 0.05) 100%);
             color: #333333;
             border-color: rgba(0, 255, 0, 0.3);
@@ -540,7 +418,7 @@ if (isset($_SESSION['uid'])) {
             text-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
         }
 
-        body.light-mode .testimonial-text {
+        html.light-mode .testimonial-text {
             color: #333333;
             text-shadow: none;
         }
@@ -563,7 +441,7 @@ if (isset($_SESSION['uid'])) {
             gap: 0.3rem;
         }
 
-        body.light-mode .testimonial-location {
+        html.light-mode .testimonial-location {
             color: #666666;
         }
 
@@ -606,7 +484,7 @@ if (isset($_SESSION['uid'])) {
             backdrop-filter: blur(10px);
         }
 
-        body.light-mode .carousel-btn {
+        html.light-mode .carousel-btn {
             background: rgba(240, 240, 240, 0.95);
             color: #00aa00;
             border-color: rgba(0, 255, 0, 0.5);
@@ -658,7 +536,7 @@ if (isset($_SESSION['uid'])) {
             transition: all 0.3s ease;
         }
 
-        body.light-mode .stats-container {
+        html.light-mode .stats-container {
             background: rgba(240, 240, 240, 0.95);
             border-color: rgba(0, 255, 0, 0.3);
         }
@@ -702,7 +580,7 @@ if (isset($_SESSION['uid'])) {
             letter-spacing: 1px;
         }
 
-        body.light-mode .stat-label {
+        html.light-mode .stat-label {
             color: #666666;
         }
 
@@ -717,7 +595,7 @@ if (isset($_SESSION['uid'])) {
             position: relative;
         }
 
-        body.light-mode .contact-prompt {
+        html.light-mode .contact-prompt {
             background: linear-gradient(135deg, rgba(0, 255, 0, 0.05) 0%, rgba(50, 205, 50, 0.05) 100%);
             border-color: rgba(0, 255, 0, 0.4);
         }
@@ -738,7 +616,7 @@ if (isset($_SESSION['uid'])) {
             position: relative;
         }
 
-        body.light-mode .contact-prompt p {
+        html.light-mode .contact-prompt p {
             color: #444444;
         }
 
@@ -796,7 +674,7 @@ if (isset($_SESSION['uid'])) {
             transition: all 0.3s ease;
         }
 
-        body.light-mode footer {
+        html.light-mode footer {
             background: rgba(240, 240, 240, 0.9);
             color: #666666;
             border-top-color: rgba(0, 255, 0, 0.2);
@@ -810,7 +688,7 @@ if (isset($_SESSION['uid'])) {
             background: #0a0a0a;
         }
 
-        body.light-mode ::-webkit-scrollbar-track {
+        html.light-mode ::-webkit-scrollbar-track {
             background: #f0f0f0;
         }
 
@@ -848,7 +726,7 @@ if (isset($_SESSION['uid'])) {
                     <path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"></path>
                 </svg>
             </a></li>
-            <button id="themeToggle" onclick="toggleTheme()">🌙</button>
+            <button id="themeToggle">🌙</button>
 
             <?php if (isset($userData['role']) && $userData['role'] === 'customer'): ?>
                 <li><a href="seller_dashboard.php">Sell</a></li>
@@ -1006,6 +884,129 @@ if (isset($_SESSION['uid'])) {
 <footer>
     <p>© 2025 Rentique — All Rights Reserved.</p>
 </footer>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const toggle = document.getElementById("themeToggle");
+        if (!toggle) return;
+
+        const saved = localStorage.getItem("rentique_theme");
+        if (saved === "light") {
+            document.documentElement.classList.add("light-mode");
+            toggle.textContent = "☀️";
+        } else {
+            toggle.textContent = "🌙";
+        }
+
+        toggle.addEventListener("click", function () {
+            document.documentElement.classList.toggle("light-mode");
+            const isLight = document.documentElement.classList.contains("light-mode");
+            localStorage.setItem("rentique_theme", isLight ? "light" : "dark");
+            toggle.textContent = isLight ? "☀️" : "🌙";
+        });
+
+        const questions = [];
+        for (let i = 1; i <= 6; i++) {
+            questions.push({
+                question: document.getElementById(`q${i}`),
+                answer: document.getElementById(`a${i}`),
+                span: document.getElementById(`s${i}`)
+            });
+        }
+        
+        questions.forEach((item, index) => {
+            if (item.question) {
+                item.question.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    
+                    const isActive = this.classList.contains('active');
+                    
+                    questions.forEach((otherItem, otherIndex) => {
+                        if (otherIndex !== index) {
+                            if (otherItem.question) {
+                                otherItem.question.classList.remove('active');
+                                otherItem.answer.classList.remove('show');
+                                if (otherItem.span) otherItem.span.innerHTML = '▼';
+                            }
+                        }
+                    });
+                    
+                    if (!isActive) {
+                        this.classList.add('active');
+                        item.answer.classList.add('show');
+                        if (item.span) item.span.innerHTML = '▲';
+                    } else {
+                        this.classList.remove('active');
+                        item.answer.classList.remove('show');
+                        if (item.span) item.span.innerHTML = '▼';
+                    }
+                });
+            }
+        });
+
+        const track = document.getElementById('carouselTrack');
+        const cards = Array.from(document.querySelectorAll('.testimonial-card'));
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const dotsContainer = document.getElementById('carouselDots');
+
+        if (track && cards.length) {
+            let currentIndex = 0;
+            const totalSlides = cards.length;
+
+            cards.forEach((_, i) => {
+                const dot = document.createElement('button');
+                dot.classList.add('dot');
+                if (i === 0) dot.classList.add('active');
+                dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+                dot.addEventListener('click', () => goToSlide(i));
+                dotsContainer.appendChild(dot);
+            });
+            
+            const dots = document.querySelectorAll('.dot');
+
+            function updateDots() {
+                dots.forEach((dot, i) => {
+                    dot.classList.toggle('active', i === currentIndex);
+                });
+            }
+
+            function goToSlide(index) {
+                if (index < 0) index = totalSlides - 1;
+                if (index >= totalSlides) index = 0;
+                currentIndex = index;
+                track.style.transform = `translateX(-${currentIndex * 100}%)`;
+                updateDots();
+            }
+
+            prevBtn.addEventListener('click', () => {
+                goToSlide(currentIndex - 1);
+            });
+
+            nextBtn.addEventListener('click', () => {
+                goToSlide(currentIndex + 1);
+            });
+
+            let interval = setInterval(() => goToSlide(currentIndex + 1), 5000);
+
+            const carousel = document.querySelector('.testimonials-carousel');
+            carousel.addEventListener('mouseenter', () => clearInterval(interval));
+            carousel.addEventListener('mouseleave', () => {
+                clearInterval(interval);
+                interval = setInterval(() => goToSlide(currentIndex + 1), 5000);
+            });
+
+            goToSlide(0);
+        }
+
+        const navLinks = document.querySelectorAll('.nav-links a');
+        navLinks.forEach(link => {
+            if (link.getAttribute('href') === 'FAQTestimonials.php') {
+                link.classList.add('faq-link-active');
+            }
+        });
+    });
+</script>
 
 </body>
 </html>
