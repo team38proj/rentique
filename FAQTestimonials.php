@@ -60,7 +60,7 @@ if (isset($_SESSION['uid'])) {
         .section-title {
             font-size: 3.5rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #00ff00 0%, #32cd32 50%, #00ff00 100%);
+            background: linear-gradient(135deg, #a3ff00 0%, #32cd32 50%, #a3ff00 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -121,7 +121,7 @@ if (isset($_SESSION['uid'])) {
         }
 
         .faq-question.active {
-            background: linear-gradient(135deg, #00ff00 0%, #32cd32 100%);
+            background: linear-gradient(135deg, #a3ff00 0%, #32cd32 100%);
             color: #0a0a0a;
         }
 
@@ -132,7 +132,7 @@ if (isset($_SESSION['uid'])) {
 
         .faq-question span {
             font-size: 1.4rem;
-            color: #00ff00;
+            color: #a3ff00;
             transition: transform 0.3s ease;
         }
 
@@ -190,7 +190,7 @@ if (isset($_SESSION['uid'])) {
         .testimonial-avatar {
             width: 100px;
             height: 100px;
-            background: linear-gradient(135deg, #00ff00 0%, #32cd32 100%);
+            background: linear-gradient(135deg, #a3ff00 0%, #32cd32 100%);
             border-radius: 50%;
             margin: 0 auto 2rem;
             display: flex;
@@ -218,7 +218,7 @@ if (isset($_SESSION['uid'])) {
             font-size: 1.3rem;
             font-weight: 600;
             margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, #00ff00 0%, #32cd32 100%);
+            background: linear-gradient(135deg, #a3ff00 0%, #32cd32 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -241,8 +241,8 @@ if (isset($_SESSION['uid'])) {
             margin-top: 1.5rem;
             font-size: 1.3rem;
             letter-spacing: 4px;
-            color: #00ff00;
-            text-shadow: 0 0 20px #00ff00;
+            color: #a3ff00;
+            text-shadow: 0 0 20px #a3ff00;
         }
 
         .carousel-controls {
@@ -259,7 +259,7 @@ if (isset($_SESSION['uid'])) {
             border-radius: 50%;
             border: none;
             background: rgba(20, 20, 20, 0.95);
-            color: #00ff00;
+            color: #a3ff00;
             font-size: 2rem;
             cursor: pointer;
             display: flex;
@@ -272,7 +272,7 @@ if (isset($_SESSION['uid'])) {
         }
 
         .carousel-btn:hover {
-            background: linear-gradient(135deg, #00ff00 0%, #32cd32 100%);
+            background: linear-gradient(135deg, #a3ff00 0%, #32cd32 100%);
             color: #0a0a0a;
             transform: scale(1.1);
             box-shadow: 0 20px 30px -8px rgba(0, 255, 0, 0.6);
@@ -298,9 +298,9 @@ if (isset($_SESSION['uid'])) {
         }
 
         .dot.active {
-            background: linear-gradient(135deg, #00ff00 0%, #32cd32 100%);
+            background: linear-gradient(135deg, #a3ff00 0%, #32cd32 100%);
             transform: scale(1.3);
-            box-shadow: 0 0 30px #00ff00;
+            box-shadow: 0 0 30px #a3ff00;
             border-color: transparent;
         }
 
@@ -329,7 +329,7 @@ if (isset($_SESSION['uid'])) {
             transform: translateY(-50%);
             width: 2px;
             height: 40px;
-            background: linear-gradient(135deg, #00ff00 0%, #32cd32 100%);
+            background: linear-gradient(135deg, #a3ff00 0%, #32cd32 100%);
             opacity: 0.3;
         }
 
@@ -340,7 +340,7 @@ if (isset($_SESSION['uid'])) {
         .stat-number {
             font-size: 2.8rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #00ff00 0%, #32cd32 100%);
+            background: linear-gradient(135deg, #a3ff00 0%, #32cd32 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -369,7 +369,7 @@ if (isset($_SESSION['uid'])) {
         .contact-prompt h3 {
             font-size: 2.2rem;
             margin-bottom: 1rem;
-            background: linear-gradient(135deg, #00ff00 0%, #32cd32 100%);
+            background: linear-gradient(135deg, #a3ff00 0%, #32cd32 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             position: relative;
@@ -385,7 +385,7 @@ if (isset($_SESSION['uid'])) {
         .contact-btn {
             display: inline-block;
             padding: 1rem 3rem;
-            background: linear-gradient(135deg, #00ff00 0%, #32cd32 100%);
+            background: linear-gradient(135deg, #a3ff00 0%, #32cd32 100%);
             color: #0a0a0a;
             text-decoration: none;
             border-radius: 50px;
@@ -406,7 +406,7 @@ if (isset($_SESSION['uid'])) {
 
         .faq-link-active {
             position: relative;
-            background: linear-gradient(135deg, #00ff00 0%, #32cd32 100%);
+            background: linear-gradient(135deg, #a3ff00 0%, #32cd32 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -419,9 +419,9 @@ if (isset($_SESSION['uid'])) {
             transform: translateX(-50%);
             width: 30px;
             height: 3px;
-            background: linear-gradient(135deg, #00ff00 0%, #32cd32 100%);
+            background: linear-gradient(135deg, #a3ff00 0%, #32cd32 100%);
             border-radius: 3px;
-            box-shadow: 0 0 20px #00ff00;
+            box-shadow: 0 0 20px #a3ff00;
         }
 
         footer {
@@ -443,12 +443,12 @@ if (isset($_SESSION['uid'])) {
         }
 
         ::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, #00ff00 0%, #32cd32 100%);
+            background: linear-gradient(135deg, #a3ff00 0%, #32cd32 100%);
             border-radius: 5px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(135deg, #32cd32 0%, #00ff00 100%);
+            background: linear-gradient(135deg, #32cd32 0%, #a3ff00 100%);
         }
     </style>
 </head>
