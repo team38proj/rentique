@@ -437,7 +437,7 @@ if (isset($_SESSION['uid'])) {
         }
 
         ::-webkit-scrollbar {
-            width: 5px;
+            width: 8px;
         }
 
         ::-webkit-scrollbar-track {
@@ -446,7 +446,7 @@ if (isset($_SESSION['uid'])) {
 
         ::-webkit-scrollbar-thumb {
             background: linear-gradient(135deg, #00ff00 0%, #32cd32 100%);
-            border-radius: 3px;
+            border-radius: 4px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
@@ -495,58 +495,58 @@ if (isset($_SESSION['uid'])) {
             <h1 class="section-title">Frequently Asked Questions</h1>
             <p class="section-subtitle">Everything you need to know about renting with Rentique. Can't find what you're looking for? Feel free to contact our support team.</p>
         </div>
-        
+
         <div class="faq-grid">
             <div class="faq-item">
-                <div class="faq-question" id="q1">
-                    How does renting work? <span id="s1">▼</span>
+                <div class="faq-question">
+                    How does renting work? <span>▼</span>
                 </div>
-                <div class="faq-answer" id="a1">
+                <div class="faq-answer">
                     Simply browse our collection, choose your favourite items, select rental dates, and proceed to checkout. We'll deliver the pieces to your doorstep, and you return them after use — dry cleaning included. All rentals come with free shipping both ways and a 24-hour grace period for returns.
                 </div>
             </div>
-            
+
             <div class="faq-item">
-                <div class="faq-question" id="q2">
-                    What if the item doesn't fit? <span id="s2">▼</span>
+                <div class="faq-question">
+                    What if the item doesn't fit? <span>▼</span>
                 </div>
-                <div class="faq-answer" id="a2">
+                <div class="faq-answer">
                     We offer one free size exchange per rental, subject to availability. Contact us within 24h of receiving your order to arrange a swap. We'll ship the new size immediately and cover all return shipping costs. Our size guide and virtual fitting tool can help you choose the perfect fit first time.
                 </div>
             </div>
-            
+
             <div class="faq-item">
-                <div class="faq-question" id="q3">
-                    How are items cleaned? <span id="s3">▼</span>
+                <div class="faq-question">
+                    How are items cleaned? <span>▼</span>
                 </div>
-                <div class="faq-answer" id="a3">
+                <div class="faq-answer">
                     Every returned piece is professionally dry-cleaned and sanitised by our eco-friendly partner using sustainable methods. Quality and hygiene are our top priorities. Each item undergoes a 15-point inspection checklist before being rented again, ensuring you receive nothing less than perfection.
                 </div>
             </div>
-            
+
             <div class="faq-item">
-                <div class="faq-question" id="q4">
-                    What if I damage an item? <span id="s4">▼</span>
+                <div class="faq-question">
+                    What if I damage an item? <span>▼</span>
                 </div>
-                <div class="faq-answer" id="a4">
+                <div class="faq-answer">
                     Minor wear is expected. For significant damage, a repair fee may apply — but we offer a damage waiver option at checkout for complete peace of mind. With the waiver, you're covered for accidental damage up to £500. Without it, repair costs are capped at 40% of the retail value.
                 </div>
             </div>
-            
+
             <div class="faq-item">
-                <div class="faq-question" id="q5">
-                    Can I extend my rental period? <span id="s5">▼</span>
+                <div class="faq-question">
+                    Can I extend my rental period? <span>▼</span>
                 </div>
-                <div class="faq-answer" id="a5">
+                <div class="faq-answer">
                     Yes! Log in to your dashboard and request an extension before the return date. Extensions are subject to availability and an additional daily fee at 30% of the original daily rate. You can extend up to twice per rental, with a maximum total rental period of 30 days.
                 </div>
             </div>
-            
+
             <div class="faq-item">
-                <div class="faq-question" id="q6">
-                    What about shipping times? <span id="s6">▼</span>
+                <div class="faq-question">
+                    What about shipping times? <span>▼</span>
                 </div>
-                <div class="faq-answer" id="a6">
+                <div class="faq-answer">
                     We offer free next-day delivery on all orders placed before 2pm Monday-Friday. Saturday delivery is available for a small fee. Returns are just as easy — use the prepaid label in your package, drop off at any Collect+ point, and we'll handle the rest.
                 </div>
             </div>
@@ -563,29 +563,29 @@ if (isset($_SESSION['uid'])) {
             <div class="carousel-container">
                 <div class="carousel-track" id="carouselTrack">
                     <div class="testimonial-card">
-                        <div class="testimonial-avatar">E</div>
+                        <div class="testimonial-avatar">K</div>
+                        <div class="testimonial-text">"Rented a puffer jacket for a ski trip — warm, stylish, and saved me buying expensive gear I'd rarely use. Will definitely rent again! The quality exceeded my expectations."</div>
+                        <div class="testimonial-author">Krish S.</div>
+                        <div class="testimonial-location">Birmingham</div>
+                        <div class="testimonial-rating">★★★★★</div>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="testimonial-avatar">J</div>
                         <div class="testimonial-text">"Absolutely stunning trench coat! I felt like a movie star at the premiere. The process was seamless and the coat arrived immaculate. Already planning my next rental!"</div>
-                        <div class="testimonial-author">Emma W.</div>
+                        <div class="testimonial-author">Jane T.</div>
                         <div class="testimonial-location">London</div>
                         <div class="testimonial-rating">★★★★★</div>
                     </div>
-                    
-                    <div class="testimonial-card">
-                        <div class="testimonial-avatar">J</div>
-                        <div class="testimonial-text">"Rented a puffer jacket for a ski trip — warm, stylish, and saved me buying expensive gear I'd rarely use. Will definitely rent again! The quality exceeded my expectations."</div>
-                        <div class="testimonial-author">James T.</div>
-                        <div class="testimonial-location">Manchester</div>
-                        <div class="testimonial-rating">★★★★★</div>
-                    </div>
-                    
+
                     <div class="testimonial-card">
                         <div class="testimonial-avatar">P</div>
                         <div class="testimonial-text">"As a bridesmaid, I needed a one-time elegant outfit. Rentique delivered perfection. So many compliments and zero commitment. The fit was perfect and the return was effortless."</div>
                         <div class="testimonial-author">Priya K.</div>
-                        <div class="testimonial-location">Birmingham</div>
+                        <div class="testimonial-location">Manchester</div>
                         <div class="testimonial-rating">★★★★★</div>
                     </div>
-                    
+
                     <div class="testimonial-card">
                         <div class="testimonial-avatar">A</div>
                         <div class="testimonial-text">"The denim jacket was exactly as pictured. Quick delivery, easy return. Sustainable fashion at its best! I love that I can wear designer pieces without the environmental guilt."</div>
@@ -597,7 +597,7 @@ if (isset($_SESSION['uid'])) {
             </div>
 
             <div class="carousel-dots" id="carouselDots"></div>
-            
+
             <div class="carousel-controls">
                 <button class="carousel-btn" id="prevBtn" aria-label="Previous">←</button>
                 <button class="carousel-btn" id="nextBtn" aria-label="Next">→</button>
@@ -606,7 +606,7 @@ if (isset($_SESSION['uid'])) {
 
         <div class="stats-container">
             <div class="stat-item">
-                <div class="stat-number">67,000+</div>
+                <div class="stat-number">50,000+</div>
                 <div class="stat-label">Happy Renters</div>
             </div>
             <div class="stat-item">
@@ -628,47 +628,50 @@ if (isset($_SESSION['uid'])) {
 </main>
 
 <footer>
-    <p>© 2025 Rentique — All Rights Reserved.</p>
+    <p>© 2025 Rentique — Sustainable Fashion, Unlimited Style</p>
 </footer>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const questions = [];
-        for (let i = 1; i <= 6; i++) {
-            questions.push({
-                question: document.getElementById(`q${i}`),
-                answer: document.getElementById(`a${i}`),
-                span: document.getElementById(`s${i}`)
-            });
-        }
+    (function() {
+        // only one faq opens when clicked
+        const faqItems = document.querySelectorAll('.faq-item');
         
-        questions.forEach((item, index) => {
-            if (item.question) {
-                item.question.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    
-                    const isActive = this.classList.contains('active');
-                    
-                    questions.forEach((otherItem, otherIndex) => {
-                        if (otherIndex !== index) {
-                            otherItem.question.classList.remove('active');
-                            otherItem.answer.classList.remove('show');
-                            if (otherItem.span) otherItem.span.innerHTML = '▼';
-                        }
-                    });
-                    
-                    if (!isActive) {
-                        this.classList.add('active');
-                        item.answer.classList.add('show');
-                        if (item.span) item.span.innerHTML = '▲';
-                    } else {
-                        this.classList.remove('active');
-                        item.answer.classList.remove('show');
-                        if (item.span) item.span.innerHTML = '▼';
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            const answer = item.querySelector('.faq-answer');
+            const arrow = question.querySelector('span');
+
+            question.addEventListener('click', (e) => {
+                e.stopPropagation(); 
+                
+                const isActive = question.classList.contains('active');
+
+                // this baso closes all the other faqs
+                faqItems.forEach(otherItem => {
+                    if (otherItem !== item) {
+                        const otherQuestion = otherItem.querySelector('.faq-question');
+                        const otherAnswer = otherItem.querySelector('.faq-answer');
+                        const otherArrow = otherQuestion.querySelector('span');
+                        
+                        otherQuestion.classList.remove('active');
+                        otherAnswer.classList.remove('show');
+                        if (otherArrow) otherArrow.innerHTML = '▼';
                     }
                 });
-            }
+
+                
+                if (!isActive) {
+                    question.classList.add('active');
+                    answer.classList.add('show');
+                    arrow.innerHTML = '▲';
+                } else {
+                    question.classList.remove('active');
+                    answer.classList.remove('show');
+                    arrow.innerHTML = '▼';
+                }
+            });
         });
+
 
         const track = document.getElementById('carouselTrack');
         const cards = Array.from(document.querySelectorAll('.testimonial-card'));
@@ -688,7 +691,7 @@ if (isset($_SESSION['uid'])) {
                 dot.addEventListener('click', () => goToSlide(i));
                 dotsContainer.appendChild(dot);
             });
-            
+
             const dots = document.querySelectorAll('.dot');
 
             function updateDots() {
@@ -731,7 +734,7 @@ if (isset($_SESSION['uid'])) {
                 link.classList.add('faq-link-active');
             }
         });
-    });
+    })();
 </script>
 
 </body>
