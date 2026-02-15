@@ -2,6 +2,34 @@
 session_start();
 require_once 'connectdb.php';
 
+ //* >>>> reduce stock*//
+$productId = $_SESSION['ordered_product_id'] ?? null;
+$orderedQty = $_SESSION['ordered_quantity'] ?? 1;
+
+if ($productId) {
+    try {
+        $stmt = $db->prepare("
+            UPDATE products 
+            SET quantity = quantity - ? 
+            WHERE id = ? AND quantity >= ?
+        ");
+        $stmt->execute([$orderedQty, $productId, $orderedQty]);
+
+        if ($stmt->rowCount() === 0) {
+            die("Not enough stock available.");
+        }
+
+        // clear session so it doesnt reduce twice
+        unset($_SESSION['ordered_product_id']);
+        unset($_SESSION['ordered_quantity']);
+
+    } catch (PDOException $e) {
+        die("Stock update failed: " . $e->getMessage());
+    }
+}
+
+//*-------*//
+
 $uid = $_SESSION['uid'] ?? null;
 if (!$uid) die("Not logged in.");
 
