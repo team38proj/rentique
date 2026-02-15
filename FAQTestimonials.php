@@ -437,7 +437,7 @@ if (isset($_SESSION['uid'])) {
         }
 
         ::-webkit-scrollbar {
-            width: 8px;
+            width: 5px;
         }
 
         ::-webkit-scrollbar-track {
@@ -628,7 +628,7 @@ if (isset($_SESSION['uid'])) {
 </main>
 
 <footer>
-    <p>© 2025 Rentique — Sustainable Fashion, Unlimited Style</p>
+    <p>© 2025 Rentique — All Rights Reserved</p>
 </footer>
 
 <script>
@@ -729,4 +729,5 @@ if (isset($_SESSION['uid'])) {
 
 </body>
 </html>
+
 
