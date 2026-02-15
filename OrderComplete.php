@@ -2,39 +2,45 @@
 session_start();
 require_once 'connectdb.php';
 
- //* >>>> reduce stock*//
-$productId = $_SESSION['ordered_product_id'] ?? null;
-$orderedQty = $_SESSION['ordered_quantity'] ?? 1;
-
-if ($productId) {
-    try {
-        $stmt = $db->prepare("
-            UPDATE products 
-            SET quantity = quantity - ? 
-            WHERE id = ? AND quantity >= ?
-        ");
-        $stmt->execute([$orderedQty, $productId, $orderedQty]);
-
-        if ($stmt->rowCount() === 0) {
-            die("Not enough stock available.");
-        }
-
-        // clear session so it doesnt reduce twice
-        unset($_SESSION['ordered_product_id']);
-        unset($_SESSION['ordered_quantity']);
-
-    } catch (PDOException $e) {
-        die("Stock update failed: " . $e->getMessage());
-    }
-}
-
-//*-------*//
-
 $uid = $_SESSION['uid'] ?? null;
 if (!$uid) die("Not logged in.");
 
 $cardLast4 = $_SESSION['last_card4'] ?? "XXXX";
+
+ //* >>>> reduce stock*//
+try {
+    // Get all items in this user's basket
+    $stmt = $db->prepare("SELECT pid, quantity FROM basket WHERE uid = ?");
+    $stmt->execute([$uid]);
+    $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    foreach ($items as $item) {
+        $update = $db->prepare("
+            UPDATE products 
+            SET quantity = quantity - ?
+            WHERE pid = ? AND quantity >= ?
+        ");
+        $update->execute([
+            (int)$item['quantity'],
+            (int)$item['pid'],
+            (int)$item['quantity']
+        ]);
+
+        if ($update->rowCount() === 0) {
+            die("Not enough stock available.");
+        }
+    }
+
+    // Clear basket after successful stock update
+    $clear = $db->prepare("DELETE FROM basket WHERE uid = ?");
+    $clear->execute([$uid]);
+
+} catch (PDOException $e) {
+    die("Stock update failed: " . $e->getMessage());
+}
 ?>
+ //*------------*//
+
 <!DOCTYPE html>
 <html>
 <head>
