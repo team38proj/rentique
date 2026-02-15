@@ -561,7 +561,7 @@ if (isset($_SESSION['uid'])) {
             <div class="carousel-container">
                 <div class="carousel-track" id="carouselTrack">
                     <div class="testimonial-card">
-                        <div class="testimonial-avatar">E</div>
+                        <div class="testimonial-avatar">I</div>
                         <div class="testimonial-text">"Absolutely stunning trench coat! I felt like a movie star at the premiere. The process was seamless and the coat arrived immaculate. Already planning my next rental!"</div>
                         <div class="testimonial-author">Iqra W.</div>
                         <div class="testimonial-location">London</div>
@@ -569,7 +569,7 @@ if (isset($_SESSION['uid'])) {
                     </div>
                     
                     <div class="testimonial-card">
-                        <div class="testimonial-avatar">J</div>
+                        <div class="testimonial-avatar">K</div>
                         <div class="testimonial-text">"Rented a puffer jacket for a ski trip — warm, stylish, and saved me buying expensive gear I'd rarely use. Will definitely rent again! The quality exceeded my expectations."</div>
                         <div class="testimonial-author">Krish S.</div>
                         <div class="testimonial-location">Manchester</div>
@@ -604,7 +604,7 @@ if (isset($_SESSION['uid'])) {
 
         <div class="stats-container">
             <div class="stat-item">
-                <div class="stat-number">50,000+</div>
+                <div class="stat-number">67,000+</div>
                 <div class="stat-label">Happy Renters</div>
             </div>
             <div class="stat-item">
@@ -612,7 +612,7 @@ if (isset($_SESSION['uid'])) {
                 <div class="stat-label">Average Rating</div>
             </div>
             <div class="stat-item">
-                <div class="stat-number">98%</div>
+                <div class="stat-number">97%</div>
                 <div class="stat-label">Would Recommend</div>
             </div>
         </div>
@@ -626,7 +626,7 @@ if (isset($_SESSION['uid'])) {
 </main>
 
 <footer>
-    <p>© 2025 Rentique — Sustainable Fashion, Unlimited Style</p>
+    <p>© 2025 Rentique — All rights reserved.</p>
 </footer>
 
 <script>
@@ -727,6 +727,7 @@ if (isset($_SESSION['uid'])) {
 
 </body>
 </html>
+
 
 
 
