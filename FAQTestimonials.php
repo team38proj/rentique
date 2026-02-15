@@ -500,7 +500,7 @@ if (isset($_SESSION['uid'])) {
                     How does renting work? <span>▼</span>
                 </div>
                 <div class="faq-answer">
-                    Simply browse our collection, choose your favourite items, select rental dates, and proceed to checkout. We'll deliver the pieces to your doorstep, and you return them after use — dry cleaning included. All rentals come with free shipping both ways and a 24-hour grace period for returns.
+                    Simply browse our collection, choose your favourite items, select rental dates, and proceed to checkout. We'll deliver the pieces to your doorstep, and you return them after use — dry cleaning included. All rentals come with a small shipping fee.
                 </div>
             </div>
             
@@ -509,7 +509,7 @@ if (isset($_SESSION['uid'])) {
                     What if the item doesn't fit? <span>▼</span>
                 </div>
                 <div class="faq-answer">
-                    We offer one free size exchange per rental, subject to availability. Contact us within 24h of receiving your order to arrange a swap. We'll ship the new size immediately and cover all return shipping costs. Our size guide and virtual fitting tool can help you choose the perfect fit first time.
+                    Contact us within 24h of receiving your order to arrange a swap. We'll ship the new size immediately and cover all return shipping costs. Our size guide and virtual fitting tool can help you choose the perfect fit first time.
                 </div>
             </div>
             
@@ -518,7 +518,7 @@ if (isset($_SESSION['uid'])) {
                     How are items cleaned? <span>▼</span>
                 </div>
                 <div class="faq-answer">
-                    Every returned piece is professionally dry-cleaned and sanitised by our eco-friendly partner using sustainable methods. Quality and hygiene are our top priorities. Each item undergoes a 15-point inspection checklist before being rented again, ensuring you receive nothing less than perfection.
+                    Every returned piece is professionally dry-cleaned and sanitised by our eco-friendly partner using sustainable methods. Quality and hygiene are our top priorities. 
                 </div>
             </div>
             
@@ -527,7 +527,7 @@ if (isset($_SESSION['uid'])) {
                     What if I damage an item? <span>▼</span>
                 </div>
                 <div class="faq-answer">
-                    Minor wear is expected. For significant damage, a repair fee may apply — but we offer a damage waiver option at checkout for complete peace of mind. With the waiver, you're covered for accidental damage up to £500. Without it, repair costs are capped at 40% of the retail value.
+                    Minor wear is expected. For significant damage, a repair fee may apply - repair costs are capped at 40% of the retail value.
                 </div>
             </div>
             
@@ -727,5 +727,6 @@ if (isset($_SESSION['uid'])) {
 
 </body>
 </html>
+
 
 
