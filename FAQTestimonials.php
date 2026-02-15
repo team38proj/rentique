@@ -987,17 +987,13 @@ if (isset($_SESSION['uid'])) {
                 goToSlide(currentIndex + 1);
             });
 
-            let interval = setInterval(() => goToSlide(currentIndex + 1), 3000);
+        let interval = setInterval(() => goToSlide(currentIndex + 1), 3000);
 
-            const carousel = document.querySelector('.testimonials-carousel');
-            carousel.addEventListener('mouseenter', () => clearInterval(interval));
-            carousel.addEventListener('mouseleave', () => {
-                clearInterval(interval);
-                interval = setInterval(() => goToSlide(currentIndex + 1), 5000);
-            });
-
-            goToSlide(0);
-        }
+const carousel = document.querySelector('.testimonials-carousel');
+carousel.addEventListener('mouseenter', () => clearInterval(interval));
+carousel.addEventListener('mouseleave', () => {
+    interval = setInterval(() => goToSlide(currentIndex + 1), 3000);
+});
 
         const navLinks = document.querySelectorAll('.nav-links a');
         navLinks.forEach(link => {
@@ -1010,4 +1006,5 @@ if (isset($_SESSION['uid'])) {
 
 </body>
 </html>
+
 
