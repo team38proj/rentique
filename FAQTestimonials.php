@@ -26,6 +26,7 @@ if (isset($_SESSION['uid'])) {
         function toggleTheme() {
             const body = document.body;
             const themeToggle = document.getElementById('themeToggle');
+            const header = document.querySelector('header');
             
             if (body.classList.contains('light-mode')) {
                 body.classList.remove('light-mode');
@@ -170,6 +171,11 @@ if (isset($_SESSION['uid'])) {
             color: #333333;
         }
 
+        header {
+            width: 100%;
+            background: transparent;
+        }
+
         .navbar {
             display: flex;
             align-items: center;
@@ -179,6 +185,7 @@ if (isset($_SESSION['uid'])) {
             backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(0, 255, 0, 0.1);
             transition: all 0.3s ease;
+            width: 100%;
         }
 
         body.light-mode .navbar {
@@ -276,6 +283,7 @@ if (isset($_SESSION['uid'])) {
         body.light-mode #themeToggle {
             color: #333333;
             border-color: rgba(0, 255, 0, 0.5);
+            background: transparent;
         }
 
         #themeToggle:hover {
@@ -304,8 +312,13 @@ if (isset($_SESSION['uid'])) {
             color: #0a0a0a;
         }
 
+        body.light-mode .btn.signup {
+            color: #0a0a0a;
+        }
+
         main {
             padding: 1rem;
+            background: transparent;
         }
 
         .faq-section, .testimonials-section {
@@ -927,7 +940,4 @@ if (isset($_SESSION['uid'])) {
                     
                     <div class="testimonial-card">
                         <div class="testimonial-avatar">J</div>
-                        <div class="testimonial-text">"Rented a puffer jacket for a ski trip — warm, stylish, and saved me buying expensive gear I'd rarely use. Will definitely rent again! The quality exceeded my expectations."</div>
-                        <div class="testimonial-author">James T.</div>
-                        <div class="testimonial-location">Manchester</div>
-                        <div class="testimonial-r
+                        <div class="testimonial-text">"Rented a puffer jacket for a ski trip — warm, stylish,
