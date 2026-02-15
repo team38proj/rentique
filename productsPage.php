@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_to_basket'])) {
     if ($rentalDays > 30) $rentalDays = 30;
 
     $stmt = $db->prepare("
-        SELECT pid, uid AS seller_uid, title, image, product_type, price
+        SELECT pid, uid AS seller_uid, title, image, product_type, price, quantity
         FROM products
         WHERE pid = ? AND is_available = 1
         LIMIT 1
@@ -44,7 +44,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_to_basket'])) {
 
     if (!$p) {
         $addError = "Item not available.";
-    } else {
+    }
+    elseif ((int)$p['quantity'] <= 0) {
+    $addError = "This item is out of stock.";
+    } 
+    else {
         $sellerUid = (int)$p['seller_uid'];
 
         if ($sellerUid === (int)$uid) {
@@ -79,7 +83,7 @@ $price = $_GET['price'] ?? "";
 $sql = "
     SELECT
         p.pid, p.title, p.image, p.product_type, p.price, p.description,
-        u.username, p.uid AS seller_uid,
+        u.username, p.uid AS seller_uid, p.quantity,
         COALESCE(AVG(r.stars), 0) AS avg_rating,
         COUNT(r.id) AS rating_count
     FROM products p
@@ -203,7 +207,8 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <h3><?= h($p['title']) ?></h3>
             <p><?= h($p['product_type']) ?></p>
             <p class="price">£<?= number_format((float)$p['price'], 2) ?> per day</p>
-
+            
+            <p style="margin-top:6px;">Stock: <?= (int)$p['quantity'] ?></p>
 
             <p style="margin-top:6px;">
         <?= number_format((float)$p['avg_rating'], 1) ?> ★ (<?= (int)$p['rating_count'] ?>)
@@ -233,9 +238,9 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </select>
                 </label>
 
-                <button type="submit" name="add_to_basket" class="btn primary" style="margin-top:10px;" <?= $isOwnListing ? "disabled" : "" ?>>
-                    Add to Basket
-                </button>
+                <button type="submit" name="add_to_basket" class="btn primary" style="margin-top:10px;" <?= ($isOwnListing || (int)$p['quantity'] <= 0) ? "disabled" : "" ?>>
+        <?= ((int)$p['quantity'] <= 0) ? "Out of Stock" : "Add to Basket" ?>
+</button>
 
                 <?php if ($isOwnListing): ?>
                     <div style="margin-top:8px;color:#ff6b6b;font-size:13px;">
