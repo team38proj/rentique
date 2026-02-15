@@ -1,4 +1,4 @@
-<!-- this goes in ur header section -->
+<!-- Add this to the <head> section in your webpage-->
 <style>
     .cart-icon {
         display: flex;
@@ -9,22 +9,21 @@
     .cart-icon svg {
         width: 20px;
         height: 20px;
-        stroke: #ffffff;
+        stroke: #eaeaea;
         transition: all 0.3s ease;
     }
 
-    body.light-mode .cart-icon svg {
+    html.light-mode .cart-icon svg {
         stroke: #333333;
     }
 
     .cart-icon:hover svg {
-        stroke: #00ff00;
-        filter: drop-shadow(0 0 10px rgba(0, 255, 0, 0.5));
+        stroke: #00FF00;
     }
 
     #themeToggle {
         background: transparent;
-        border: 1px solid rgba(0, 255, 0, 0.3);
+        border: 1px solid #00FF00;
         color: #ffffff;
         width: 36px;
         height: 36px;
@@ -38,56 +37,48 @@
         padding: 0;
     }
 
-    body.light-mode #themeToggle {
+    html.light-mode #themeToggle {
         color: #333333;
-        border-color: rgba(0, 255, 0, 0.5);
+        border-color: #00FF00;
         background: transparent;
     }
 
     #themeToggle:hover {
-        background: rgba(0, 255, 0, 0.1);
-        border-color: #00ff00;
+        background: transparent;
+        border-color: #d2ff4c;
         transform: scale(1.1);
     }
 </style>
 
-<!-- u need to add this to javaScript before closing </body> or before <head> -->
+<!-- Add this before closing </body> -->
 <script>
-    function toggleTheme() {
-        const body = document.body;
-        const themeToggle = document.getElementById('themeToggle');
+    document.addEventListener("DOMContentLoaded", function () {
+        const toggle = document.getElementById("themeToggle");
+        if (!toggle) return;
 
-        if (body.classList.contains('light-mode')) {
-            body.classList.remove('light-mode');
-            themeToggle.textContent = '🌙';
-            localStorage.setItem('theme', 'dark');
+        const saved = localStorage.getItem("rentique_theme");
+        if (saved === "light") {
+            document.documentElement.classList.add("light-mode");
+            toggle.textContent = "☀️";
         } else {
-            body.classList.add('light-mode');
-            themeToggle.textContent = '☀️';
-            localStorage.setItem('theme', 'light');
+            toggle.textContent = "🌙";
         }
-    }
 
-    document.addEventListener('DOMContentLoaded', function () {
-        const savedTheme = localStorage.getItem('theme');
-        const themeToggle = document.getElementById('themeToggle');
-
-        if (savedTheme === 'light') {
-            document.body.classList.add('light-mode');
-            themeToggle.textContent = '☀️';
-        } else {
-            themeToggle.textContent = '🌙';
-        }
+        toggle.addEventListener("click", function () {
+            document.documentElement.classList.toggle("light-mode");
+            const isLight = document.documentElement.classList.contains("light-mode");
+            localStorage.setItem("rentique_theme", isLight ? "light" : "dark");
+            toggle.textContent = isLight ? "☀️" : "🌙";
+        });
     });
 </script>
 
-<!-- add this to the navbar in ur webpage <ul>  -->
+<!-- Add these two items inside your <ul class="nav-links"> -->
 <li><a href="basketPage.php" class="cart-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-            stroke-linejoin="round">
-            <circle cx="9" cy="21" r="1"></circle>
-            <circle cx="20" cy="21" r="1"></circle>
-            <path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"></path>
-        </svg>
-    </a></li>
-<li><button id="themeToggle" onclick="toggleTheme()">🌙</button></li>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="9" cy="21" r="1"></circle>
+        <circle cx="20" cy="21" r="1"></circle>
+        <path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"></path>
+    </svg>
+</a></li>
+<li><button id="themeToggle">🌙</button></li>
