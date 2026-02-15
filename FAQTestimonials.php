@@ -606,7 +606,7 @@ if (isset($_SESSION['uid'])) {
 
         <div class="stats-container">
             <div class="stat-item">
-                <div class="stat-number">50,000+</div>
+                <div class="stat-number">67,000+</div>
                 <div class="stat-label">Happy Renters</div>
             </div>
             <div class="stat-item">
@@ -729,5 +729,6 @@ if (isset($_SESSION['uid'])) {
 
 </body>
 </html>
+
 
 
