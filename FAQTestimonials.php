@@ -35,38 +35,39 @@ if (isset($_SESSION['uid'])) {
             background: #0a0a0a;
             min-height: 100vh;
             color: #ffffff;
+            font-size: 14px;
         }
 
         main {
-            padding: 1.5rem 1rem;
+            padding: 1rem;
         }
 
         .faq-section, .testimonials-section {
-            max-width: 1100px;
-            margin: 2rem auto;
-            padding: 2rem;
+            max-width: 1000px;
+            margin: 1.5rem auto;
+            padding: 1.5rem;
             background: rgba(10, 10, 10, 0.95);
             backdrop-filter: blur(10px);
-            border-radius: 30px;
-            box-shadow: 0 20px 40px -12px rgba(0, 255, 0, 0.15);
+            border-radius: 24px;
+            box-shadow: 0 15px 30px -12px rgba(0, 255, 0, 0.15);
             border: 1px solid rgba(0, 255, 0, 0.1);
         }
 
         .section-header {
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
 
         .section-title {
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: 700;
             background: linear-gradient(135deg, #00ff00 0%, #32cd32 50%, #00ff00 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.5rem;
             letter-spacing: -0.02em;
-            text-shadow: 0 0 25px rgba(0, 255, 0, 0.3);
+            text-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
             animation: gradientShift 3s ease infinite;
             background-size: 200% 200%;
         }
@@ -78,39 +79,39 @@ if (isset($_SESSION['uid'])) {
         }
 
         .section-subtitle {
-            font-size: 1rem;
+            font-size: 0.9rem;
             color: #a0a0a0;
-            max-width: 550px;
+            max-width: 500px;
             margin: 0 auto;
             line-height: 1.5;
         }
 
         .faq-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 0.8rem;
         }
 
         .faq-item {
             background: rgba(20, 20, 20, 0.95);
-            border-radius: 18px;
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 8px 20px -8px rgba(0, 255, 0, 0.15);
+            box-shadow: 0 5px 15px -8px rgba(0, 255, 0, 0.15);
             transition: all 0.3s ease;
             border: 1px solid rgba(0, 255, 0, 0.2);
             backdrop-filter: blur(10px);
         }
 
         .faq-item:hover {
-            transform: translateY(-3px) scale(1.01);
-            box-shadow: 0 15px 30px -12px rgba(0, 255, 0, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -12px rgba(0, 255, 0, 0.4);
             border-color: rgba(0, 255, 0, 0.4);
         }
 
         .faq-question {
-            padding: 1.2rem 1.5rem;
+            padding: 1rem 1.2rem;
             font-weight: 600;
-            font-size: 1rem;
+            font-size: 0.95rem;
             cursor: pointer;
             display: flex;
             justify-content: space-between;
@@ -131,35 +132,35 @@ if (isset($_SESSION['uid'])) {
         }
 
         .faq-question span {
-            font-size: 1.2rem;
+            font-size: 1rem;
             color: #00ff00;
             transition: transform 0.3s ease;
         }
 
         .faq-answer {
             max-height: 0;
-            padding: 0 1.5rem;
+            padding: 0 1.2rem;
             background: rgba(20, 20, 20, 0.95);
-            line-height: 1.6;
+            line-height: 1.5;
             color: #d0d0d0;
             overflow: hidden;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            font-size: 0.95rem;
+            font-size: 0.85rem;
         }
 
         .faq-answer.show {
-            max-height: 250px;
-            padding: 1.2rem 1.5rem;
+            max-height: 200px;
+            padding: 1rem 1.2rem;
         }
 
         .testimonials-carousel {
             position: relative;
-            padding: 1.5rem 0;
+            padding: 1rem 0;
         }
 
         .carousel-container {
             overflow: hidden;
-            border-radius: 24px;
+            border-radius: 20px;
         }
 
         .carousel-track {
@@ -169,11 +170,11 @@ if (isset($_SESSION['uid'])) {
 
         .testimonial-card {
             flex: 0 0 100%;
-            padding: 2rem;
+            padding: 1.5rem;
             background: linear-gradient(135deg, rgba(0, 255, 0, 0.1) 0%, rgba(50, 205, 50, 0.1) 100%);
             color: white;
             text-align: center;
-            border-radius: 24px;
+            border-radius: 20px;
             position: relative;
             isolation: isolate;
             border: 1px solid rgba(0, 255, 0, 0.2);
@@ -189,86 +190,86 @@ if (isset($_SESSION['uid'])) {
         }
 
         .testimonial-avatar {
-            width: 70px;
-            height: 70px;
+            width: 60px;
+            height: 60px;
             background: linear-gradient(135deg, #00ff00 0%, #32cd32 100%);
             border-radius: 50%;
-            margin: 0 auto 1.2rem;
+            margin: 0 auto 1rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: 600;
             color: #0a0a0a;
-            border: 3px solid rgba(0, 255, 0, 0.3);
-            box-shadow: 0 0 25px rgba(0, 255, 0, 0.5);
+            border: 2px solid rgba(0, 255, 0, 0.3);
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
         }
 
         .testimonial-text {
-            font-size: 1.2rem;
+            font-size: 1rem;
             line-height: 1.5;
-            max-width: 700px;
-            margin: 0 auto 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 1rem;
             font-style: italic;
             font-weight: 400;
             color: #ffffff;
-            text-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
         }
 
         .testimonial-author {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 600;
-            margin-bottom: 0.3rem;
+            margin-bottom: 0.2rem;
             background: linear-gradient(135deg, #00ff00 0%, #32cd32 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .testimonial-location {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: #a0a0a0;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.4rem;
+            gap: 0.3rem;
         }
 
         .testimonial-location::before {
             content: '📍';
-            font-size: 1rem;
+            font-size: 0.9rem;
         }
 
         .testimonial-rating {
-            margin-top: 1rem;
-            font-size: 1.1rem;
-            letter-spacing: 3px;
+            margin-top: 0.8rem;
+            font-size: 1rem;
+            letter-spacing: 2px;
             color: #00ff00;
-            text-shadow: 0 0 15px #00ff00;
+            text-shadow: 0 0 10px #00ff00;
         }
 
         .carousel-controls {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 1.5rem;
-            margin-top: 1.5rem;
+            gap: 1rem;
+            margin-top: 1rem;
         }
 
         .carousel-btn {
-            width: 45px;
-            height: 45px;
+            width: 35px;
+            height: 35px;
             border-radius: 50%;
             border: none;
             background: rgba(20, 20, 20, 0.95);
             color: #00ff00;
-            font-size: 1.6rem;
+            font-size: 1.3rem;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 8px 20px -5px rgba(0, 255, 0, 0.3);
+            box-shadow: 0 5px 15px -5px rgba(0, 255, 0, 0.3);
             transition: all 0.3s ease;
-            border: 2px solid rgba(0, 255, 0, 0.3);
+            border: 1px solid rgba(0, 255, 0, 0.3);
             backdrop-filter: blur(10px);
         }
 
@@ -276,23 +277,23 @@ if (isset($_SESSION['uid'])) {
             background: linear-gradient(135deg, #00ff00 0%, #32cd32 100%);
             color: #0a0a0a;
             transform: scale(1.1);
-            box-shadow: 0 15px 25px -8px rgba(0, 255, 0, 0.6);
+            box-shadow: 0 10px 20px -8px rgba(0, 255, 0, 0.6);
             border-color: transparent;
         }
 
         .carousel-dots {
             display: flex;
             justify-content: center;
-            gap: 0.8rem;
-            margin: 1.5rem 0;
+            gap: 0.6rem;
+            margin: 1rem 0;
         }
 
         .dot {
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
             background: rgba(0, 255, 0, 0.2);
-            border: 2px solid rgba(0, 255, 0, 0.3);
+            border: 1px solid rgba(0, 255, 0, 0.3);
             cursor: pointer;
             transition: all 0.3s ease;
             padding: 0;
@@ -301,18 +302,18 @@ if (isset($_SESSION['uid'])) {
         .dot.active {
             background: linear-gradient(135deg, #00ff00 0%, #32cd32 100%);
             transform: scale(1.2);
-            box-shadow: 0 0 20px #00ff00;
+            box-shadow: 0 0 15px #00ff00;
             border-color: transparent;
         }
 
         .stats-container {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
-            margin-top: 2.5rem;
-            padding: 1.5rem;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding: 1.2rem;
             background: rgba(15, 15, 15, 0.95);
-            border-radius: 24px;
+            border-radius: 20px;
             border: 1px solid rgba(0, 255, 0, 0.2);
             backdrop-filter: blur(10px);
         }
@@ -325,11 +326,11 @@ if (isset($_SESSION['uid'])) {
         .stat-item::after {
             content: '';
             position: absolute;
-            right: -0.75rem;
+            right: -0.5rem;
             top: 50%;
             transform: translateY(-50%);
             width: 1px;
-            height: 30px;
+            height: 25px;
             background: linear-gradient(135deg, #00ff00 0%, #32cd32 100%);
             opacity: 0.3;
         }
@@ -339,37 +340,37 @@ if (isset($_SESSION['uid'])) {
         }
 
         .stat-number {
-            font-size: 2rem;
+            font-size: 1.6rem;
             font-weight: 700;
             background: linear-gradient(135deg, #00ff00 0%, #32cd32 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 0.3rem;
-            text-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+            margin-bottom: 0.2rem;
+            text-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
         }
 
         .stat-label {
             color: #a0a0a0;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
         .contact-prompt {
             text-align: center;
-            margin: 2.5rem 0 1rem;
-            padding: 2rem;
+            margin: 2rem 0 1rem;
+            padding: 1.5rem;
             background: linear-gradient(135deg, rgba(0, 255, 0, 0.1) 0%, rgba(50, 205, 50, 0.1) 100%);
-            border-radius: 24px;
+            border-radius: 20px;
             border: 1px solid rgba(0, 255, 0, 0.3);
             backdrop-filter: blur(10px);
             position: relative;
         }
 
         .contact-prompt h3 {
-            font-size: 1.6rem;
-            margin-bottom: 0.75rem;
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
             background: linear-gradient(135deg, #00ff00 0%, #32cd32 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -377,23 +378,23 @@ if (isset($_SESSION['uid'])) {
         }
 
         .contact-prompt p {
-            font-size: 1rem;
-            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            margin-bottom: 1.2rem;
             color: #d0d0d0;
             position: relative;
         }
 
         .contact-btn {
             display: inline-block;
-            padding: 0.8rem 2.2rem;
+            padding: 0.6rem 1.8rem;
             background: linear-gradient(135deg, #00ff00 0%, #32cd32 100%);
             color: #0a0a0a;
             text-decoration: none;
-            border-radius: 40px;
+            border-radius: 30px;
             font-weight: 600;
-            font-size: 1rem;
+            font-size: 0.9rem;
             transition: all 0.3s ease;
-            box-shadow: 0 8px 20px -5px rgba(0, 255, 0, 0.3);
+            box-shadow: 0 5px 15px -5px rgba(0, 255, 0, 0.3);
             position: relative;
             border: none;
             text-transform: uppercase;
@@ -401,8 +402,8 @@ if (isset($_SESSION['uid'])) {
         }
 
         .contact-btn:hover {
-            transform: translateY(-2px) scale(1.03);
-            box-shadow: 0 15px 25px -8px rgba(0, 255, 0, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -8px rgba(0, 255, 0, 0.5);
         }
 
         .faq-link-active {
@@ -415,29 +416,29 @@ if (isset($_SESSION['uid'])) {
         .faq-link-active::after {
             content: '';
             position: absolute;
-            bottom: -4px;
+            bottom: -3px;
             left: 50%;
             transform: translateX(-50%);
-            width: 25px;
+            width: 20px;
             height: 2px;
             background: linear-gradient(135deg, #00ff00 0%, #32cd32 100%);
             border-radius: 2px;
-            box-shadow: 0 0 15px #00ff00;
+            box-shadow: 0 0 10px #00ff00;
         }
 
         footer {
             text-align: center;
-            padding: 1.5rem;
+            padding: 1.2rem;
             color: #a0a0a0;
             background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(10px);
-            margin-top: 3rem;
+            margin-top: 2rem;
             border-top: 1px solid rgba(0, 255, 0, 0.1);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
         ::-webkit-scrollbar {
-            width: 8px;
+            width: 5px;
         }
 
         ::-webkit-scrollbar-track {
@@ -446,7 +447,7 @@ if (isset($_SESSION['uid'])) {
 
         ::-webkit-scrollbar-thumb {
             background: linear-gradient(135deg, #00ff00 0%, #32cd32 100%);
-            border-radius: 4px;
+            border-radius: 3px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
@@ -498,55 +499,55 @@ if (isset($_SESSION['uid'])) {
         
         <div class="faq-grid">
             <div class="faq-item">
-                <div class="faq-question" data-faq="1">
-                    How does renting work? <span>▼</span>
+                <div class="faq-question" id="q1">
+                    How does renting work? <span id="s1">▼</span>
                 </div>
-                <div class="faq-answer" data-answer="1">
+                <div class="faq-answer" id="a1">
                     Simply browse our collection, choose your favourite items, select rental dates, and proceed to checkout. We'll deliver the pieces to your doorstep, and you return them after use — dry cleaning included. All rentals come with free shipping both ways and a 24-hour grace period for returns.
                 </div>
             </div>
             
             <div class="faq-item">
-                <div class="faq-question" data-faq="2">
-                    What if the item doesn't fit? <span>▼</span>
+                <div class="faq-question" id="q2">
+                    What if the item doesn't fit? <span id="s2">▼</span>
                 </div>
-                <div class="faq-answer" data-answer="2">
+                <div class="faq-answer" id="a2">
                     We offer one free size exchange per rental, subject to availability. Contact us within 24h of receiving your order to arrange a swap. We'll ship the new size immediately and cover all return shipping costs. Our size guide and virtual fitting tool can help you choose the perfect fit first time.
                 </div>
             </div>
             
             <div class="faq-item">
-                <div class="faq-question" data-faq="3">
-                    How are items cleaned? <span>▼</span>
+                <div class="faq-question" id="q3">
+                    How are items cleaned? <span id="s3">▼</span>
                 </div>
-                <div class="faq-answer" data-answer="3">
+                <div class="faq-answer" id="a3">
                     Every returned piece is professionally dry-cleaned and sanitised by our eco-friendly partner using sustainable methods. Quality and hygiene are our top priorities. Each item undergoes a 15-point inspection checklist before being rented again, ensuring you receive nothing less than perfection.
                 </div>
             </div>
             
             <div class="faq-item">
-                <div class="faq-question" data-faq="4">
-                    What if I damage an item? <span>▼</span>
+                <div class="faq-question" id="q4">
+                    What if I damage an item? <span id="s4">▼</span>
                 </div>
-                <div class="faq-answer" data-answer="4">
+                <div class="faq-answer" id="a4">
                     Minor wear is expected. For significant damage, a repair fee may apply — but we offer a damage waiver option at checkout for complete peace of mind. With the waiver, you're covered for accidental damage up to £500. Without it, repair costs are capped at 40% of the retail value.
                 </div>
             </div>
             
             <div class="faq-item">
-                <div class="faq-question" data-faq="5">
-                    Can I extend my rental period? <span>▼</span>
+                <div class="faq-question" id="q5">
+                    Can I extend my rental period? <span id="s5">▼</span>
                 </div>
-                <div class="faq-answer" data-answer="5">
+                <div class="faq-answer" id="a5">
                     Yes! Log in to your dashboard and request an extension before the return date. Extensions are subject to availability and an additional daily fee at 30% of the original daily rate. You can extend up to twice per rental, with a maximum total rental period of 30 days.
                 </div>
             </div>
             
             <div class="faq-item">
-                <div class="faq-question" data-faq="6">
-                    What about shipping times? <span>▼</span>
+                <div class="faq-question" id="q6">
+                    What about shipping times? <span id="s6">▼</span>
                 </div>
-                <div class="faq-answer" data-answer="6">
+                <div class="faq-answer" id="a6">
                     We offer free next-day delivery on all orders placed before 2pm Monday-Friday. Saturday delivery is available for a small fee. Returns are just as easy — use the prepaid label in your package, drop off at any Collect+ point, and we'll handle the rest.
                 </div>
             </div>
@@ -563,10 +564,10 @@ if (isset($_SESSION['uid'])) {
             <div class="carousel-container">
                 <div class="carousel-track" id="carouselTrack">
                     <div class="testimonial-card">
-                        <div class="testimonial-avatar">E</div>
+                        <div class="testimonial-avatar">K</div>
                         <div class="testimonial-text">"Absolutely stunning trench coat! I felt like a movie star at the premiere. The process was seamless and the coat arrived immaculate. Already planning my next rental!"</div>
-                        <div class="testimonial-author">Emma W.</div>
-                        <div class="testimonial-location">London</div>
+                        <div class="testimonial-author">Krish S.</div>
+                        <div class="testimonial-location">Birmingham</div>
                         <div class="testimonial-rating">★★★★★</div>
                     </div>
                     
@@ -606,7 +607,7 @@ if (isset($_SESSION['uid'])) {
 
         <div class="stats-container">
             <div class="stat-item">
-                <div class="stat-number">50,000+</div>
+                <div class="stat-number">67,000+</div>
                 <div class="stat-label">Happy Renters</div>
             </div>
             <div class="stat-item">
@@ -628,41 +629,46 @@ if (isset($_SESSION['uid'])) {
 </main>
 
 <footer>
-    <p>© 2025 Rentique — Sustainable Fashion, Unlimited Style</p>
+    <p>© 2025 Rentique — All Rights Reserved.</p>
 </footer>
 
 <script>
-    (function() {
-        const faqQuestions = document.querySelectorAll('.faq-question');
+    document.addEventListener('DOMContentLoaded', function() {
+        const questions = [];
+        for (let i = 1; i <= 6; i++) {
+            questions.push({
+                question: document.getElementById(`q${i}`),
+                answer: document.getElementById(`a${i}`),
+                span: document.getElementById(`s${i}`)
+            });
+        }
         
-        faqQuestions.forEach((question) => {
-            question.addEventListener('click', function() {
-                const faqItem = this.closest('.faq-item');
-                const answer = faqItem.querySelector('.faq-answer');
-                const arrow = this.querySelector('span');
-                const isActive = this.classList.contains('active');
-                
-                document.querySelectorAll('.faq-item').forEach((item) => {
-                    if (item !== faqItem) {
-                        const otherQuestion = item.querySelector('.faq-question');
-                        const otherAnswer = item.querySelector('.faq-answer');
-                        const otherArrow = otherQuestion.querySelector('span');
-                        otherQuestion.classList.remove('active');
-                        otherAnswer.classList.remove('show');
-                        if (otherArrow) otherArrow.innerHTML = '▼';
+        questions.forEach((item, index) => {
+            if (item.question) {
+                item.question.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    
+                    const isActive = this.classList.contains('active');
+                    
+                    questions.forEach((otherItem, otherIndex) => {
+                        if (otherIndex !== index) {
+                            otherItem.question.classList.remove('active');
+                            otherItem.answer.classList.remove('show');
+                            if (otherItem.span) otherItem.span.innerHTML = '▼';
+                        }
+                    });
+                    
+                    if (!isActive) {
+                        this.classList.add('active');
+                        item.answer.classList.add('show');
+                        if (item.span) item.span.innerHTML = '▲';
+                    } else {
+                        this.classList.remove('active');
+                        item.answer.classList.remove('show');
+                        if (item.span) item.span.innerHTML = '▼';
                     }
                 });
-                
-                if (!isActive) {
-                    this.classList.add('active');
-                    answer.classList.add('show');
-                    arrow.innerHTML = '▲';
-                } else {
-                    this.classList.remove('active');
-                    answer.classList.remove('show');
-                    arrow.innerHTML = '▼';
-                }
-            });
+            }
         });
 
         const track = document.getElementById('carouselTrack');
@@ -726,7 +732,7 @@ if (isset($_SESSION['uid'])) {
                 link.classList.add('faq-link-active');
             }
         });
-    })();
+    });
 </script>
 
 </body>
