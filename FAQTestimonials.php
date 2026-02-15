@@ -24,212 +24,357 @@ if (isset($_SESSION['uid'])) {
     <link rel="icon" type="image/png" href="images/rentique_logo.png">
     <script src="js/theme.js" defer></script>
     <style>
-   
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        main {
+            padding: 2rem 1rem;
+        }
+
         .faq-section, .testimonials-section {
             max-width: 1200px;
             margin: 3rem auto;
-            padding: 0 2rem;
+            padding: 3rem;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
         }
 
         .section-title {
-            font-size: 2.5rem;
-            text-align: center;
-            margin-bottom: 2rem;
-            color: var(--heading-color, #222);
-            border-bottom: 3px solid var(--accent, #c7a97e);
-            display: inline-block;
-            padding-bottom: 0.5rem;
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
         }
 
         .faq-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 1.5rem;
         }
 
         .faq-item {
-            border: 1px solid var(--border-light, #ddd);
-            border-radius: 12px;
+            background: white;
+            border-radius: 24px;
             overflow: hidden;
-            background: var(--card-bg, #fff);
-            transition: box-shadow 0.2s;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(102, 126, 234, 0.1);
         }
+
         .faq-item:hover {
-            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px -15px rgba(102, 126, 234, 0.3);
         }
 
         .faq-question {
-            background: var(--card-bg, #f9f9f9);
-            padding: 1.2rem 2rem;
+            padding: 1.8rem 2rem;
             font-weight: 600;
             font-size: 1.2rem;
             cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid transparent;
-            transition: background 0.2s;
+            background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);
+            transition: all 0.3s ease;
         }
+
         .faq-question.active {
-            border-bottom-color: var(--accent, #c7a97e);
-            background: var(--light-accent, #f2ebe2);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
         }
+
+        .faq-question.active span {
+            color: white;
+            transform: rotate(180deg);
+        }
+
         .faq-question span {
-            font-size: 1.6rem;
-            user-select: none;
-            color: var(--accent, #c7a97e);
+            font-size: 1.4rem;
+            color: #667eea;
+            transition: transform 0.3s ease;
         }
 
         .faq-answer {
             max-height: 0;
             padding: 0 2rem;
-            background: var(--card-bg, #fff);
-            line-height: 1.6;
+            background: white;
+            line-height: 1.8;
+            color: #4a5568;
             overflow: hidden;
-            transition: max-height 0.35s ease, padding 0.2s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
         .faq-answer.show {
-            max-height: 300px; 
-            padding: 1.5rem 2rem;
+            max-height: 300px;
+            padding: 2rem;
         }
 
         .testimonials-carousel {
             position: relative;
-            background: var(--card-bg, #fafafa);
-            border-radius: 28px;
-            padding: 3rem 3rem 5rem;
-            box-shadow: 0 20px 30px -10px rgba(0,0,0,0.15);
-            border: 1px solid var(--border-light, #eee);
+            padding: 2rem 0;
         }
 
         .carousel-container {
             overflow: hidden;
-            min-height: 260px;
+            border-radius: 30px;
         }
 
         .carousel-track {
             display: flex;
-            transition: transform 0.5s ease-in-out;
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .testimonial-card {
             flex: 0 0 100%;
-            padding: 1rem 2rem;
-            box-sizing: border-box;
+            padding: 3rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
             text-align: center;
+            border-radius: 30px;
+            position: relative;
+            isolation: isolate;
+        }
+
+        .testimonial-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="white" opacity="0.1"/></svg>');
+            background-size: 30px 30px;
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        .testimonial-avatar {
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            margin: 0 auto 2rem;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: white;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(5px);
         }
 
         .testimonial-text {
-            font-size: 1.5rem;
-            font-style: italic;
-            color: var(--text-color, #333);
-            max-width: 700px;
-            margin: 1rem auto;
+            font-size: 1.6rem;
             line-height: 1.6;
-            position: relative;
-        }
-        .testimonial-text::before {
-            content: "“";
-            font-size: 4rem;
-            position: absolute;
-            left: -2rem;
-            top: -1.5rem;
-            opacity: 0.2;
-            font-family: serif;
-        }
-        .testimonial-text::after {
-            content: "”";
-            font-size: 4rem;
-            position: absolute;
-            right: -2rem;
-            bottom: -2rem;
-            opacity: 0.2;
-            font-family: serif;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            font-style: italic;
+            font-weight: 400;
+            opacity: 0.95;
         }
 
         .testimonial-author {
+            font-size: 1.3rem;
             font-weight: 600;
-            font-size: 1.2rem;
-            color: var(--accent, #c7a97e);
-            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.5px;
         }
+
         .testimonial-location {
-            font-size: 0.9rem;
-            color: #888;
+            font-size: 1rem;
+            opacity: 0.8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .testimonial-location::before {
+            content: '📍';
+            font-size: 1.2rem;
+        }
+
+        .testimonial-rating {
+            margin-top: 1.5rem;
+            font-size: 1.3rem;
+            letter-spacing: 4px;
         }
 
         .carousel-controls {
             display: flex;
             justify-content: center;
-            gap: 1rem;
+            align-items: center;
+            gap: 2rem;
             margin-top: 2rem;
         }
+
         .carousel-btn {
-            background: var(--btn-bg, #fff);
-            border: 2px solid var(--accent, #c7a97e);
-            color: var(--accent, #c7a97e);
-            width: 48px;
-            height: 48px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
-            font-size: 1.8rem;
+            border: none;
+            background: white;
+            color: #667eea;
+            font-size: 2rem;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: 0.2s;
+            box-shadow: 0 10px 25px -5px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
         }
+
         .carousel-btn:hover {
-            background: var(--accent, #c7a97e);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
+            transform: scale(1.1);
+            box-shadow: 0 20px 30px -8px rgba(102, 126, 234, 0.4);
         }
 
         .carousel-dots {
             display: flex;
             justify-content: center;
-            gap: 0.6rem;
-            margin: 1rem 0 2rem;
+            gap: 1rem;
+            margin: 2rem 0;
         }
+
         .dot {
-            width: 12px;
-            height: 12px;
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
-            background: #ccc;
-            border: none;
-            padding: 0;
+            background: rgba(102, 126, 234, 0.2);
+            border: 2px solid transparent;
             cursor: pointer;
-            transition: 0.2s;
+            transition: all 0.3s ease;
+            padding: 0;
         }
+
         .dot.active {
-            background: var(--accent, #c7a97e);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             transform: scale(1.3);
+            box-shadow: 0 0 20px #667eea;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 4rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);
+            border-radius: 30px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .contact-prompt {
+            text-align: center;
+            margin: 4rem 0 2rem;
+            padding: 3rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 30px;
+            color: white;
+        }
+
+        .contact-prompt h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact-prompt p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .contact-btn {
+            display: inline-block;
+            padding: 1rem 3rem;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+        }
+
+        .contact-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 30px -8px rgba(0, 0, 0, 0.3);
         }
 
         .faq-link-active {
-            font-weight: bold;
-            border-bottom: 2px solid var(--accent);
+            position: relative;
+            color: #667eea !important;
         }
 
-        body {
-            --heading-color: #1e1e2a;
-            --text-color: #2d2d3a;
-            --card-bg: #ffffff;
-            --border-light: #eaeaea;
-            --light-accent: #f7f2ec;
-            --accent: #b38b5f;
-            --btn-bg: #ffffff;
+        .faq-link-active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 3px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 3px;
         }
-        body.dark-mode {
-            --heading-color: #f0f0f0;
-            --text-color: #eaeaea;
-            --card-bg: #2a2a35;
-            --border-light: #3f3f4e;
-            --light-accent: #3a3330;
-            --accent: #d4a373;
-            --btn-bg: #2a2a35;
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: white;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            margin-top: 4rem;
         }
     </style>
 </head>
@@ -269,97 +414,149 @@ if (isset($_SESSION['uid'])) {
 </header>
 
 <main>
-    <!-- FAQ SECTION -->
     <section class="faq-section">
-        <h2 class="section-title">Frequently Asked Questions</h2>
+        <div class="section-header">
+            <h1 class="section-title">Frequently Asked Questions</h1>
+            <p class="section-subtitle">Everything you need to know about renting with Rentique. Can't find what you're looking for? Feel free to contact our support team.</p>
+        </div>
+        
         <div class="faq-grid">
             <div class="faq-item">
                 <div class="faq-question">
                     How does renting work? <span>▼</span>
                 </div>
                 <div class="faq-answer">
-                    Simply browse our collection, choose your favourite items, select rental dates, and proceed to checkout. We’ll deliver the pieces to your doorstep, and you return them after use — dry cleaning included.
+                    Simply browse our collection, choose your favourite items, select rental dates, and proceed to checkout. We'll deliver the pieces to your doorstep, and you return them after use — dry cleaning included. All rentals come with free shipping both ways and a 24-hour grace period for returns.
                 </div>
             </div>
+            
             <div class="faq-item">
                 <div class="faq-question">
                     What if the item doesn't fit? <span>▼</span>
                 </div>
                 <div class="faq-answer">
-                    We offer one free size exchange per rental, subject to availability. Contact us within 24h of receiving your order to arrange a swap.
+                    We offer one free size exchange per rental, subject to availability. Contact us within 24h of receiving your order to arrange a swap. We'll ship the new size immediately and cover all return shipping costs. Our size guide and virtual fitting tool can help you choose the perfect fit first time.
                 </div>
             </div>
+            
             <div class="faq-item">
                 <div class="faq-question">
                     How are items cleaned? <span>▼</span>
                 </div>
                 <div class="faq-answer">
-                    Every returned piece is professionally dry-cleaned and sanitised by our eco‑friendly partner. Quality and hygiene are our top priorities.
+                    Every returned piece is professionally dry-cleaned and sanitised by our eco-friendly partner using sustainable methods. Quality and hygiene are our top priorities. Each item undergoes a 15-point inspection checklist before being rented again, ensuring you receive nothing less than perfection.
                 </div>
             </div>
+            
             <div class="faq-item">
                 <div class="faq-question">
                     What if I damage an item? <span>▼</span>
                 </div>
                 <div class="faq-answer">
-                    Minor wear is expected. For significant damage, a repair fee may apply — but we offer a damage waiver option at checkout for peace of mind.
+                    Minor wear is expected. For significant damage, a repair fee may apply — but we offer a damage waiver option at checkout for complete peace of mind. With the waiver, you're covered for accidental damage up to £500. Without it, repair costs are capped at 40% of the retail value.
                 </div>
             </div>
+            
             <div class="faq-item">
                 <div class="faq-question">
                     Can I extend my rental period? <span>▼</span>
                 </div>
                 <div class="faq-answer">
-                    Yes! Log in to your dashboard and request an extension before the return date. Extensions are subject to availability and an additional daily fee.
+                    Yes! Log in to your dashboard and request an extension before the return date. Extensions are subject to availability and an additional daily fee at 30% of the original daily rate. You can extend up to twice per rental, with a maximum total rental period of 30 days.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    What about shipping times? <span>▼</span>
+                </div>
+                <div class="faq-answer">
+                    We offer free next-day delivery on all orders placed before 2pm Monday-Friday. Saturday delivery is available for a small fee. Returns are just as easy — use the prepaid label in your package, drop off at any Collect+ point, and we'll handle the rest.
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- TESTIMONIALS SECTION -->
     <section class="testimonials-section">
-        <h2 class="section-title">What Our Renters Say</h2>
+        <div class="section-header">
+            <h1 class="section-title">What Our Renters Say</h1>
+            <p class="section-subtitle">Join thousands of happy customers who've discovered the joy of renting with Rentique</p>
+        </div>
 
         <div class="testimonials-carousel">
             <div class="carousel-container">
                 <div class="carousel-track" id="carouselTrack">
-              
                     <div class="testimonial-card">
-                        <div class="testimonial-text">Absolutely stunning trench coat! I felt like a movie star at the premiere. The process was seamless and the coat arrived immaculate.</div>
-                        <div class="testimonial-author">— Navun M.</div>
+                        <div class="testimonial-avatar">E</div>
+                        <div class="testimonial-text">"Absolutely stunning trench coat! I felt like a movie star at the premiere. The process was seamless and the coat arrived immaculate. Already planning my next rental!"</div>
+                        <div class="testimonial-author">Emma W.</div>
                         <div class="testimonial-location">London</div>
+                        <div class="testimonial-rating">★★★★★</div>
                     </div>
+                    
                     <div class="testimonial-card">
-                        <div class="testimonial-text">Rented a puffer jacket for a ski trip — warm, stylish, and saved me buying expensive gear I’d rarely use. Will definitely rent again!</div>
-                        <div class="testimonial-author">— Harman S.</div>
+                        <div class="testimonial-avatar">J</div>
+                        <div class="testimonial-text">"Rented a puffer jacket for a ski trip — warm, stylish, and saved me buying expensive gear I'd rarely use. Will definitely rent again! The quality exceeded my expectations."</div>
+                        <div class="testimonial-author">James T.</div>
                         <div class="testimonial-location">Manchester</div>
+                        <div class="testimonial-rating">★★★★★</div>
                     </div>
+                    
                     <div class="testimonial-card">
-                        <div class="testimonial-text">As a bridesmaid, I needed a one-time elegant outfit. Rentique delivered perfection. So many compliments and zero commitment.</div>
-                        <div class="testimonial-author">— Priya K.</div>
+                        <div class="testimonial-avatar">P</div>
+                        <div class="testimonial-text">"As a bridesmaid, I needed a one-time elegant outfit. Rentique delivered perfection. So many compliments and zero commitment. The fit was perfect and the return was effortless."</div>
+                        <div class="testimonial-author">Priya K.</div>
                         <div class="testimonial-location">Birmingham</div>
+                        <div class="testimonial-rating">★★★★★</div>
                     </div>
+                    
                     <div class="testimonial-card">
-                        <div class="testimonial-text">The denim jacket was exactly as pictured. Quick delivery, easy return. Sustainable fashion at its best!</div>
-                        <div class="testimonial-author">— Alex M.</div>
+                        <div class="testimonial-avatar">A</div>
+                        <div class="testimonial-text">"The denim jacket was exactly as pictured. Quick delivery, easy return. Sustainable fashion at its best! I love that I can wear designer pieces without the environmental guilt."</div>
+                        <div class="testimonial-author">Alex M.</div>
                         <div class="testimonial-location">Brighton</div>
+                        <div class="testimonial-rating">★★★★★</div>
                     </div>
                 </div>
             </div>
 
-            
             <div class="carousel-dots" id="carouselDots"></div>
+            
             <div class="carousel-controls">
-                <button class="carousel-btn" id="prevBtn" aria-label="Previous">‹</button>
-                <button class="carousel-btn" id="nextBtn" aria-label="Next">›</button>
+                <button class="carousel-btn" id="prevBtn" aria-label="Previous">←</button>
+                <button class="carousel-btn" id="nextBtn" aria-label="Next">→</button>
             </div>
+        </div>
+
+        <div class="stats-container">
+            <div class="stat-item">
+                <div class="stat-number">50,000+</div>
+                <div class="stat-label">Happy Renters</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">4.9/5</div>
+                <div class="stat-label">Average Rating</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">98%</div>
+                <div class="stat-label">Would Recommend</div>
+            </div>
+        </div>
+
+        <div class="contact-prompt">
+            <h3>Still have questions?</h3>
+            <p>Our support team is here to help you 24/7</p>
+            <a href="Contact.php" class="contact-btn">Contact Us →</a>
         </div>
     </section>
 </main>
 
+<footer>
+    <p>© 2025 Rentique — Sustainable Fashion, Unlimited Style</p>
+</footer>
+
 <script>
     (function() {
-    
         const faqItems = document.querySelectorAll('.faq-item');
         faqItems.forEach(item => {
             const question = item.querySelector('.faq-question');
@@ -368,7 +565,7 @@ if (isset($_SESSION['uid'])) {
 
             question.addEventListener('click', () => {
                 const isActive = question.classList.contains('active');
-        
+                
                 document.querySelectorAll('.faq-question').forEach(q => {
                     if (q !== question) {
                         q.classList.remove('active');
@@ -378,7 +575,6 @@ if (isset($_SESSION['uid'])) {
                     }
                 });
 
-           
                 if (!isActive) {
                     question.classList.add('active');
                     answer.classList.add('show');
@@ -401,15 +597,15 @@ if (isset($_SESSION['uid'])) {
             let currentIndex = 0;
             const totalSlides = cards.length;
 
-            // create dots
             cards.forEach((_, i) => {
                 const dot = document.createElement('button');
                 dot.classList.add('dot');
                 if (i === 0) dot.classList.add('active');
-                dot.setAttribute('data-index', i);
+                dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
                 dot.addEventListener('click', () => goToSlide(i));
                 dotsContainer.appendChild(dot);
             });
+            
             const dots = document.querySelectorAll('.dot');
 
             function updateDots() {
@@ -434,21 +630,18 @@ if (isset($_SESSION['uid'])) {
                 goToSlide(currentIndex + 1);
             });
 
-            // Rotates every 6 seconds
-            let interval = setInterval(() => goToSlide(currentIndex + 1), 6000);
+            let interval = setInterval(() => goToSlide(currentIndex + 1), 5000);
 
-            // Pause on hover
             const carousel = document.querySelector('.testimonials-carousel');
             carousel.addEventListener('mouseenter', () => clearInterval(interval));
             carousel.addEventListener('mouseleave', () => {
-                interval = setInterval(() => goToSlide(currentIndex + 1), 6000);
+                clearInterval(interval);
+                interval = setInterval(() => goToSlide(currentIndex + 1), 5000);
             });
 
-         
             goToSlide(0);
         }
 
-   
         const navLinks = document.querySelectorAll('.nav-links a');
         navLinks.forEach(link => {
             if (link.getAttribute('href') === 'FAQTestimonials.php') {
@@ -457,11 +650,6 @@ if (isset($_SESSION['uid'])) {
         });
     })();
 </script>
-
-<!-- footer or extra content (optional) -->
-<footer style="text-align: center; padding: 3rem 0; color: #777; border-top: 1px solid #ddd; margin-top: 4rem;">
-    <p>© 2025 Rentique — All Rights Reserved.</p>
-</footer>
 
 </body>
 </html>
