@@ -276,7 +276,7 @@ if (isset($_SESSION['uid'])) {
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: left;
             padding: 0;
         }
 
@@ -379,7 +379,7 @@ if (isset($_SESSION['uid'])) {
 
         .faq-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 0.8rem;
         }
 
@@ -941,4 +941,5 @@ if (isset($_SESSION['uid'])) {
                     <div class="testimonial-card">
                         <div class="testimonial-avatar">J</div>
                         <div class="testimonial-text">"Rented a puffer jacket for a ski trip — warm, stylish, incomplete.
+
 
