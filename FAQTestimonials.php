@@ -498,55 +498,55 @@ if (isset($_SESSION['uid'])) {
         
         <div class="faq-grid">
             <div class="faq-item">
-                <div class="faq-question" onclick="toggleFAQ(1)">
-                    How does renting work? <span id="arrow1">▼</span>
+                <div class="faq-question" id="q1">
+                    How does renting work? <span id="s1">▼</span>
                 </div>
-                <div class="faq-answer" id="answer1">
+                <div class="faq-answer" id="a1">
                     Simply browse our collection, choose your favourite items, select rental dates, and proceed to checkout. We'll deliver the pieces to your doorstep, and you return them after use — dry cleaning included. All rentals come with free shipping both ways and a 24-hour grace period for returns.
                 </div>
             </div>
             
             <div class="faq-item">
-                <div class="faq-question" onclick="toggleFAQ(2)">
-                    What if the item doesn't fit? <span id="arrow2">▼</span>
+                <div class="faq-question" id="q2">
+                    What if the item doesn't fit? <span id="s2">▼</span>
                 </div>
-                <div class="faq-answer" id="answer2">
+                <div class="faq-answer" id="a2">
                     We offer one free size exchange per rental, subject to availability. Contact us within 24h of receiving your order to arrange a swap. We'll ship the new size immediately and cover all return shipping costs. Our size guide and virtual fitting tool can help you choose the perfect fit first time.
                 </div>
             </div>
             
             <div class="faq-item">
-                <div class="faq-question" onclick="toggleFAQ(3)">
-                    How are items cleaned? <span id="arrow3">▼</span>
+                <div class="faq-question" id="q3">
+                    How are items cleaned? <span id="s3">▼</span>
                 </div>
-                <div class="faq-answer" id="answer3">
+                <div class="faq-answer" id="a3">
                     Every returned piece is professionally dry-cleaned and sanitised by our eco-friendly partner using sustainable methods. Quality and hygiene are our top priorities. Each item undergoes a 15-point inspection checklist before being rented again, ensuring you receive nothing less than perfection.
                 </div>
             </div>
             
             <div class="faq-item">
-                <div class="faq-question" onclick="toggleFAQ(4)">
-                    What if I damage an item? <span id="arrow4">▼</span>
+                <div class="faq-question" id="q4">
+                    What if I damage an item? <span id="s4">▼</span>
                 </div>
-                <div class="faq-answer" id="answer4">
+                <div class="faq-answer" id="a4">
                     Minor wear is expected. For significant damage, a repair fee may apply — but we offer a damage waiver option at checkout for complete peace of mind. With the waiver, you're covered for accidental damage up to £500. Without it, repair costs are capped at 40% of the retail value.
                 </div>
             </div>
             
             <div class="faq-item">
-                <div class="faq-question" onclick="toggleFAQ(5)">
-                    Can I extend my rental period? <span id="arrow5">▼</span>
+                <div class="faq-question" id="q5">
+                    Can I extend my rental period? <span id="s5">▼</span>
                 </div>
-                <div class="faq-answer" id="answer5">
+                <div class="faq-answer" id="a5">
                     Yes! Log in to your dashboard and request an extension before the return date. Extensions are subject to availability and an additional daily fee at 30% of the original daily rate. You can extend up to twice per rental, with a maximum total rental period of 30 days.
                 </div>
             </div>
             
             <div class="faq-item">
-                <div class="faq-question" onclick="toggleFAQ(6)">
-                    What about shipping times? <span id="arrow6">▼</span>
+                <div class="faq-question" id="q6">
+                    What about shipping times? <span id="s6">▼</span>
                 </div>
-                <div class="faq-answer" id="answer6">
+                <div class="faq-answer" id="a6">
                     We offer free next-day delivery on all orders placed before 2pm Monday-Friday. Saturday delivery is available for a small fee. Returns are just as easy — use the prepaid label in your package, drop off at any Collect+ point, and we'll handle the rest.
                 </div>
             </div>
@@ -632,31 +632,44 @@ if (isset($_SESSION['uid'])) {
 </footer>
 
 <script>
-    function toggleFAQ(id) {
+    document.addEventListener('DOMContentLoaded', function() {
+        const questions = [];
         for (let i = 1; i <= 6; i++) {
-            const question = document.querySelector(`.faq-question[onclick="toggleFAQ(${i})"]`);
-            const answer = document.getElementById(`answer${i}`);
-            const arrow = document.getElementById(`arrow${i}`);
-            
-            if (i === id) {
-                if (question.classList.contains('active')) {
-                    question.classList.remove('active');
-                    answer.classList.remove('show');
-                    arrow.innerHTML = '▼';
-                } else {
-                    question.classList.add('active');
-                    answer.classList.add('show');
-                    arrow.innerHTML = '▲';
-                }
-            } else {
-                question.classList.remove('active');
-                answer.classList.remove('show');
-                arrow.innerHTML = '▼';
-            }
+            questions.push({
+                question: document.getElementById(`q${i}`),
+                answer: document.getElementById(`a${i}`),
+                span: document.getElementById(`s${i}`)
+            });
         }
-    }
+        
+        questions.forEach((item, index) => {
+            if (item.question) {
+                item.question.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    
+                    const isActive = this.classList.contains('active');
+                    
+                    questions.forEach((otherItem, otherIndex) => {
+                        if (otherIndex !== index) {
+                            otherItem.question.classList.remove('active');
+                            otherItem.answer.classList.remove('show');
+                            if (otherItem.span) otherItem.span.innerHTML = '▼';
+                        }
+                    });
+                    
+                    if (!isActive) {
+                        this.classList.add('active');
+                        item.answer.classList.add('show');
+                        if (item.span) item.span.innerHTML = '▲';
+                    } else {
+                        this.classList.remove('active');
+                        item.answer.classList.remove('show');
+                        if (item.span) item.span.innerHTML = '▼';
+                    }
+                });
+            }
+        });
 
-    (function() {
         const track = document.getElementById('carouselTrack');
         const cards = Array.from(document.querySelectorAll('.testimonial-card'));
         const prevBtn = document.getElementById('prevBtn');
@@ -718,7 +731,7 @@ if (isset($_SESSION['uid'])) {
                 link.classList.add('faq-link-active');
             }
         });
-    })();
+    });
 </script>
 
 </body>
