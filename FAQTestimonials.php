@@ -22,7 +22,133 @@ if (isset($_SESSION['uid'])) {
     <title>Rentique | FAQ & Testimonials</title>
     <link rel="stylesheet" href="css/rentique.css">
     <link rel="icon" type="image/png" href="images/rentique_logo.png">
-    <script src="js/theme.js" defer></script>
+    <script>
+        function toggleTheme() {
+            const body = document.body;
+            const themeToggle = document.getElementById('themeToggle');
+            
+            if (body.classList.contains('light-mode')) {
+                body.classList.remove('light-mode');
+                themeToggle.textContent = '🌙';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                body.classList.add('light-mode');
+                themeToggle.textContent = '☀️';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('theme');
+            const themeToggle = document.getElementById('themeToggle');
+            
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-mode');
+                themeToggle.textContent = '☀️';
+            } else {
+                themeToggle.textContent = '🌙';
+            }
+
+            const questions = [];
+            for (let i = 1; i <= 6; i++) {
+                questions.push({
+                    question: document.getElementById(`q${i}`),
+                    answer: document.getElementById(`a${i}`),
+                    span: document.getElementById(`s${i}`)
+                });
+            }
+            
+            questions.forEach((item, index) => {
+                if (item.question) {
+                    item.question.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        
+                        const isActive = this.classList.contains('active');
+                        
+                        questions.forEach((otherItem, otherIndex) => {
+                            if (otherIndex !== index) {
+                                otherItem.question.classList.remove('active');
+                                otherItem.answer.classList.remove('show');
+                                if (otherItem.span) otherItem.span.innerHTML = '▼';
+                            }
+                        });
+                        
+                        if (!isActive) {
+                            this.classList.add('active');
+                            item.answer.classList.add('show');
+                            if (item.span) item.span.innerHTML = '▲';
+                        } else {
+                            this.classList.remove('active');
+                            item.answer.classList.remove('show');
+                            if (item.span) item.span.innerHTML = '▼';
+                        }
+                    });
+                }
+            });
+
+            const track = document.getElementById('carouselTrack');
+            const cards = Array.from(document.querySelectorAll('.testimonial-card'));
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const dotsContainer = document.getElementById('carouselDots');
+
+            if (track && cards.length) {
+                let currentIndex = 0;
+                const totalSlides = cards.length;
+
+                cards.forEach((_, i) => {
+                    const dot = document.createElement('button');
+                    dot.classList.add('dot');
+                    if (i === 0) dot.classList.add('active');
+                    dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+                    dot.addEventListener('click', () => goToSlide(i));
+                    dotsContainer.appendChild(dot);
+                });
+                
+                const dots = document.querySelectorAll('.dot');
+
+                function updateDots() {
+                    dots.forEach((dot, i) => {
+                        dot.classList.toggle('active', i === currentIndex);
+                    });
+                }
+
+                function goToSlide(index) {
+                    if (index < 0) index = totalSlides - 1;
+                    if (index >= totalSlides) index = 0;
+                    currentIndex = index;
+                    track.style.transform = `translateX(-${currentIndex * 100}%)`;
+                    updateDots();
+                }
+
+                prevBtn.addEventListener('click', () => {
+                    goToSlide(currentIndex - 1);
+                });
+
+                nextBtn.addEventListener('click', () => {
+                    goToSlide(currentIndex + 1);
+                });
+
+                let interval = setInterval(() => goToSlide(currentIndex + 1), 5000);
+
+                const carousel = document.querySelector('.testimonials-carousel');
+                carousel.addEventListener('mouseenter', () => clearInterval(interval));
+                carousel.addEventListener('mouseleave', () => {
+                    clearInterval(interval);
+                    interval = setInterval(() => goToSlide(currentIndex + 1), 5000);
+                });
+
+                goToSlide(0);
+            }
+
+            const navLinks = document.querySelectorAll('.nav-links a');
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === 'FAQTestimonials.php') {
+                    link.classList.add('faq-link-active');
+                }
+            });
+        });
+    </script>
     <style>
         * {
             margin: 0;
@@ -36,6 +162,12 @@ if (isset($_SESSION['uid'])) {
             min-height: 100vh;
             color: #ffffff;
             font-size: 14px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        body.light-mode {
+            background: #f5f5f5;
+            color: #333333;
         }
 
         .navbar {
@@ -46,6 +178,12 @@ if (isset($_SESSION['uid'])) {
             background: rgba(10, 10, 10, 0.95);
             backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(0, 255, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        body.light-mode .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            border-bottom: 1px solid rgba(0, 255, 0, 0.2);
         }
 
         .logo {
@@ -81,6 +219,10 @@ if (isset($_SESSION['uid'])) {
             transition: all 0.3s ease;
         }
 
+        body.light-mode .nav-links a {
+            color: #333333;
+        }
+
         .nav-links a:hover {
             background: linear-gradient(135deg, #00ff00 0%, #32cd32 100%);
             -webkit-background-clip: text;
@@ -106,6 +248,10 @@ if (isset($_SESSION['uid'])) {
             transition: all 0.3s ease;
         }
 
+        body.light-mode .cart-icon svg {
+            stroke: #333333;
+        }
+
         .cart-icon:hover svg {
             stroke: #00ff00;
             filter: drop-shadow(0 0 10px rgba(0, 255, 0, 0.5));
@@ -115,16 +261,27 @@ if (isset($_SESSION['uid'])) {
             background: transparent;
             border: 1px solid rgba(0, 255, 0, 0.3);
             color: #ffffff;
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
             cursor: pointer;
-            font-size: 0.85rem;
+            font-size: 1.2rem;
             transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+
+        body.light-mode #themeToggle {
+            color: #333333;
+            border-color: rgba(0, 255, 0, 0.5);
         }
 
         #themeToggle:hover {
             background: rgba(0, 255, 0, 0.1);
             border-color: #00ff00;
+            transform: scale(1.1);
         }
 
         .btn {
@@ -135,6 +292,11 @@ if (isset($_SESSION['uid'])) {
 
         .btn.login {
             border: 1px solid rgba(0, 255, 0, 0.3);
+        }
+
+        body.light-mode .btn.login {
+            border-color: rgba(0, 255, 0, 0.5);
+            color: #333333;
         }
 
         .btn.signup {
@@ -155,6 +317,14 @@ if (isset($_SESSION['uid'])) {
             border-radius: 24px;
             box-shadow: 0 15px 30px -12px rgba(0, 255, 0, 0.15);
             border: 1px solid rgba(0, 255, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        body.light-mode .faq-section, 
+        body.light-mode .testimonials-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-color: rgba(0, 255, 0, 0.2);
+            box-shadow: 0 15px 30px -12px rgba(0, 255, 0, 0.2);
         }
 
         .section-header {
@@ -190,6 +360,10 @@ if (isset($_SESSION['uid'])) {
             line-height: 1.5;
         }
 
+        body.light-mode .section-subtitle {
+            color: #666666;
+        }
+
         .faq-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -204,6 +378,11 @@ if (isset($_SESSION['uid'])) {
             transition: all 0.3s ease;
             border: 1px solid rgba(0, 255, 0, 0.2);
             backdrop-filter: blur(10px);
+        }
+
+        body.light-mode .faq-item {
+            background: rgba(240, 240, 240, 0.95);
+            border-color: rgba(0, 255, 0, 0.3);
         }
 
         .faq-item:hover {
@@ -225,6 +404,11 @@ if (isset($_SESSION['uid'])) {
             color: #ffffff;
         }
 
+        body.light-mode .faq-question {
+            background: rgba(230, 230, 230, 0.95);
+            color: #333333;
+        }
+
         .faq-question.active {
             background: linear-gradient(135deg, #00ff00 0%, #32cd32 100%);
             color: #0a0a0a;
@@ -241,6 +425,10 @@ if (isset($_SESSION['uid'])) {
             transition: transform 0.3s ease;
         }
 
+        body.light-mode .faq-question span {
+            color: #00aa00;
+        }
+
         .faq-answer {
             max-height: 0;
             padding: 0 1.2rem;
@@ -250,6 +438,11 @@ if (isset($_SESSION['uid'])) {
             overflow: hidden;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             font-size: 0.85rem;
+        }
+
+        body.light-mode .faq-answer {
+            background: rgba(240, 240, 240, 0.95);
+            color: #444444;
         }
 
         .faq-answer.show {
@@ -283,6 +476,12 @@ if (isset($_SESSION['uid'])) {
             isolation: isolate;
             border: 1px solid rgba(0, 255, 0, 0.2);
             backdrop-filter: blur(10px);
+        }
+
+        body.light-mode .testimonial-card {
+            background: linear-gradient(135deg, rgba(0, 255, 0, 0.05) 0%, rgba(50, 205, 50, 0.05) 100%);
+            color: #333333;
+            border-color: rgba(0, 255, 0, 0.3);
         }
 
         .testimonial-card::before {
@@ -320,6 +519,11 @@ if (isset($_SESSION['uid'])) {
             text-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
         }
 
+        body.light-mode .testimonial-text {
+            color: #333333;
+            text-shadow: none;
+        }
+
         .testimonial-author {
             font-size: 1rem;
             font-weight: 600;
@@ -336,6 +540,10 @@ if (isset($_SESSION['uid'])) {
             align-items: center;
             justify-content: center;
             gap: 0.3rem;
+        }
+
+        body.light-mode .testimonial-location {
+            color: #666666;
         }
 
         .testimonial-location::before {
@@ -375,6 +583,12 @@ if (isset($_SESSION['uid'])) {
             transition: all 0.3s ease;
             border: 1px solid rgba(0, 255, 0, 0.3);
             backdrop-filter: blur(10px);
+        }
+
+        body.light-mode .carousel-btn {
+            background: rgba(240, 240, 240, 0.95);
+            color: #00aa00;
+            border-color: rgba(0, 255, 0, 0.5);
         }
 
         .carousel-btn:hover {
@@ -420,6 +634,12 @@ if (isset($_SESSION['uid'])) {
             border-radius: 20px;
             border: 1px solid rgba(0, 255, 0, 0.2);
             backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        body.light-mode .stats-container {
+            background: rgba(240, 240, 240, 0.95);
+            border-color: rgba(0, 255, 0, 0.3);
         }
 
         .stat-item {
@@ -461,6 +681,10 @@ if (isset($_SESSION['uid'])) {
             letter-spacing: 1px;
         }
 
+        body.light-mode .stat-label {
+            color: #666666;
+        }
+
         .contact-prompt {
             text-align: center;
             margin: 2rem 0 1rem;
@@ -470,6 +694,11 @@ if (isset($_SESSION['uid'])) {
             border: 1px solid rgba(0, 255, 0, 0.3);
             backdrop-filter: blur(10px);
             position: relative;
+        }
+
+        body.light-mode .contact-prompt {
+            background: linear-gradient(135deg, rgba(0, 255, 0, 0.05) 0%, rgba(50, 205, 50, 0.05) 100%);
+            border-color: rgba(0, 255, 0, 0.4);
         }
 
         .contact-prompt h3 {
@@ -486,6 +715,10 @@ if (isset($_SESSION['uid'])) {
             margin-bottom: 1.2rem;
             color: #d0d0d0;
             position: relative;
+        }
+
+        body.light-mode .contact-prompt p {
+            color: #444444;
         }
 
         .contact-btn {
@@ -539,6 +772,13 @@ if (isset($_SESSION['uid'])) {
             margin-top: 2rem;
             border-top: 1px solid rgba(0, 255, 0, 0.1);
             font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        body.light-mode footer {
+            background: rgba(240, 240, 240, 0.9);
+            color: #666666;
+            border-top-color: rgba(0, 255, 0, 0.2);
         }
 
         ::-webkit-scrollbar {
@@ -547,6 +787,10 @@ if (isset($_SESSION['uid'])) {
 
         ::-webkit-scrollbar-track {
             background: #0a0a0a;
+        }
+
+        body.light-mode ::-webkit-scrollbar-track {
+            background: #f0f0f0;
         }
 
         ::-webkit-scrollbar-thumb {
@@ -583,7 +827,7 @@ if (isset($_SESSION['uid'])) {
                     <path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"></path>
                 </svg>
             </a></li>
-            <button id="themeToggle">Theme</button>
+            <button id="themeToggle" onclick="toggleTheme()">🌙</button>
 
             <?php if (isset($userData['role']) && $userData['role'] === 'customer'): ?>
                 <li><a href="seller_dashboard.php">Sell</a></li>
@@ -686,164 +930,4 @@ if (isset($_SESSION['uid'])) {
                         <div class="testimonial-text">"Rented a puffer jacket for a ski trip — warm, stylish, and saved me buying expensive gear I'd rarely use. Will definitely rent again! The quality exceeded my expectations."</div>
                         <div class="testimonial-author">James T.</div>
                         <div class="testimonial-location">Manchester</div>
-                        <div class="testimonial-rating">★★★★★</div>
-                    </div>
-                    
-                    <div class="testimonial-card">
-                        <div class="testimonial-avatar">P</div>
-                        <div class="testimonial-text">"As a bridesmaid, I needed a one-time elegant outfit. Rentique delivered perfection. So many compliments and zero commitment. The fit was perfect and the return was effortless."</div>
-                        <div class="testimonial-author">Priya K.</div>
-                        <div class="testimonial-location">Birmingham</div>
-                        <div class="testimonial-rating">★★★★★</div>
-                    </div>
-                    
-                    <div class="testimonial-card">
-                        <div class="testimonial-avatar">A</div>
-                        <div class="testimonial-text">"The denim jacket was exactly as pictured. Quick delivery, easy return. Sustainable fashion at its best! I love that I can wear designer pieces without the environmental guilt."</div>
-                        <div class="testimonial-author">Alex M.</div>
-                        <div class="testimonial-location">Brighton</div>
-                        <div class="testimonial-rating">★★★★★</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="carousel-dots" id="carouselDots"></div>
-            
-            <div class="carousel-controls">
-                <button class="carousel-btn" id="prevBtn" aria-label="Previous">←</button>
-                <button class="carousel-btn" id="nextBtn" aria-label="Next">→</button>
-            </div>
-        </div>
-
-        <div class="stats-container">
-            <div class="stat-item">
-                <div class="stat-number">67,000+</div>
-                <div class="stat-label">Happy Renters</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">4.9/5</div>
-                <div class="stat-label">Average Rating</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">98%</div>
-                <div class="stat-label">Would Recommend</div>
-            </div>
-        </div>
-
-        <div class="contact-prompt">
-            <h3>Still have questions?</h3>
-            <p>Our support team is here to help you 24/7</p>
-            <a href="Contact.php" class="contact-btn">Contact Us →</a>
-        </div>
-    </section>
-</main>
-
-<footer>
-    <p>© 2025 Rentique — All Rights Reserved.</p>
-</footer>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const questions = [];
-        for (let i = 1; i <= 6; i++) {
-            questions.push({
-                question: document.getElementById(`q${i}`),
-                answer: document.getElementById(`a${i}`),
-                span: document.getElementById(`s${i}`)
-            });
-        }
-        
-        questions.forEach((item, index) => {
-            if (item.question) {
-                item.question.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    
-                    const isActive = this.classList.contains('active');
-                    
-                    questions.forEach((otherItem, otherIndex) => {
-                        if (otherIndex !== index) {
-                            otherItem.question.classList.remove('active');
-                            otherItem.answer.classList.remove('show');
-                            if (otherItem.span) otherItem.span.innerHTML = '▼';
-                        }
-                    });
-                    
-                    if (!isActive) {
-                        this.classList.add('active');
-                        item.answer.classList.add('show');
-                        if (item.span) item.span.innerHTML = '▲';
-                    } else {
-                        this.classList.remove('active');
-                        item.answer.classList.remove('show');
-                        if (item.span) item.span.innerHTML = '▼';
-                    }
-                });
-            }
-        });
-
-        const track = document.getElementById('carouselTrack');
-        const cards = Array.from(document.querySelectorAll('.testimonial-card'));
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const dotsContainer = document.getElementById('carouselDots');
-
-        if (track && cards.length) {
-            let currentIndex = 0;
-            const totalSlides = cards.length;
-
-            cards.forEach((_, i) => {
-                const dot = document.createElement('button');
-                dot.classList.add('dot');
-                if (i === 0) dot.classList.add('active');
-                dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
-                dot.addEventListener('click', () => goToSlide(i));
-                dotsContainer.appendChild(dot);
-            });
-            
-            const dots = document.querySelectorAll('.dot');
-
-            function updateDots() {
-                dots.forEach((dot, i) => {
-                    dot.classList.toggle('active', i === currentIndex);
-                });
-            }
-
-            function goToSlide(index) {
-                if (index < 0) index = totalSlides - 1;
-                if (index >= totalSlides) index = 0;
-                currentIndex = index;
-                track.style.transform = `translateX(-${currentIndex * 100}%)`;
-                updateDots();
-            }
-
-            prevBtn.addEventListener('click', () => {
-                goToSlide(currentIndex - 1);
-            });
-
-            nextBtn.addEventListener('click', () => {
-                goToSlide(currentIndex + 1);
-            });
-
-            let interval = setInterval(() => goToSlide(currentIndex + 1), 5000);
-
-            const carousel = document.querySelector('.testimonials-carousel');
-            carousel.addEventListener('mouseenter', () => clearInterval(interval));
-            carousel.addEventListener('mouseleave', () => {
-                clearInterval(interval);
-                interval = setInterval(() => goToSlide(currentIndex + 1), 5000);
-            });
-
-            goToSlide(0);
-        }
-
-        const navLinks = document.querySelectorAll('.nav-links a');
-        navLinks.forEach(link => {
-            if (link.getAttribute('href') === 'FAQTestimonials.php') {
-                link.classList.add('faq-link-active');
-            }
-        });
-    });
-</script>
-
-</body>
-</html>
+                        <div class="testimonial-r
