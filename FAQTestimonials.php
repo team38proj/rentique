@@ -38,6 +38,110 @@ if (isset($_SESSION['uid'])) {
             font-size: 14px;
         }
 
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 2rem;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 255, 0, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo img {
+            height: 30px;
+            width: auto;
+        }
+
+        .logo span {
+            font-size: 1.2rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #00ff00 0%, #32cd32 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background: linear-gradient(135deg, #00ff00 0%, #32cd32 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links .active {
+            background: linear-gradient(135deg, #00ff00 0%, #32cd32 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .cart-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cart-icon svg {
+            width: 20px;
+            height: 20px;
+            stroke: #ffffff;
+            transition: all 0.3s ease;
+        }
+
+        .cart-icon:hover svg {
+            stroke: #00ff00;
+            filter: drop-shadow(0 0 10px rgba(0, 255, 0, 0.5));
+        }
+
+        #themeToggle {
+            background: transparent;
+            border: 1px solid rgba(0, 255, 0, 0.3);
+            color: #ffffff;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        #themeToggle:hover {
+            background: rgba(0, 255, 0, 0.1);
+            border-color: #00ff00;
+        }
+
+        .btn {
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+
+        .btn.login {
+            border: 1px solid rgba(0, 255, 0, 0.3);
+        }
+
+        .btn.signup {
+            background: linear-gradient(135deg, #00ff00 0%, #32cd32 100%);
+            color: #0a0a0a;
+        }
+
         main {
             padding: 1rem;
         }
@@ -472,7 +576,13 @@ if (isset($_SESSION['uid'])) {
             <li><a href="AboutUs.php">About</a></li>
             <li><a href="Contact.php">Contact</a></li>
             <li><a href="FAQTestimonials.php" class="active">FAQ</a></li> 
-            <li><a href="basketPage.php" class="cart-icon">Basket</a></li>
+            <li><a href="basketPage.php" class="cart-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"></path>
+                </svg>
+            </a></li>
             <button id="themeToggle">Theme</button>
 
             <?php if (isset($userData['role']) && $userData['role'] === 'customer'): ?>
@@ -503,7 +613,7 @@ if (isset($_SESSION['uid'])) {
                     How does renting work? <span id="s1">▼</span>
                 </div>
                 <div class="faq-answer" id="a1">
-                    Simply browse our collection, choose your favourite items, select rental dates, and proceed to checkout. We'll deliver the pieces to your doorstep, and you return them after use — dry cleaning included. All rentals come with free shipping both ways and a 24-hour grace period for returns.
+                    Simply browse our collection, choose your favourite items, select rental dates, and proceed to checkout. We'll deliver the pieces to your doorstep, and you return them after use — dry cleaning included. All rentals come with a small shipping fee.
                 </div>
             </div>
             
