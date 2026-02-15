@@ -940,4 +940,5 @@ if (isset($_SESSION['uid'])) {
                     
                     <div class="testimonial-card">
                         <div class="testimonial-avatar">J</div>
-                        <div class="testimonial-text">"Rented a puffer jacket for a ski trip — warm, stylish,
+                        <div class="testimonial-text">"Rented a puffer jacket for a ski trip — warm, stylish, incomplete.
+
