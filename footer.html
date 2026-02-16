@@ -1,20 +1,20 @@
 <footer class="footer">
     <div class="footer-container">
-        <div class="footer-column">
+        <div class="footer-column brand-column">
             <div class="footer-logo">
                 <img src="images/rentique_logo.png" alt="Rentique Logo">
                 <span>rentique.</span>
             </div>
             <p class="footer-description">Sustainable fashion, unlimited style. Rent the runway, own the moment.</p>
             <div class="footer-social">
-                <a href="https://facebook.com" target="_blank">f</a>
-                <a href="https://instagram.com" target="_blank">ig</a>
-                <a href="https://twitter.com" target="_blank">t</a>
-                <a href="https://pinterest.com" target="_blank">p</a>
+                <a href="https://facebook.com" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://instagram.com" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://twitter.com" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="https://pinterest.com" target="_blank" aria-label="Pinterest"><i class="fab fa-pinterest-p"></i></a>
             </div>
         </div>
 
-        <div class="footer-column">
+        <div class="footer-column links-column">
             <h4>Quick Links</h4>
             <ul>
                 <li><a href="index.php">Home</a></li>
@@ -25,20 +25,30 @@
             </ul>
         </div>
 
-        <div class="footer-column">
+        <div class="footer-column contact-column">
             <h4>Stay Connected</h4>
-            <div class="footer-contact">
-                <p><span class="contact-icon">✉</span> support@rentique.com</p>
-                <p><span class="contact-icon">📞</span> 0121-875-3543</p>
-                <p><span class="contact-icon">📍</span> Aston University, Birmingham</p>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>support@rentique.com</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-phone-alt"></i>
+                    <span>0121-875-3543</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Aston University, Birmingham</span>
+                </div>
             </div>
             
-            <div class="footer-newsletter">
+            <div class="newsletter">
+                <h5>Newsletter</h5>
                 <p>Subscribe for exclusive offers</p>
                 <form class="newsletter-form" onsubmit="return false;">
-                    <div class="newsletter-input">
+                    <div class="newsletter-wrapper">
                         <input type="email" placeholder="Your email address" required>
-                        <button type="submit">➤</button>
+                        <button type="submit">Subscribe</button>
                     </div>
                 </form>
             </div>
@@ -46,27 +56,34 @@
     </div>
     
     <div class="footer-bottom">
-        <p>&copy; 2025 Rentique. All rights reserved. | Student ID: 240196583</p>
+        <div class="footer-bottom-container">
+            <p class="copyright">&copy; 2025 Rentique. All rights reserved.</p>
+            <p class="student-id">Student ID: 240196583</p>
+        </div>
     </div>
 </footer>
 
+<!-- Font Awesome for icons (add to head section) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
 <style>
 .footer {
-    background-color: #000;
-    color: #fff;
-    padding: 2.5rem 0 0;
-    margin-top: 3rem;
-    border-top: 2px solid #00FF00;
+    background: linear-gradient(180deg, #0a0a0a 0%, #000000 100%);
+    color: #ffffff;
+    padding: 3rem 0 0;
+    margin-top: 4rem;
+    border-top: 3px solid #00FF00;
     width: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 .footer-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 2rem;
+    padding: 0 2rem 2rem 2rem;
     display: grid;
     grid-template-columns: 2fr 1fr 2fr;
-    gap: 2rem;
+    gap: 3rem;
 }
 
 .footer-column {
@@ -74,244 +91,318 @@
     flex-direction: column;
 }
 
+.brand-column {
+    padding-right: 1rem;
+}
+
 .footer-logo {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 0.8rem;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
 }
 
 .footer-logo img {
-    width: 40px;
+    width: 45px;
     height: auto;
+    filter: brightness(1.1);
 }
 
 .footer-logo span {
-    font-size: 1.6rem;
-    font-weight: bold;
-    color: #00FF00;
+    font-size: 2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #00FF00 0%, #32cd32 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
     text-transform: lowercase;
+    letter-spacing: -0.5px;
 }
 
 .footer-description {
-    color: #aaa;
-    line-height: 1.5;
-    margin-bottom: 1rem;
-    font-size: 0.9rem;
-    max-width: 260px;
+    color: #b0b0b0;
+    line-height: 1.6;
+    margin-bottom: 1.75rem;
+    font-size: 0.95rem;
+    max-width: 300px;
 }
 
 .footer-social {
     display: flex;
-    gap: 0.8rem;
+    gap: 1rem;
 }
 
 .footer-social a {
-    color: #fff;
-    background: rgba(255, 255, 255, 0.1);
-    width: 34px;
-    height: 34px;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.08);
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
     text-decoration: none;
-    font-size: 0.9rem;
-    font-weight: bold;
+    font-size: 1.2rem;
+    border: 1px solid rgba(0, 255, 0, 0.2);
 }
 
 .footer-social a:hover {
     background: #00FF00;
-    color: #000;
-    transform: translateY(-2px);
+    color: #000000;
+    transform: translateY(-4px);
+    border-color: transparent;
+    box-shadow: 0 5px 15px rgba(0, 255, 0, 0.3);
 }
 
 .footer-column h4 {
     color: #00FF00;
-    font-size: 1.1rem;
-    margin-bottom: 1rem;
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
     font-weight: 600;
-    margin-top: 0;
+    margin-top: 0.25rem;
+    position: relative;
+    padding-bottom: 0.5rem;
 }
 
-.footer-column ul {
+.footer-column h4::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 35px;
+    height: 2px;
+    background: #00FF00;
+    border-radius: 2px;
+}
+
+.links-column ul {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-.footer-column ul li {
-    margin-bottom: 0.6rem;
+.links-column ul li {
+    margin-bottom: 0.9rem;
 }
 
-.footer-column ul li a {
-    color: #ccc;
+.links-column ul li a {
+    color: #d0d0d0;
     text-decoration: none;
-    font-size: 0.9rem;
-    transition: color 0.3s ease;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
     display: inline-block;
+    position: relative;
 }
 
-.footer-column ul li a:hover {
+.links-column ul li a:hover {
     color: #00FF00;
+    transform: translateX(8px);
 }
 
-.footer-contact {
-    margin-bottom: 1.2rem;
+.contact-info {
+    margin-bottom: 2rem;
 }
 
-.footer-contact p {
-    color: #ccc;
-    font-size: 0.9rem;
-    margin-bottom: 0.7rem;
+.contact-item {
     display: flex;
     align-items: center;
-    gap: 0.6rem;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    color: #d0d0d0;
+    font-size: 0.95rem;
 }
 
-.contact-icon {
+.contact-item i {
     color: #00FF00;
-    width: 18px;
+    width: 20px;
+    font-size: 1.1rem;
+}
+
+.newsletter h5 {
+    color: #ffffff;
     font-size: 1rem;
-    display: inline-block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
 }
 
-.footer-newsletter p {
-    color: #ccc;
+.newsletter p {
+    color: #b0b0b0;
     font-size: 0.9rem;
-    margin-bottom: 0.6rem;
+    margin-bottom: 1rem;
 }
 
-.newsletter-form {
-    width: 100%;
-}
-
-.newsletter-input {
+.newsletter-wrapper {
     display: flex;
-    align-items: center;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
+    max-width: 350px;
+    border-radius: 8px;
     overflow: hidden;
     border: 1px solid rgba(0, 255, 0, 0.2);
-    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
 }
 
-.newsletter-input input {
+.newsletter-wrapper input {
     flex: 1;
-    padding: 0.6rem 0.8rem;
+    padding: 0.9rem 1rem;
     background: transparent;
     border: none;
-    color: #fff;
-    font-size: 0.9rem;
-    min-width: 0;
+    color: #ffffff;
+    font-size: 0.95rem;
 }
 
-.newsletter-input input:focus {
+.newsletter-wrapper input:focus {
     outline: none;
 }
 
-.newsletter-input input::placeholder {
-    color: #666;
+.newsletter-wrapper input::placeholder {
+    color: #666666;
 }
 
-.newsletter-input button {
+.newsletter-wrapper button {
     background: #00FF00;
     border: none;
-    color: #000;
-    padding: 0.6rem 1rem;
+    color: #000000;
+    padding: 0.9rem 1.5rem;
     cursor: pointer;
-    transition: background 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1rem;
-    font-weight: bold;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.newsletter-input button:hover {
-    background: #d2ff4c;
+.newsletter-wrapper button:hover {
+    background: #32cd32;
 }
 
 .footer-bottom {
-    margin-top: 2.5rem;
-    padding: 1.2rem 0;
-    text-align: center;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(0, 0, 0, 0.3);
+    margin-top: 2rem;
+    background: rgba(0, 0, 0, 0.5);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 1.25rem 0;
     width: 100%;
 }
 
+.footer-bottom-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
 .footer-bottom p {
-    color: #888;
-    font-size: 0.85rem;
+    color: #888888;
+    font-size: 0.9rem;
     margin: 0;
 }
 
+.student-id {
+    color: #00FF00 !important;
+    font-weight: 500;
+}
+
 html.light-mode .footer {
-    background-color: #f8f8f8;
-    color: #333;
+    background: linear-gradient(180deg, #f8f8f8 0%, #f0f0f0 100%);
+    color: #333333;
 }
 
 html.light-mode .footer-description {
-    color: #666;
+    color: #666666;
 }
 
 html.light-mode .footer-social a {
     background: rgba(0, 0, 0, 0.05);
-    color: #333;
+    color: #333333;
+    border-color: rgba(0, 255, 0, 0.3);
 }
 
 html.light-mode .footer-social a:hover {
     background: #00FF00;
-    color: #000;
+    color: #000000;
 }
 
-html.light-mode .footer-column ul li a {
-    color: #555;
+html.light-mode .links-column ul li a {
+    color: #555555;
 }
 
-html.light-mode .footer-contact p {
-    color: #555;
+html.light-mode .links-column ul li a:hover {
+    color: #00FF00;
 }
 
-html.light-mode .footer-newsletter p {
-    color: #555;
+html.light-mode .contact-item {
+    color: #555555;
 }
 
-html.light-mode .newsletter-input {
-    background: #fff;
+html.light-mode .newsletter h5 {
+    color: #333333;
+}
+
+html.light-mode .newsletter p {
+    color: #666666;
+}
+
+html.light-mode .newsletter-wrapper {
+    background: #ffffff;
     border-color: rgba(0, 255, 0, 0.3);
 }
 
-html.light-mode .newsletter-input input {
-    color: #333;
+html.light-mode .newsletter-wrapper input {
+    color: #333333;
 }
 
-html.light-mode .newsletter-input input::placeholder {
-    color: #999;
+html.light-mode .newsletter-wrapper input::placeholder {
+    color: #999999;
 }
 
 html.light-mode .footer-bottom {
     background: rgba(0, 0, 0, 0.02);
+    border-top-color: rgba(0, 0, 0, 0.05);
 }
 
 html.light-mode .footer-bottom p {
-    color: #666;
+    color: #666666;
 }
 
-@media (max-width: 900px) {
+html.light-mode .student-id {
+    color: #00FF00 !important;
+}
+
+@media (max-width: 1000px) {
     .footer-container {
         grid-template-columns: 1fr 1fr;
+        gap: 2.5rem;
     }
-}
-
-@media (max-width: 600px) {
-    .footer-container {
-        grid-template-columns: 1fr;
+    
+    .brand-column {
+        grid-column: span 2;
+        padding-right: 0;
     }
     
     .footer-description {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 700px) {
+    .footer-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .brand-column {
+        grid-column: span 1;
+    }
+    
+    .footer-bottom-container {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .newsletter-wrapper {
         max-width: 100%;
     }
 }
