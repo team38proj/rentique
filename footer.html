@@ -1,4 +1,4 @@
-<!--Krish's Revamp-->
+<!--Krish's Revamped Footer-->
 
 <footer class="footer">
     <div class="footer-container">
@@ -11,7 +11,6 @@
             <div class="footer-social">
                 <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
                 <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
-                 <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
                 <a href="https://pinterest.com" target="_blank"><i class="fab fa-pinterest-p"></i></a>
             </div>
         </div>
@@ -30,7 +29,7 @@
         <div class="footer-column contact-column">
             <h4>Stay Connected</h4>
             <div class="contact-info">
-                <p><i class="fas fa-envelope"></i> support@rentique.com</p>
+                <p><i class="fas fa-envelope"></i> dtblations@gmail.com</p>
                 <p><i class="fas fa-phone-alt"></i> 0121-875-3543</p>
                 <p><i class="fas fa-map-marker-alt"></i> Aston University, Birmingham</p>
             </div>
@@ -38,9 +37,10 @@
             <div class="newsletter">
                 <p>Subscribe for exclusive offers</p>
                 <div class="newsletter-input">
-                    <input type="email" placeholder="Your email address">
-                    <button type="submit">→</button>
+                    <input type="email" id="subscribeEmail" placeholder="Your email address">
+                    <button type="button" id="subscribeBtn">→</button>
                 </div>
+                <div id="subscribeMessage" class="subscribe-message"></div>
             </div>
         </div>
     </div>
@@ -262,6 +262,14 @@
     background: #d2ff4c;
 }
 
+.subscribe-message {
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+    min-height: 1.2rem;
+    color: #00FF00;
+    text-align: right;
+}
+
 .footer-bottom {
     margin-top: 2rem;
     padding: 1.2rem 0;
@@ -324,6 +332,10 @@ html.light-mode .newsletter-input input::placeholder {
     color: #999;
 }
 
+html.light-mode .subscribe-message {
+    color: #00FF00;
+}
+
 html.light-mode .footer-bottom {
     background: rgba(0, 0, 0, 0.02);
 }
@@ -371,6 +383,10 @@ html.light-mode .footer-bottom p {
     .newsletter-input {
         margin: 0 auto;
     }
+    
+    .subscribe-message {
+        text-align: center;
+    }
 }
 
 @media (max-width: 600px) {
@@ -384,6 +400,49 @@ html.light-mode .footer-bottom p {
 }
 </style>
 
-
-
-
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const subscribeBtn = document.getElementById('subscribeBtn');
+    const subscribeEmail = document.getElementById('subscribeEmail');
+    const subscribeMessage = document.getElementById('subscribeMessage');
+    
+    if (subscribeBtn) {
+        subscribeBtn.addEventListener('click', function() {
+            const email = subscribeEmail.value.trim();
+            
+            if (!email) {
+                showMessage('Please enter your email address', 'error');
+                return;
+            }
+            
+            if (!isValidEmail(email)) {
+                showMessage('Please enter a valid email address', 'error');
+                return;
+            }
+            
+            showMessage('Thank you for subscribing!', 'success');
+            subscribeEmail.value = '';
+            
+            setTimeout(() => {
+                subscribeMessage.innerHTML = '';
+            }, 3000);
+        });
+        
+        subscribeEmail.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                subscribeBtn.click();
+            }
+        });
+    }
+    
+    function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+    
+    function showMessage(text, type) {
+        subscribeMessage.innerHTML = text;
+        subscribeMessage.style.color = type === 'success' ? '#00FF00' : '#ff4444';
+    }
+});
+</script>
