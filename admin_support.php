@@ -96,13 +96,35 @@ $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Support · Rentique</title>
     <link rel="stylesheet" href="css/rentique.css">
-    <script src="js/theme.js" defer></script>
+    <script>
+        // Apply saved theme immediately to prevent flash
+        if (localStorage.getItem('theme') === 'light') {
+            document.documentElement.classList.add('light-mode');
+        }
+    </script>
 
-    <!-- Theme toggle styles -->
     <style>
+        .cart-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .cart-icon svg {
+            width: 20px;
+            height: 20px;
+            stroke: #ffffff;
+            transition: all 0.3s ease;
+        }
+        html.light-mode .cart-icon svg {
+            stroke: #333333;
+        }
+        .cart-icon:hover svg {
+            stroke: #00ff00;
+            filter: drop-shadow(0 0 10px rgba(0, 255, 0, 0.5));
+        }
         #themeToggle {
             background: transparent;
-            border: 1px solid #00FF00;
+            border: 1px solid rgba(0, 255, 0, 0.3);
             color: #ffffff;
             width: 36px;
             height: 36px;
@@ -117,12 +139,12 @@ $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
         html.light-mode #themeToggle {
             color: #333333;
-            border-color: #00FF00;
+            border-color: rgba(0, 255, 0, 0.5);
             background: transparent;
         }
         #themeToggle:hover {
-            background: transparent;
-            border-color: #d2ff4c;
+            background: rgba(0, 255, 0, 0.1);
+            border-color: #00ff00;
             transform: scale(1.1);
         }
 
@@ -316,7 +338,7 @@ $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
         .conv-status.open {
             background: rgba(163, 255, 0, 0.15);
         }
-        
+
         .conv-status.closed {
             background: rgba(255, 255, 255, 0.05);
             color: var(--text-muted);
@@ -426,14 +448,8 @@ $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
         @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
         .message-meta {
@@ -667,124 +683,37 @@ $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
             font-size: 0.9rem;
         }
 
-        .loading {
-            display: inline-block;
-            width: 30px;
-            height: 30px;
-            border: 3px solid var(--border-color);
-            border-top-color: var(--primary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
 
         @media (max-width: 1000px) {
-            .support-container {
-                gap: 20px;
-            }
-            .inbox-panel {
-                width: 300px;
-            }
+            .support-container { gap: 20px; }
+            .inbox-panel { width: 300px; }
         }
 
         @media (max-width: 800px) {
-            .support-container {
-                flex-direction: column;
-                margin: 20px auto;
-            }
-            
-            .inbox-panel {
-                width: 100%;
-                height: 350px;
-                position: static;
-                max-height: 350px;
-            }
-            
-            .chat-panel {
-                height: 600px;
-            }
-            
-            .message-bubble {
-                max-width: 85%;
-            }
-            
-            .compose-form {
-                flex-direction: column;
-                gap: 12px;
-            }
-            
-            .send-btn {
-                width: 100%;
-                min-width: 100%;
-                padding: 16px;
-                align-self: center;
-            }
-            
-            .message-input {
-                min-height: 100px;
-            }
-            
-            .chat-header h2 {
-                font-size: 1.5rem;
-            }
+            .support-container { flex-direction: column; margin: 20px auto; }
+            .inbox-panel { width: 100%; height: 350px; position: static; max-height: 350px; }
+            .chat-panel { height: 600px; }
+            .message-bubble { max-width: 85%; }
+            .compose-form { flex-direction: column; gap: 12px; }
+            .send-btn { width: 100%; min-width: 100%; padding: 16px; align-self: center; }
+            .message-input { min-height: 100px; }
+            .chat-header h2 { font-size: 1.5rem; }
         }
 
         @media (max-width: 500px) {
-            .support-container {
-                padding: 0 12px;
-            }
-            
-            .inbox-panel,
-            .chat-panel {
-                border-radius: var(--radius-lg);
-            }
-            
-            .message-bubble {
-                padding: 12px 16px;
-                font-size: 0.9rem;
-                max-width: 90%;
-            }
-            
-            .message-meta {
-                font-size: 0.65rem;
-            }
-            
-            .chat-header {
-                padding: 20px;
-            }
-            
-            .messages-container {
-                padding: 20px;
-            }
-        }
-
-        @media print {
-            .inbox-panel,
-            .compose-area,
-            .send-btn {
-                display: none !important;
-            }
-            
-            .chat-panel {
-                height: auto;
-                box-shadow: none;
-                border: 1px solid #ccc;
-            }
-            
-            .message-bubble {
-                break-inside: avoid;
-            }
+            .support-container { padding: 0 12px; }
+            .inbox-panel, .chat-panel { border-radius: var(--radius-lg); }
+            .message-bubble { padding: 12px 16px; font-size: 0.9rem; max-width: 90%; }
+            .message-meta { font-size: 0.65rem; }
+            .chat-header { padding: 20px; }
+            .messages-container { padding: 20px; }
         }
 
         @media (prefers-reduced-motion: reduce) {
-            * {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
+            * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
         }
 
         .send-btn:focus-visible,
@@ -812,14 +741,22 @@ $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <li><a href="AboutUs.php">About</a></li>
             <li><a href="Contact.php">Contact</a></li>
             <li><a href="FAQTestimonials.php">FAQ</a></li>
+            <li><a href="basketPage.php" class="cart-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"></path>
+                </svg>
+            </a></li>
+            <li><button id="themeToggle" onclick="toggleTheme()">🌙</button></li>
 
-            <!-- Theme Toggle Button -->
-            <li>
-                <button id="themeToggle" onclick="toggleTheme()">🌙</button>
-            </li>
-
-            <!-- Admin Dashboard link -->
-            <li><a href="admin_dashboard.php" class="btn login">Admin</a></li>
+            <?php if ($isAdmin): ?>
+                <li><a href="admin_dashboard.php" class="btn login">Admin</a></li>
+            <?php else: ?>
+                <li><a href="seller_dashboard.php">Sell</a></li>
+                <li><a href="user_dashboard.php">Account</a></li>
+            <?php endif; ?>
 
             <li><a href="index.php?logout=1" class="btn login">Logout</a></li>
         </ul>
@@ -838,7 +775,7 @@ $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <?php else: ?>
                 <?php foreach ($convs as $cv): ?>
                     <?php $isActive = ($activeId == $cv['id']); ?>
-                    <a href="admin_support.php?conv_id=<?= (int)$cv['id'] ?>" 
+                    <a href="admin_support.php?conv_id=<?= (int)$cv['id'] ?>"
                        class="conversation-item <?= $isActive ? 'active' : '' ?>">
                         <div class="conv-user">
                             <span class="conv-user-name"><?= h($cv['username']) ?></span>
@@ -867,7 +804,7 @@ $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </div>
             <?php else: ?>
                 <?php foreach ($messages as $m): ?>
-                    <?php 
+                    <?php
                     $senderType = 'support';
                     if ($m['sender_role'] === 'user') {
                         $senderType = 'user';
@@ -892,10 +829,10 @@ $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         <div class="compose-area">
             <form method="POST" class="compose-form">
-                <textarea 
-                    name="body" 
-                    class="message-input" 
-                    placeholder="Type your message..." 
+                <textarea
+                    name="body"
+                    class="message-input"
+                    placeholder="Type your message..."
                     required
                 ></textarea>
                 <button type="submit" class="send-btn">Send</button>
@@ -904,26 +841,23 @@ $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
 </div>
 
-<!-- Theme toggle script -->
 <script>
     function toggleTheme() {
-        const body = document.body;
+        const html = document.documentElement;
         const themeToggle = document.getElementById('themeToggle');
-        if (body.classList.contains('light-mode')) {
-            body.classList.remove('light-mode');
+        if (html.classList.contains('light-mode')) {
+            html.classList.remove('light-mode');
             themeToggle.textContent = '🌙';
             localStorage.setItem('theme', 'dark');
         } else {
-            body.classList.add('light-mode');
+            html.classList.add('light-mode');
             themeToggle.textContent = '☀️';
             localStorage.setItem('theme', 'light');
         }
     }
     document.addEventListener('DOMContentLoaded', function () {
-        const savedTheme = localStorage.getItem('theme');
         const themeToggle = document.getElementById('themeToggle');
-        if (savedTheme === 'light') {
-            document.body.classList.add('light-mode');
+        if (localStorage.getItem('theme') === 'light') {
             themeToggle.textContent = '☀️';
         } else {
             themeToggle.textContent = '🌙';
@@ -932,25 +866,22 @@ $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </script>
 
 <script>
-const container = document.getElementById('messagesContainer');
-if (container) {
-    container.scrollTop = container.scrollHeight;
-}
+    const container = document.getElementById('messagesContainer');
+    if (container) container.scrollTop = container.scrollHeight;
 
-const textarea = document.querySelector('.message-input');
-if (textarea) {
-    textarea.addEventListener('input', function() {
-        this.style.height = 'auto';
-        this.style.height = (this.scrollHeight) + 'px';
-    });
-
-    textarea.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            this.form.submit();
-        }
-    });
-}
+    const textarea = document.querySelector('.message-input');
+    if (textarea) {
+        textarea.addEventListener('input', function () {
+            this.style.height = 'auto';
+            this.style.height = this.scrollHeight + 'px';
+        });
+        textarea.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                this.form.submit();
+            }
+        });
+    }
 </script>
 
 </body>
