@@ -129,7 +129,6 @@ $uidParam = isset($_GET['uid']) ? (int)$_GET['uid'] : 0;
 $pidParam = isset($_GET['pid']) ? (int)$_GET['pid'] : 0;
 $oiParam  = isset($_GET['oi'])  ? (int)$_GET['oi']  : 0;
 
-// Log the parameters for debugging
 error_log("Admin Dashboard - View: {$view}, UID: {$uidParam}, PID: {$pidParam}, OI: {$oiParam}");
 
 /* Schema detection */
@@ -267,7 +266,7 @@ if ($view === 'user' && $uidParam > 0 && $hasUsers) {
 
     if ($hasProducts) {
         $userListings = getList($db,
-            "SELECT pid, title, " 
+            "SELECT pid, title, "
             . ($productsHasProductType ? "product_type" : "'' AS product_type") . ", "
             . "price, " . ($productsHasIsAvailable ? "is_available" : "1") . " AS is_available
              FROM products
@@ -331,7 +330,7 @@ if ($view === 'seller' && $uidParam > 0 && $hasUsers) {
 
     if ($hasProducts) {
         $userListings = getList($db,
-            "SELECT pid, title, " 
+            "SELECT pid, title, "
             . ($productsHasProductType ? "product_type" : "'' AS product_type") . ", "
             . "price, " . ($productsHasIsAvailable ? "is_available" : "1") . " AS is_available
              FROM products
@@ -366,14 +365,14 @@ if ($view === 'seller' && $uidParam > 0 && $hasUsers) {
 
 if ($view === 'item' && $pidParam > 0 && $hasProducts) {
     error_log("Fetching item details for PID: {$pidParam}");
-    
+
     $itemDetail = getRow($db,
         "SELECT
-            p.pid, 
-            p.title, 
-            " . ($productsHasImage ? "p.image" : "'' AS image") . ", 
-            " . ($productsHasProductType ? "p.product_type" : "'' AS product_type") . ", 
-            p.price, 
+            p.pid,
+            p.title,
+            " . ($productsHasImage ? "p.image" : "'' AS image") . ",
+            " . ($productsHasProductType ? "p.product_type" : "'' AS product_type") . ",
+            p.price,
             " . ($productsHasDescription ? "p.description" : "'' AS description") . ",
             p.uid AS seller_uid,
             u.username AS seller_name,
@@ -384,7 +383,7 @@ if ($view === 'item' && $pidParam > 0 && $hasProducts) {
          WHERE p.pid = ? LIMIT 1",
         [$pidParam]
     );
-    
+
     error_log("Item detail fetched: " . ($itemDetail ? "YES (PID: {$itemDetail['pid']})" : "NO"));
 
     if ($itemDetail && $hasOrders && $hasOrderItems) {
@@ -455,7 +454,34 @@ if ($view === 'order' && $oiParam > 0 && $hasOrders && $hasOrderItems) {
     <meta charset="UTF-8">
     <title>Rentique | Admin Dashboard</title>
     <link rel="stylesheet" href="css/rentique.css">
-    <script src="js/theme.js" defer></script>
+    <script>
+        // Apply saved theme immediately to prevent flash
+        if (localStorage.getItem('theme') === 'light') {
+            document.documentElement.classList.add('light-mode');
+        }
+    </script>
+    <style>
+        #themeToggle {
+            background: none;
+            border: none;
+            box-shadow: none;
+            outline: none;
+            color: inherit;
+            cursor: pointer;
+            font-size: 1.3rem;
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            line-height: 1;
+        }
+        #themeToggle:hover {
+            background: none;
+            border: none;
+            transform: scale(1.2);
+        }
+    </style>
 </head>
 <body>
 
@@ -470,8 +496,8 @@ if ($view === 'order' && $oiParam > 0 && $hasOrders && $hasOrderItems) {
             <li><a href="productsPage.php">Shop</a></li>
             <li><a href="AboutUs.php">About</a></li>
             <li><a href="Contact.php">Contact</a></li>
-			<li><a href="FAQTestimonials.php" class="active">FAQ</a></li> 
-            <button id="themeToggle">Theme</button>
+            <li><a href="FAQTestimonials.php">FAQ</a></li>
+            <li><button id="themeToggle" onclick="toggleTheme()">🌙</button></li>
             <li><a href="index.php?logout=1" class="btn logout">Logout</a></li>
         </ul>
     </nav>
@@ -589,9 +615,7 @@ if ($view === 'order' && $oiParam > 0 && $hasOrders && $hasOrderItems) {
                 <?php if (!empty($itemDetail['image'])): ?>
                     <h3 style="margin-top:18px;">Image</h3>
                     <?php
-                    // Handle different image path formats
                     $imagePath = $itemDetail['image'];
-                    // If path doesn't already have a directory prefix, prepend 'images/'
                     if (!preg_match('/^(uploads\/|images\/|products\/|assets\/|https?:\/\/)/i', $imagePath)) {
                         $imagePath = 'images/' . $imagePath;
                     }
@@ -897,6 +921,30 @@ if ($view === 'order' && $oiParam > 0 && $hasOrders && $hasOrderItems) {
         </div>
     </section>
 </div>
+
+<script>
+    function toggleTheme() {
+        const html = document.documentElement;
+        const themeToggle = document.getElementById('themeToggle');
+        if (html.classList.contains('light-mode')) {
+            html.classList.remove('light-mode');
+            themeToggle.textContent = '🌙';
+            localStorage.setItem('theme', 'dark');
+        } else {
+            html.classList.add('light-mode');
+            themeToggle.textContent = '☀️';
+            localStorage.setItem('theme', 'light');
+        }
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+        const themeToggle = document.getElementById('themeToggle');
+        if (localStorage.getItem('theme') === 'light') {
+            themeToggle.textContent = '☀️';
+        } else {
+            themeToggle.textContent = '🌙';
+        }
+    });
+</script>
 
 </body>
 </html>
