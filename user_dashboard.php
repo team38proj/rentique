@@ -340,6 +340,7 @@ $menuItems = [
                 </svg>
             </a></li>
             <li><button id="themeToggle" onclick="toggleTheme()">🌙</button></li>
+            <li><a href="seller_dashboard.php">Sell</a></li>
             <li><a href="user_dashboard.php"><?= h($userData['username']) ?></a></li>
             <li><a href="index.php?logout=1" class="btn logout">Logout</a></li>
         </ul>
