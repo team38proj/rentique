@@ -5,6 +5,9 @@ $db_host = 'localhost';
 $db_name = 'cs2team38_db';
 $db_user = 'cs2team38';
 $db_pass = 'A9BLN1Yz5VXDDF3ewpaDXNNEb';
+$username_local = 'root';
+$password_local = '';
+$db_host_local = 'localhost';
 
 try {
     $db = new PDO(
@@ -16,9 +19,17 @@ try {
     $db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
 } catch (PDOException $e) {
-    echo "Failed to connect to database.<br>";
-    echo "Error: " . $e->getMessage();
-    exit;
+    echo "Failed to connect to database. Trying locally installed DB now.<br>";
+    echo "Remote DB Error: " . $e->getMessage();
+
+    try {
+		$db = new PDO("mysql:dbname=$db_name;host=$db_host_local", $username_local, $password_local); 
+		#$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	} catch(PDOException $ex) {
+		echo("Failed to connect to local database.<br>");
+		echo("Error in connectdb for local DB connection: " . $ex->getMessage());
+	exit;
+}
 }
 
 /* CSRF FUNCTIONS */
