@@ -99,19 +99,18 @@ if (isset($_GET['search']) || isset($_GET['category']) || isset($_GET['price_ran
         .cart-icon svg {
             width: 20px;
             height: 20px;
-            stroke: #ffffff;
+            stroke: #eaeaea;
             transition: all 0.3s ease;
         }
-        body.light-mode .cart-icon svg {
-            stroke: #333333;
+        html.light-mode .cart-icon svg {
+            stroke: #000000;
         }
         .cart-icon:hover svg {
-            stroke: #00ff00;
-            filter: drop-shadow(0 0 10px rgba(0, 255, 0, 0.5));
+            stroke: #00FF00;
         }
         #themeToggle {
             background: transparent;
-            border: 1px solid rgba(0, 255, 0, 0.3);
+            border: 1px solid #00FF00;
             color: #ffffff;
             width: 36px;
             height: 36px;
@@ -124,14 +123,14 @@ if (isset($_GET['search']) || isset($_GET['category']) || isset($_GET['price_ran
             justify-content: center;
             padding: 0;
         }
-        body.light-mode #themeToggle {
+        html.light-mode #themeToggle {
             color: #333333;
-            border-color: rgba(0, 255, 0, 0.5);
+            border-color: #00FF00;
             background: transparent;
         }
         #themeToggle:hover {
-            background: rgba(0, 255, 0, 0.1);
-            border-color: #00ff00;
+            background: transparent;
+            border-color: #d2ff4c;
             transform: scale(1.1);
         }
     </style>
