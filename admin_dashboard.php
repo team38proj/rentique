@@ -20,20 +20,13 @@ if (!isset($_SESSION['uid'])) {
 
 $admin_uid = (int)$_SESSION['uid'];
 
-/* Helper functions */
-
 function h($v) {
     return htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8');
 }
 
 function tableExists(PDO $db, $tableName) {
     try {
-        $stmt = $db->prepare("
-            SELECT COUNT(*)
-            FROM information_schema.tables
-            WHERE table_schema = DATABASE()
-              AND table_name = ?
-        ");
+        $stmt = $db->prepare("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = DATABASE() AND table_name = ?");
         $stmt->execute([$tableName]);
         return ((int)$stmt->fetchColumn() > 0);
     } catch (PDOException $e) {
@@ -44,13 +37,7 @@ function tableExists(PDO $db, $tableName) {
 
 function columnExists(PDO $db, $tableName, $colName) {
     try {
-        $stmt = $db->prepare("
-            SELECT COUNT(*)
-            FROM information_schema.columns
-            WHERE table_schema = DATABASE()
-              AND table_name = ?
-              AND column_name = ?
-        ");
+        $stmt = $db->prepare("SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = DATABASE() AND table_name = ? AND column_name = ?");
         $stmt->execute([$tableName, $colName]);
         return ((int)$stmt->fetchColumn() > 0);
     } catch (PDOException $e) {
@@ -115,32 +102,23 @@ function renderEmptyRow($colspan, $message) {
     return '<tr><td colspan="' . (int)$colspan . '">' . h($message) . '</td></tr>';
 }
 
-/* Admin access check */
-
 $userRole = getRow($db, "SELECT role FROM users WHERE uid = ? LIMIT 1", [$admin_uid]);
 if (!$userRole || ($userRole['role'] ?? '') !== 'admin') {
     die("Access denied.");
 }
-
-/* View parameters */
 
 $view = trim($_GET['view'] ?? '');
 $uidParam = isset($_GET['uid']) ? (int)$_GET['uid'] : 0;
 $pidParam = isset($_GET['pid']) ? (int)$_GET['pid'] : 0;
 $oiParam  = isset($_GET['oi'])  ? (int)$_GET['oi']  : 0;
 
-// Log the parameters for debugging
 error_log("Admin Dashboard - View: {$view}, UID: {$uidParam}, PID: {$pidParam}, OI: {$oiParam}");
-
-/* Schema detection */
 
 $hasProducts = tableExists($db, 'products');
 $hasUsers = tableExists($db, 'users');
-
 $hasOrders = tableExists($db, 'orders');
 $hasOrderItems = tableExists($db, 'order_items');
 $hasShipments = tableExists($db, 'order_shipments');
-
 $hasAdminConversations = tableExists($db, 'admin_conversations');
 
 $productsHasIsAvailable = $hasProducts && columnExists($db, 'products', 'is_available');
@@ -152,25 +130,18 @@ $usersHasPayout = $hasUsers && columnExists($db, 'users', 'pay_sortcode') && col
 $usersHasAddress = $hasUsers && columnExists($db, 'users', 'address');
 $usersHasBilling = $hasUsers && columnExists($db, 'users', 'billing_fullname');
 
-/* Dashboard totals */
-
 $totalUsers = $hasUsers ? getCount($db, "SELECT COUNT(*) FROM users") : 0;
 $totalItems = $hasProducts ? getCount($db, "SELECT COUNT(*) FROM products") : 0;
-
 $totalSellers = 0;
 if ($hasProducts) {
     $totalSellers = getCount($db, "SELECT COUNT(DISTINCT uid) FROM products WHERE uid IS NOT NULL");
 }
-
 $totalOrders = ($hasOrders ? getCount($db, "SELECT COUNT(*) FROM orders") : 0);
 $totalOrderItems = ($hasOrderItems ? getCount($db, "SELECT COUNT(*) FROM order_items") : 0);
-
 $supportOpenCount = 0;
 if ($hasAdminConversations) {
     $supportOpenCount = getCount($db, "SELECT COUNT(*) FROM admin_conversations WHERE status = 'open'");
 }
-
-/* Lists */
 
 $users = [];
 $sellers = [];
@@ -242,17 +213,13 @@ if ($hasAdminConversations && $hasUsers) {
     ");
 }
 
-/* Detail views */
-
 $userDetail = null;
 $sellerDetail = null;
 $itemDetail = null;
-
 $userListings = [];
 $userOrdersAsBuyer = [];
 $userOrdersAsSeller = [];
 $itemOrderHistory = [];
-
 $orderItemDetail = null;
 $orderShipmentDetail = null;
 
@@ -267,54 +234,33 @@ if ($view === 'user' && $uidParam > 0 && $hasUsers) {
 
     if ($hasProducts) {
         $userListings = getList($db,
-            "SELECT pid, title, " 
+            "SELECT pid, title, "
             . ($productsHasProductType ? "product_type" : "'' AS product_type") . ", "
             . "price, " . ($productsHasIsAvailable ? "is_available" : "1") . " AS is_available
-             FROM products
-             WHERE uid = ?
-             ORDER BY pid DESC
-             LIMIT 100",
+             FROM products WHERE uid = ? ORDER BY pid DESC LIMIT 100",
             [$uidParam]
         );
     }
 
     if ($hasOrders && $hasOrderItems) {
         $userOrdersAsBuyer = getList($db, "
-            SELECT
-                oi.id AS order_item_id,
-                o.order_id AS order_public_id,
-                o.created_at,
-                oi.title,
-                oi.pid,
-                oi.rental_days,
-                oi.platform_fee,
-                oi.line_total,
-                us.username AS seller_name
+            SELECT oi.id AS order_item_id, o.order_id AS order_public_id, o.created_at,
+                oi.title, oi.pid, oi.rental_days, oi.platform_fee, oi.line_total, us.username AS seller_name
             FROM order_items oi
             JOIN orders o ON o.id = oi.order_id_fk
             LEFT JOIN users us ON us.uid = oi.seller_uid
             WHERE o.buyer_uid = ?
-            ORDER BY o.created_at DESC, oi.id DESC
-            LIMIT 200
+            ORDER BY o.created_at DESC, oi.id DESC LIMIT 200
         ", [$uidParam]);
 
         $userOrdersAsSeller = getList($db, "
-            SELECT
-                oi.id AS order_item_id,
-                o.order_id AS order_public_id,
-                o.created_at,
-                oi.title,
-                oi.pid,
-                oi.rental_days,
-                oi.platform_fee,
-                oi.line_total,
-                ub.username AS buyer_name
+            SELECT oi.id AS order_item_id, o.order_id AS order_public_id, o.created_at,
+                oi.title, oi.pid, oi.rental_days, oi.platform_fee, oi.line_total, ub.username AS buyer_name
             FROM order_items oi
             JOIN orders o ON o.id = oi.order_id_fk
             LEFT JOIN users ub ON ub.uid = o.buyer_uid
             WHERE oi.seller_uid = ?
-            ORDER BY o.created_at DESC, oi.id DESC
-            LIMIT 200
+            ORDER BY o.created_at DESC, oi.id DESC LIMIT 200
         ", [$uidParam]);
     }
 }
@@ -331,120 +277,80 @@ if ($view === 'seller' && $uidParam > 0 && $hasUsers) {
 
     if ($hasProducts) {
         $userListings = getList($db,
-            "SELECT pid, title, " 
+            "SELECT pid, title, "
             . ($productsHasProductType ? "product_type" : "'' AS product_type") . ", "
             . "price, " . ($productsHasIsAvailable ? "is_available" : "1") . " AS is_available
-             FROM products
-             WHERE uid = ?
-             ORDER BY pid DESC
-             LIMIT 200",
+             FROM products WHERE uid = ? ORDER BY pid DESC LIMIT 200",
             [$uidParam]
         );
     }
 
     if ($hasOrders && $hasOrderItems) {
         $userOrdersAsSeller = getList($db, "
-            SELECT
-                oi.id AS order_item_id,
-                o.order_id AS order_public_id,
-                o.created_at,
-                oi.title,
-                oi.pid,
-                oi.rental_days,
-                oi.platform_fee,
-                oi.line_total,
-                ub.username AS buyer_name
+            SELECT oi.id AS order_item_id, o.order_id AS order_public_id, o.created_at,
+                oi.title, oi.pid, oi.rental_days, oi.platform_fee, oi.line_total, ub.username AS buyer_name
             FROM order_items oi
             JOIN orders o ON o.id = oi.order_id_fk
             LEFT JOIN users ub ON ub.uid = o.buyer_uid
             WHERE oi.seller_uid = ?
-            ORDER BY o.created_at DESC, oi.id DESC
-            LIMIT 200
+            ORDER BY o.created_at DESC, oi.id DESC LIMIT 200
         ", [$uidParam]);
     }
 }
 
 if ($view === 'item' && $pidParam > 0 && $hasProducts) {
     error_log("Fetching item details for PID: {$pidParam}");
-    
+
     $itemDetail = getRow($db,
-        "SELECT
-            p.pid, 
-            p.title, 
-            " . ($productsHasImage ? "p.image" : "'' AS image") . ", 
-            " . ($productsHasProductType ? "p.product_type" : "'' AS product_type") . ", 
-            p.price, 
-            " . ($productsHasDescription ? "p.description" : "'' AS description") . ",
-            p.uid AS seller_uid,
-            u.username AS seller_name,
-            u.email AS seller_email,
+        "SELECT p.pid, p.title, "
+        . ($productsHasImage ? "p.image" : "'' AS image") . ", "
+        . ($productsHasProductType ? "p.product_type" : "'' AS product_type") . ", "
+        . "p.price, "
+        . ($productsHasDescription ? "p.description" : "'' AS description") . ",
+            p.uid AS seller_uid, u.username AS seller_name, u.email AS seller_email,
             " . ($productsHasIsAvailable ? "p.is_available" : "1") . " AS is_available
          FROM products p
          LEFT JOIN users u ON u.uid = p.uid
          WHERE p.pid = ? LIMIT 1",
         [$pidParam]
     );
-    
+
     error_log("Item detail fetched: " . ($itemDetail ? "YES (PID: {$itemDetail['pid']})" : "NO"));
 
     if ($itemDetail && $hasOrders && $hasOrderItems) {
         $itemOrderHistory = getList($db, "
-            SELECT
-                oi.id AS order_item_id,
-                o.order_id AS order_public_id,
-                o.created_at,
-                ub.username AS buyer_name,
-                us.username AS seller_name,
-                oi.rental_days,
-                oi.per_day_price,
-                oi.platform_fee,
-                oi.line_total
+            SELECT oi.id AS order_item_id, o.order_id AS order_public_id, o.created_at,
+                ub.username AS buyer_name, us.username AS seller_name,
+                oi.rental_days, oi.per_day_price, oi.platform_fee, oi.line_total
             FROM order_items oi
             JOIN orders o ON o.id = oi.order_id_fk
             LEFT JOIN users ub ON ub.uid = o.buyer_uid
             LEFT JOIN users us ON us.uid = oi.seller_uid
             WHERE oi.pid = ?
-            ORDER BY o.created_at DESC, oi.id DESC
-            LIMIT 200
+            ORDER BY o.created_at DESC, oi.id DESC LIMIT 200
         ", [$pidParam]);
     }
 }
 
 if ($view === 'order' && $oiParam > 0 && $hasOrders && $hasOrderItems) {
     $orderItemDetail = getRow($db, "
-        SELECT
-            oi.id AS order_item_id,
-            o.order_id AS order_public_id,
-            o.created_at,
-            o.status AS order_status,
-            o.buyer_uid,
-            ub.username AS buyer_name,
-            ub.email AS buyer_email,
-            oi.seller_uid,
-            us.username AS seller_name,
-            us.email AS seller_email,
-            oi.pid,
-            oi.title AS item_title,
-            oi.product_type,
-            oi.image,
-            oi.per_day_price,
-            oi.rental_days,
-            oi.platform_fee,
-            oi.line_total
+        SELECT oi.id AS order_item_id, o.order_id AS order_public_id, o.created_at,
+            o.status AS order_status, o.buyer_uid, ub.username AS buyer_name, ub.email AS buyer_email,
+            oi.seller_uid, us.username AS seller_name, us.email AS seller_email,
+            oi.pid, oi.title AS item_title, oi.product_type, oi.image,
+            oi.per_day_price, oi.rental_days, oi.platform_fee, oi.line_total
         FROM order_items oi
         JOIN orders o ON o.id = oi.order_id_fk
         LEFT JOIN users ub ON ub.uid = o.buyer_uid
         LEFT JOIN users us ON us.uid = oi.seller_uid
-        WHERE oi.id = ?
-        LIMIT 1
+        WHERE oi.id = ? LIMIT 1
     ", [$oiParam]);
 
     if ($orderItemDetail && $hasShipments) {
         $orderShipmentDetail = getRow($db, "
-            SELECT shipped_at, courier, tracking_number, buyer_marked_returned_at, buyer_return_courier, buyer_return_tracking, seller_marked_received_at
-            FROM order_shipments
-            WHERE order_item_id = ?
-            LIMIT 1
+            SELECT shipped_at, courier, tracking_number, buyer_marked_returned_at,
+                buyer_return_courier, buyer_return_tracking, seller_marked_received_at
+            FROM order_shipments WHERE order_item_id = ? LIMIT 1
         ", [$oiParam]);
     }
 }
@@ -456,6 +362,35 @@ if ($view === 'order' && $oiParam > 0 && $hasOrders && $hasOrderItems) {
     <title>Rentique | Admin Dashboard</title>
     <link rel="stylesheet" href="css/rentique.css">
     <script src="js/theme.js" defer></script>
+
+    <!-- Theme toggle styles -->
+    <style>
+        #themeToggle {
+            background: transparent;
+            border: 1px solid #00FF00;
+            color: #ffffff;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+        html.light-mode #themeToggle {
+            color: #333333;
+            border-color: #00FF00;
+            background: transparent;
+        }
+        #themeToggle:hover {
+            background: transparent;
+            border-color: #d2ff4c;
+            transform: scale(1.1);
+        }
+    </style>
 </head>
 <body>
 
@@ -470,7 +405,13 @@ if ($view === 'order' && $oiParam > 0 && $hasOrders && $hasOrderItems) {
             <li><a href="productsPage.php">Shop</a></li>
             <li><a href="AboutUs.php">About</a></li>
             <li><a href="Contact.php">Contact</a></li>
-            <button id="themeToggle">Theme</button>
+            <li><a href="FAQTestimonials.php">FAQ</a></li>
+
+            <!-- Theme Toggle Button (no cart icon on admin page) -->
+            <li>
+                <button id="themeToggle" onclick="toggleTheme()">🌙</button>
+            </li>
+
             <li><a href="index.php?logout=1" class="btn logout">Logout</a></li>
         </ul>
     </nav>
@@ -587,9 +528,7 @@ if ($view === 'order' && $oiParam > 0 && $hasOrders && $hasOrderItems) {
                 <?php if (!empty($itemDetail['image'])): ?>
                     <h3 style="margin-top:18px;">Image</h3>
                     <?php
-                    // Handle different image path formats
                     $imagePath = $itemDetail['image'];
-                    // If path doesn't already have a directory prefix, prepend 'images/'
                     if (!preg_match('/^(uploads\/|images\/|products\/|assets\/|https?:\/\/)/i', $imagePath)) {
                         $imagePath = 'images/' . $imagePath;
                     }
@@ -896,6 +835,33 @@ if ($view === 'order' && $oiParam > 0 && $hasOrders && $hasOrderItems) {
 
     </section>
 </div>
+
+<!-- Theme toggle script -->
+<script>
+    function toggleTheme() {
+        const body = document.body;
+        const themeToggle = document.getElementById('themeToggle');
+        if (body.classList.contains('light-mode')) {
+            body.classList.remove('light-mode');
+            themeToggle.textContent = '🌙';
+            localStorage.setItem('theme', 'dark');
+        } else {
+            body.classList.add('light-mode');
+            themeToggle.textContent = '☀️';
+            localStorage.setItem('theme', 'light');
+        }
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+        const savedTheme = localStorage.getItem('theme');
+        const themeToggle = document.getElementById('themeToggle');
+        if (savedTheme === 'light') {
+            document.body.classList.add('light-mode');
+            themeToggle.textContent = '☀️';
+        } else {
+            themeToggle.textContent = '🌙';
+        }
+    });
+</script>
 
 </body>
 </html>
