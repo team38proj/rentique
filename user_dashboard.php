@@ -266,7 +266,57 @@ $menuItems = [
     <meta charset="UTF-8">
     <title>Rentique | User Dashboard</title>
     <link rel="stylesheet" href="css/rentique.css">
-    <script src="js/theme.js" defer></script>
+    <script>
+        // Apply saved theme immediately to prevent flash
+        if (localStorage.getItem('theme') === 'light') {
+            document.documentElement.classList.add('light-mode');
+        }
+    </script>
+    <style>
+        .cart-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .cart-icon svg {
+            width: 20px;
+            height: 20px;
+            stroke: #ffffff;
+            transition: all 0.3s ease;
+        }
+        html.light-mode .cart-icon svg {
+            stroke: #333333;
+        }
+        .cart-icon:hover svg {
+            stroke: #00ff00;
+            filter: drop-shadow(0 0 10px rgba(0, 255, 0, 0.5));
+        }
+        #themeToggle {
+            background: transparent;
+            border: 1px solid rgba(0, 255, 0, 0.3);
+            color: #ffffff;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+        html.light-mode #themeToggle {
+            color: #333333;
+            border-color: rgba(0, 255, 0, 0.5);
+            background: transparent;
+        }
+        #themeToggle:hover {
+            background: rgba(0, 255, 0, 0.1);
+            border-color: #00ff00;
+            transform: scale(1.1);
+        }
+    </style>
 </head>
 <body>
 
@@ -281,10 +331,17 @@ $menuItems = [
             <li><a href="productsPage.php">Shop</a></li>
             <li><a href="AboutUs.php">About</a></li>
             <li><a href="Contact.php">Contact</a></li>
-            <li><a href="basketPage.php" class="cart-icon">Basket</a></li>
-            <button id="themeToggle">Theme</button>
+            <li><a href="basketPage.php" class="cart-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"></path>
+                </svg>
+            </a></li>
+            <li><button id="themeToggle" onclick="toggleTheme()">🌙</button></li>
             <li><a href="user_dashboard.php"><?= h($userData['username']) ?></a></li>
-            <li><a href="index.php?logout=1" class="btn login">Logout</a></li>
+            <li><a href="index.php?logout=1" class="btn logout">Logout</a></li>
         </ul>
     </nav>
 </header>
@@ -606,6 +663,29 @@ $menuItems = [
     </section>
 </div>
 
+<script>
+    function toggleTheme() {
+        const html = document.documentElement;
+        const themeToggle = document.getElementById('themeToggle');
+        if (html.classList.contains('light-mode')) {
+            html.classList.remove('light-mode');
+            themeToggle.textContent = '🌙';
+            localStorage.setItem('theme', 'dark');
+        } else {
+            html.classList.add('light-mode');
+            themeToggle.textContent = '☀️';
+            localStorage.setItem('theme', 'light');
+        }
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+        const themeToggle = document.getElementById('themeToggle');
+        if (localStorage.getItem('theme') === 'light') {
+            themeToggle.textContent = '☀️';
+        } else {
+            themeToggle.textContent = '🌙';
+        }
+    });
+</script>
+
 </body>
 </html>
-
