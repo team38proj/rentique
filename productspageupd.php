@@ -301,16 +301,16 @@ $categories = $catStmt->fetchAll(PDO::FETCH_COLUMN);
             gap: 6px;
         }
 
-        .price-radio {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 10px;
-            background: var(--bg-hover);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            font-size: 0.85rem;
-        }
+		      .price-radio {
+		    display: flex;
+		    align-items: center;
+		    gap: 8px;
+		    padding: 6px 10px;
+		    background: #1a1a1a;
+		    border: 1px solid var(--border-color);
+		    border-radius: 6px;
+		    font-size: 0.85rem;
+		}	
 
              .price-radio label {
             color: #ffffff;
@@ -1317,5 +1317,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
 </body>
 </html>
+
 
 
