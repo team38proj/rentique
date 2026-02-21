@@ -312,8 +312,8 @@ $categories = $catStmt->fetchAll(PDO::FETCH_COLUMN);
             font-size: 0.85rem;
         }
 
-        .price-radio label {
-            color: var(--text-primary);
+             .price-radio label {
+            color: #ffffff;
             font-size: 0.85rem;
             cursor: pointer;
         }
@@ -1317,4 +1317,5 @@ document.addEventListener("DOMContentLoaded", function() {
 
 </body>
 </html>
+
 
