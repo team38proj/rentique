@@ -5,20 +5,15 @@ ini_set('display_errors', 1);
 session_start();
 require_once 'connectdb.php';
 
-// 🔐 Generate CSRF token
 if (empty($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
 
 $errors = [];
 
-
-/* =========================
-   PROCESS LOGIN
-========================= */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
+    if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
         die("CSRF validation failed");
     }
 
@@ -38,7 +33,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             session_regenerate_id(true);
 
-            // Skip MFA for admin
             if ($user['role'] === 'admin') {
 
                 $_SESSION['uid']   = $user['uid'];
@@ -49,7 +43,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 exit;
             }
 
-            // Store for Secret MFA
             $_SESSION['secret_mfa_user'] = [
                 'uid'   => $user['uid'],
                 'email' => $user['email'],
@@ -67,18 +60,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rentique | Welcome Back</title>
-    <!-- Google Fonts for better typography -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
-    <!-- Font Awesome for better icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Rentique | Login</title>
+    <link rel="icon" type="image/png" href="images/rentique_logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -87,16 +74,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            background: #000;
             position: relative;
-            overflow-x: hidden;
         }
 
-        /* Premium animated background */
+        /* added picture from about us here as bg */
         body::before {
             content: '';
             position: fixed;
@@ -104,12 +91,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             left: 0;
             width: 100%;
             height: 100%;
-            background-image:
-                linear-gradient(135deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.6) 50%, rgba(0, 0, 0, 0.85) 100%),
-                url("images/Dakar1.png");
+            background-image: url("images/Dakar1.png");
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+            opacity: 0.4;
             z-index: -2;
         }
 
@@ -120,537 +106,403 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 30% 50%, rgba(255, 215, 0, 0.08) 0%, transparent 50%);
+            background: radial-gradient(circle at 30% 50%, rgba(0, 255, 0, 0.1) 0%, transparent 60%);
             z-index: -1;
-            animation: pulseGlow 8s ease-in-out infinite;
-        }
-
-        @keyframes pulseGlow {
-
-            0%,
-            100% {
-                opacity: 0.5;
-            }
-
-            50% {
-                opacity: 1;
-            }
         }
 
         .auth-wrapper {
             width: 100%;
-            max-width: 480px;
+            max-width: 420px;
             padding: 20px;
-            position: relative;
-            animation: floatIn 1s cubic-bezier(0.23, 1, 0.32, 1);
+            animation: fadeIn 0.6s ease-out;
         }
 
-        @keyframes floatIn {
-            0% {
+        @keyframes fadeIn {
+            from {
                 opacity: 0;
-                transform: translateY(40px) scale(0.95);
+                transform: translateY(20px);
             }
-
-            100% {
+            to {
                 opacity: 1;
-                transform: translateY(0) scale(1);
+                transform: translateY(0);
             }
         }
 
         .login-container {
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(20px);
-            border-radius: 40px;
-            padding: 50px 45px;
-            box-shadow:
-                0 30px 60px -20px rgba(0, 0, 0, 0.6),
-                0 0 0 1px rgba(255, 255, 255, 0.1) inset,
-                0 20px 40px -15px rgba(0, 0, 0, 0.5);
-            transform: translateY(0);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: 1px solid rgba(255, 215, 0, 0.2);
+            background: #111;
+            border: 2px solid #00FF00;
+            border-radius: 12px;
+            padding: 40px 35px;
+            box-shadow: 0 20px 40px rgba(0, 255, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
         }
 
         .login-container:hover {
-            transform: translateY(-8px);
-            box-shadow:
-                0 40px 70px -20px rgba(0, 0, 0, 0.8),
-                0 0 0 1px rgba(255, 215, 0, 0.3) inset,
-                0 30px 50px -15px rgba(0, 0, 0, 0.7);
+            border-color: #d2ff4c;
+            box-shadow: 0 25px 50px rgba(0, 255, 0, 0.15);
+        }
+
+     
+        .logo-area {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .logo-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 10px;
+            background: #000;
+            border: 2px solid #00FF00;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-icon i {
+            color: #00FF00;
+            font-size: 30px;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: #00FF00;
+            text-transform: lowercase;
+            letter-spacing: 1px;
         }
 
         h2 {
-            color: #1a1a1a;
-            font-size: 42px;
-            font-weight: 800;
-            letter-spacing: -1px;
-            margin-bottom: 35px;
-            text-align: left;
+            color: #fff;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            text-align: center;
             position: relative;
-            background: linear-gradient(135deg, #1a1a1a 0%, #333333 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        h2::before {
-            content: '👋';
-            font-size: 32px;
-            margin-right: 12px;
-            background: none;
-            -webkit-text-fill-color: initial;
-            display: inline-block;
-            animation: wave 2.5s infinite;
-            transform-origin: 70% 70%;
-        }
-
-        @keyframes wave {
-
-            0%,
-            100% {
-                transform: rotate(0deg);
-            }
-
-            10% {
-                transform: rotate(14deg);
-            }
-
-            20% {
-                transform: rotate(-8deg);
-            }
-
-            30% {
-                transform: rotate(14deg);
-            }
-
-            40% {
-                transform: rotate(-4deg);
-            }
-
-            50% {
-                transform: rotate(10deg);
-            }
-
-            60% {
-                transform: rotate(0deg);
-            }
+            padding-bottom: 12px;
         }
 
         h2::after {
             content: '';
             position: absolute;
-            bottom: -12px;
-            left: 0;
-            width: 80px;
-            height: 4px;
-            background: linear-gradient(90deg, #FFD700, #FFA500, #FF8C00);
-            border-radius: 4px;
-            transition: width 0.4s ease;
-        }
-
-        .login-container:hover h2::after {
-            width: 150px;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 3px;
+            background: #00FF00;
+            border-radius: 3px;
         }
 
         .error-message {
-            background: linear-gradient(135deg, #fff5f5 0%, #ffe9e9 100%);
-            border-left: 6px solid #ff3b3b;
-            color: #d63031;
-            padding: 18px 22px;
-            border-radius: 20px;
-            font-size: 15px;
-            font-weight: 600;
-            margin-bottom: 30px;
+            background: rgba(255, 0, 0, 0.1);
+            border-left: 4px solid #ff4444;
+            color: #ff8888;
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            margin-bottom: 25px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            box-shadow: 0 10px 20px -8px rgba(255, 59, 59, 0.3);
-            animation: shake 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+            gap: 10px;
         }
 
         .error-message i {
-            font-size: 22px;
-            color: #ff3b3b;
-        }
-
-        @keyframes shake {
-
-            10%,
-            90% {
-                transform: translateX(-2px);
-            }
-
-            20%,
-            80% {
-                transform: translateX(4px);
-            }
-
-            30%,
-            50%,
-            70% {
-                transform: translateX(-6px);
-            }
-
-            40%,
-            60% {
-                transform: translateX(6px);
-            }
+            color: #ff4444;
+            font-size: 16px;
         }
 
         .field {
-            margin-bottom: 25px;
-            position: relative;
-        }
-
-        .field .icon {
-            position: absolute;
-            left: 22px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #FFD700;
-            transition: all 0.3s ease;
-            z-index: 2;
-            font-size: 18px;
+            margin-bottom: 20px;
         }
 
         .field input {
             width: 100%;
-            height: 70px;
-            padding: 0 30px 0 60px;
-            background: #f8f9fc;
-            border: 2px solid transparent;
-            border-radius: 25px;
-            font-size: 16px;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            color: #1a1a1a;
+            height: 48px;
+            padding: 0 16px;
+            background: #1a1a1a;
+            border: 2px solid #333;
+            border-radius: 6px;
+            font-size: 15px;
+            color: #fff;
             transition: all 0.3s ease;
-            box-shadow: 0 8px 20px -8px rgba(0, 0, 0, 0.15);
-            font-weight: 500;
         }
 
         .field input:hover {
-            background: #ffffff;
-            transform: scale(1.02);
-            box-shadow: 0 12px 25px -10px rgba(255, 215, 0, 0.3);
+            border-color: #00FF00;
+            background: #222;
         }
 
         .field input:focus {
             outline: none;
-            background: #ffffff;
-            border-color: #FFD700;
-            box-shadow:
-                0 15px 30px -10px rgba(255, 215, 0, 0.4),
-                0 0 0 5px rgba(255, 215, 0, 0.1);
-            transform: scale(1.02);
-            padding-left: 65px;
+            border-color: #00FF00;
+            background: #222;
+            box-shadow: 0 0 0 3px rgba(0, 255, 0, 0.1);
         }
 
         .field input::placeholder {
-            color: #a0a0a0;
-            font-weight: 400;
-            transition: all 0.3s ease;
-        }
-
-        .field input:focus::placeholder {
-            opacity: 0.7;
-            transform: translateX(10px);
-        }
-
-        .field:focus-within .icon {
-            color: #FFA500;
-            transform: translateY(-50%) scale(1.1);
+            color: #666;
         }
 
         .btn {
             width: 100%;
-            height: 70px;
-            background: linear-gradient(135deg, #FFD700, #FFA500, #FF8C00);
-            color: #1a1a1a;
+            height: 48px;
+            background: #00FF00;
+            color: #000;
             border: none;
-            border-radius: 25px;
-            font-size: 20px;
-            font-weight: 800;
-            letter-spacing: 1px;
-            text-transform: uppercase;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            overflow: hidden;
-            box-shadow:
-                0 15px 30px -8px rgba(255, 165, 0, 0.4),
-                0 0 0 2px rgba(255, 255, 255, 0.3) inset;
+            transition: all 0.3s ease;
             margin-top: 15px;
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.4);
-            transform: translate(-50%, -50%);
-            transition: width 0.8s ease, height 0.8s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
         .btn:hover {
-            transform: translateY(-4px) scale(1.02);
-            box-shadow:
-                0 25px 40px -8px #FF8C00,
-                0 0 0 3px rgba(255, 255, 255, 0.5) inset;
-            background: linear-gradient(135deg, #FFE55C, #FFB347, #FFA500);
-        }
-
-        .btn:hover::before {
-            width: 400px;
-            height: 400px;
+            background: #d2ff4c;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 255, 0, 0.3);
         }
 
         .btn:active {
-            transform: translateY(2px);
-            box-shadow: 0 10px 20px -5px #FF8C00;
+            transform: translateY(0);
         }
 
         .btn i {
-            margin-right: 10px;
-            font-size: 18px;
-            transition: transform 0.3s ease;
+            font-size: 14px;
         }
 
-        .btn:hover i {
-            transform: translateX(5px);
-        }
-
-        .login-container>p {
+        .links {
             text-align: center;
-            margin-top: 35px;
-            color: #4a4a4a;
-            font-size: 16px;
-            font-weight: 500;
-            padding-top: 25px;
-            border-top: 2px dashed rgba(255, 215, 0, 0.3);
-            position: relative;
+            margin-top: 25px;
         }
 
-        .login-container>p::before {
-            content: '✨';
-            position: absolute;
-            top: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: white;
-            padding: 0 15px;
-            font-size: 18px;
+        .links p {
+            color: #888;
+            font-size: 14px;
+            margin-bottom: 8px;
         }
 
-        .login-container a {
-            color: #FF8C00;
+        .links a {
+            color: #00FF00;
             text-decoration: none;
-            font-weight: 700;
+            font-weight: 600;
             transition: all 0.3s ease;
             position: relative;
-            display: inline-block;
         }
 
-        .login-container a::after {
+        .links a::after {
             content: '';
             position: absolute;
-            bottom: -3px;
+            bottom: -2px;
             left: 0;
             width: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #FFD700, #FFA500);
+            height: 2px;
+            background: #00FF00;
             transition: width 0.3s ease;
-            border-radius: 3px;
         }
 
-        .login-container a:hover {
-            color: #00ff2a;
-            transform: translateX(5px);
+        .links a:hover {
+            color: #d2ff4c;
         }
 
-        .login-container a:hover::after {
+        .links a:hover::after {
             width: 100%;
         }
 
-        /* Decorative elements */
-        .login-container::before {
-            content: '';
-            position: absolute;
-            top: -10px;
-            right: -10px;
-            width: 100px;
-            height: 100px;
-            background: radial-gradient(circle, rgba(255, 215, 0, 0.2) 0%, transparent 70%);
-            border-radius: 50%;
-            z-index: -1;
-            animation: float 6s ease-in-out infinite;
+        .signup-link {
+            display: inline-block;
+            padding: 8px 24px;
+            border: 2px solid #00FF00;
+            border-radius: 25px;
+            margin-top: 8px;
+            font-weight: 600;
         }
 
-        .login-container::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: -10px;
-            width: 150px;
-            height: 150px;
-            background: radial-gradient(circle, rgba(255, 165, 0, 0.15) 0%, transparent 70%);
-            border-radius: 50%;
-            z-index: -1;
-            animation: float 8s ease-in-out infinite reverse;
+        .signup-link:hover {
+            background: #00FF00;
+            color: #000 !important;
         }
 
-        @keyframes float {
-
-            0%,
-            100% {
-                transform: translate(0, 0);
-            }
-
-            50% {
-                transform: translate(10px, -10px);
-            }
+        .signup-link:hover::after {
+            display: none;
         }
 
-        /* Responsive design */
-        @media (max-width: 520px) {
+        html.light-mode body {
+            background: #f5f5f5;
+        }
+
+        html.light-mode .login-container {
+            background: #fff;
+            border-color: #00FF00;
+        }
+
+        html.light-mode h2 {
+            color: #000;
+        }
+
+        html.light-mode .logo-icon {
+            background: #fff;
+        }
+
+        html.light-mode .logo-text {
+            color: #00FF00;
+        }
+
+        html.light-mode .field input {
+            background: #f5f5f5;
+            border-color: #ddd;
+            color: #000;
+        }
+
+        html.light-mode .field input:hover,
+        html.light-mode .field input:focus {
+            background: #fff;
+            border-color: #00FF00;
+        }
+
+        html.light-mode .field input::placeholder {
+            color: #999;
+        }
+
+        html.light-mode .links p {
+            color: #666;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
             .auth-wrapper {
                 padding: 15px;
             }
-
+            
             .login-container {
-                padding: 35px 25px;
+                padding: 30px 25px;
             }
-
-            h2 {
-                font-size: 36px;
+            
+            .logo-icon {
+                width: 50px;
+                height: 50px;
             }
-
-            h2::before {
-                font-size: 28px;
+            
+            .logo-icon i {
+                font-size: 24px;
             }
-
-            .field input,
-            .btn {
-                height: 60px;
-            }
-
-            .field input {
-                font-size: 15px;
-            }
-
-            .btn {
-                font-size: 18px;
+            
+            .logo-text {
+                font-size: 20px;
             }
         }
 
-        /* Loading animation for form submission */
-        @keyframes shimmer {
-            0% {
-                background-position: -1000px 0;
-            }
-
-            100% {
-                background-position: 1000px 0;
-            }
+        /* Loading state */
+        .btn.loading {
+            position: relative;
+            color: transparent;
+            pointer-events: none;
         }
 
-        .btn:active {
-            background: linear-gradient(135deg, #FFA500, #FF8C00);
-            background-size: 200% 100%;
-            animation: shimmer 2s infinite;
+        .btn.loading::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 50%;
+            left: 50%;
+            margin-left: -10px;
+            margin-top: -10px;
+            border: 2px solid #000;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 0.8s infinite linear;
         }
 
-        /* Add these classes for JavaScript enhancement if needed */
-        .password-strength {
-            margin-top: 5px;
-            font-size: 12px;
-            display: flex;
-            gap: 5px;
-        }
-
-        .strength-bar {
-            height: 4px;
-            flex: 1;
-            background: #e0e0e0;
-            border-radius: 4px;
-            transition: all 0.3s ease;
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
     </style>
 </head>
-
 <body>
 
-    <div class="auth-wrapper">
-        <div class="login-container">
-
-            <h2>LOGIN</h2>
-
-            <?php if (!empty($errors)): ?>
-            <div class="error-message">
-                <i class="fas fa-exclamation-circle"></i>
-                <span>
-                    <?= implode("<br>", array_map('htmlspecialchars', $errors)); ?>
-                </span>
+<div class="auth-wrapper">
+    <div class="login-container">
+        
+        <!-- Logo area matching footer style -->
+        <div class="logo-area">
+            <div class="logo-icon">
+                <i class="fas fa-tshirt"></i>
             </div>
-            <?php endif; ?>
-
-            <form method="POST">
-
-                <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
-
-                <div class="field">
-                    <div class="icon">
-                        <i class="far fa-envelope"></i>
-                    </div>
-                    <input type="email" name="email" placeholder="Email address"
-                        value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" required>
-                </div>
-
-
-                <div class="field">
-                    <div class="icon">
-                        <i class="fas fa-lock"></i>
-                    </div>
-                    <input type="password" name="password" id="password" placeholder="Password" required>
-                </div>
-
-                <button type="submit" class="btn">
-                    <i class="fas fa-arrow-right"></i> LOGIN
-                </button>
-
-            </form>
-
-            <p>New here? <a href="signup.php">Create an Account →</a></p>
-
+            <div class="logo-text">rentique.</div>
         </div>
+
+        <h2>Welcome Back</h2>
+
+        <?php if (!empty($errors)): ?>
+        <div class="error-message">
+            <i class="fas fa-exclamation-circle"></i>
+            <span><?= implode("<br>", array_map('htmlspecialchars', $errors)); ?></span>
+        </div>
+        <?php endif; ?>
+
+        <form method="POST">
+            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
+
+            <div class="field">
+                <input type="email" name="email" placeholder="Email address" value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" required>
+            </div>
+
+            <div class="field">
+                <input type="password" name="password" placeholder="Password" required>
+            </div>
+
+            <button type="submit" class="btn">
+                <i class="fas fa-arrow-right"></i> Log in
+            </button>
+        </form>
+
+        <div class="links">
+            <p>Don't have an account?</p>
+            <a href="signup.php" class="signup-link">Create Account</a>
+        </div>
+
     </div>
+</div>
 
-
-    <script>
-        // Smooth scroll in case of errors
-        if (document.querySelector('.error-message')) {
-            document.querySelector('.error-message').scrollIntoView({ behavior: 'smooth', block: 'center' });
+<script>
+// this changes theme
+document.addEventListener('DOMContentLoaded', function() {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') {
+        document.documentElement.classList.add('light-mode');
+    }
+    
+    
+    const form = document.querySelector('form');
+    const submitBtn = document.querySelector('.btn');
+    
+    form.addEventListener('submit', function(e) {
+        if (!submitBtn.classList.contains('loading')) {
+            submitBtn.classList.add('loading');
         }
-
-        document.querySelectorAll('.field input').forEach(input => {
-            input.addEventListener('focus', function () {
-                this.parentElement.style.transform = 'scale(1.02)';
-            });
-
-            input.addEventListener('blur', function () {
-                this.parentElement.style.transform = 'scale(1)';
-            });
+    });
+    
+   
+    const inputs = document.querySelectorAll('.field input');
+    inputs.forEach(input => {
+        input.addEventListener('focus', function() {
+            this.style.transform = 'scale(1.01)';
         });
-    </script>
+        
+        input.addEventListener('blur', function() {
+            this.style.transform = 'scale(1)';
+        });
+    });
+});
+</script>
 
 </body>
-
 </html>
