@@ -133,7 +133,6 @@ $categories = $catStmt->fetchAll(PDO::FETCH_COLUMN);
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="js/theme.js" defer></script>
 
-    <!-- Cart icon & theme toggle styles -->
     <style>
         .cart-icon {
             display: flex;
@@ -554,10 +553,10 @@ $categories = $catStmt->fetchAll(PDO::FETCH_COLUMN);
             border-radius: 10px;
         }
 
-		html.light-mode .price-radio label {
-		    color: #000000 !important;
-		    font-weight: 500;
-		}
+        html.light-mode .price-radio label {
+            color: #000000;
+            font-weight: 500;
+        }
 
         html.light-mode .product-description {
             background: #f0f0f0;
@@ -624,7 +623,6 @@ $categories = $catStmt->fetchAll(PDO::FETCH_COLUMN);
             <li><a href="Contact.php">Contact</a></li>
             <li><a href="FAQTestimonials.php">FAQ</a></li>
 
-            <!-- SVG Cart Icon -->
             <li><a href="basketPage.php" class="cart-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="9" cy="21" r="1"></circle>
@@ -633,7 +631,6 @@ $categories = $catStmt->fetchAll(PDO::FETCH_COLUMN);
                 </svg>
             </a></li>
 
-            <!-- Theme Toggle Button -->
             <li>
                 <button id="themeToggle" onclick="toggleTheme()">🌙</button>
             </li>
@@ -820,9 +817,6 @@ $categories = $catStmt->fetchAll(PDO::FETCH_COLUMN);
         </div>
     </main>
 </div>
-
-
-<!--Krish's Revamped Footer-->
 
 <footer class="footer">
     <div class="footer-container">
@@ -1271,7 +1265,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-<!-- Theme toggle script -->
 <script>
     function toggleTheme() {
         const body = document.body;
@@ -1324,5 +1317,3 @@ document.addEventListener("DOMContentLoaded", function() {
 
 </body>
 </html>
-
-
