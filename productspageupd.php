@@ -554,10 +554,10 @@ $categories = $catStmt->fetchAll(PDO::FETCH_COLUMN);
             border-radius: 10px;
         }
 
-     html.light-mode .price-radio label {
-    color: #000000;
-    font-weight: 500;
-}
+		html.light-mode .price-radio label {
+		    color: #000000 !important;
+		    font-weight: 500;
+		}
 
         html.light-mode .product-description {
             background: #f0f0f0;
@@ -1324,4 +1324,5 @@ document.addEventListener("DOMContentLoaded", function() {
 
 </body>
 </html>
+
 
