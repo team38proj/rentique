@@ -105,6 +105,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <meta charset="UTF-8">
 <title>Rentique | Forgot Password</title>
 <style>
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("images/Dakar1.png");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        opacity: 0.4;
+        z-index: -2;
+    }
+    
     body{
         margin:0;
         font-family: Arial, sans-serif;
