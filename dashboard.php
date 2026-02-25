@@ -6,6 +6,7 @@
 <title>Rentique | Style Planner Dashboard</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
@@ -38,15 +39,30 @@ body.style-high{ background:#00aa33; }
     z-index:100;
 }
 
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 .logo a {
-    display: inline-block;
-    line-height: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: white;
 }
 
 .logo img{ 
     height:60px;
     width: auto;
     display: block;
+}
+
+.logo span {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #00ff66;
 }
 
 .nav-links{
@@ -59,6 +75,12 @@ body.style-high{ background:#00aa33; }
 .nav-links a{
     color:#00ff66;
     text-decoration:none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: white;
 }
 
 .banner{
@@ -74,6 +96,16 @@ body.style-high{ background:#00aa33; }
     justify-content:center;
     align-items:center;
     text-align:center;
+}
+
+.banner-overlay h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.banner-overlay p {
+    font-size: 1.2rem;
+    opacity: 0.9;
 }
 
 .dashboard{
@@ -98,6 +130,8 @@ body.style-high{ background:#00aa33; }
     border-radius:25px;
     padding:2rem;
     text-align:center;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(0,255,120,0.2);
 }
 
 .kpi h2{
@@ -105,8 +139,18 @@ body.style-high{ background:#00aa33; }
     font-size:2.5rem;
 }
 
+.kpi span {
+    font-size: 1rem;
+    opacity: 0.8;
+}
+
 .form-card{
     margin-bottom:3rem;
+}
+
+.form-card h3 {
+    margin-bottom: 1.5rem;
+    color: #00ff66;
 }
 
 .form-card input{
@@ -117,6 +161,12 @@ body.style-high{ background:#00aa33; }
     border:none;
     background:rgba(0,0,0,.4);
     color:white;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.form-card input:focus {
+    outline: none;
+    border-color: #00ff66;
 }
 
 .form-card button{
@@ -126,6 +176,14 @@ body.style-high{ background:#00aa33; }
     border:none;
     border-radius:30px;
     cursor:pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: transform 0.2s ease;
+}
+
+.form-card button:hover {
+    transform: translateY(-2px);
+    background: #00cc52;
 }
 
 .main-grid{
@@ -139,6 +197,12 @@ body.style-high{ background:#00aa33; }
     backdrop-filter:blur(20px);
     border-radius:28px;
     padding:2.5rem;
+    border: 1px solid rgba(0,255,120,0.1);
+}
+
+.card h3 {
+    margin-bottom: 1.5rem;
+    color: #00ff66;
 }
 
 .log-item{
@@ -149,6 +213,11 @@ body.style-high{ background:#00aa33; }
     display:flex;
     justify-content:space-between;
     align-items:center;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.log-item strong {
+    color: #00ff66;
 }
 
 .delete-btn{
@@ -158,10 +227,16 @@ body.style-high{ background:#00aa33; }
     border-radius:8px;
     color:white;
     cursor:pointer;
+    transition: background 0.2s ease;
+}
+
+.delete-btn:hover {
+    background: #ff3333;
 }
 
 #planChart{
     margin-top:2.5rem;
+    max-height: 300px;
 }
 
 .note-section{
@@ -177,6 +252,31 @@ textarea{
     background:rgba(0,0,0,.4);
     color:white;
     resize:none;
+    border: 1px solid rgba(255,255,255,0.1);
+    margin-top: 1rem;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: #00ff66;
+}
+
+.note-section button {
+    margin-top:1rem;
+    width:100%;
+    background:#00ff66;
+    border:none;
+    padding:.8rem;
+    border-radius:25px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: transform 0.2s ease;
+}
+
+.note-section button:hover {
+    transform: translateY(-2px);
+    background: #00cc52;
 }
 
 footer{
@@ -185,7 +285,19 @@ footer{
     opacity:.8;
 }
 
+
+.nav-links i {
+    margin-right: 5px;
+}
+
+.kpi i {
+    font-size: 2rem;
+    color: #00ff66;
+    margin-bottom: 1rem;
+}
+
 </style>
+
 
 <link rel="icon" type="image/png" href="/images/rentique_logo.png">
 
@@ -195,16 +307,16 @@ footer{
 
 <nav class="navbar">
     <div class="logo">
-   
         <a href="index.php">
             <img src="/images/rentique_logo.png" alt="Rentique logo">
+            <span>Rentique</span>
         </a>
     </div>
 
     <ul class="nav-links">
-        <li><a href="index.php">Home</a></li>
-        <li><a href="game.php">Game</a></li>
-        <li><a href="dashboard.php">Dashboard</a></li>
+        <li><a href="index.php"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="game.php"><i class="fas fa-gamepad"></i> Game</a></li>
+        <li><a href="dashboard.php"><i class="fas fa-chart-line"></i> Dashboard</a></li>
     </ul>
 </nav>
 
@@ -217,23 +329,26 @@ footer{
 
 <section class="dashboard">
 
-<h1>Welcome Style Planner</h1>
+<h1 style="margin-bottom: 2rem; color: #00ff66;">Welcome Style Planner</h1>
 
 <div class="kpi-grid">
 
 <div class="kpi">
-<h2 id="totalDays">0d</h2>
-<span>Planned Rental Days</span>
+    <i class="fas fa-calendar-alt"></i>
+    <h2 id="totalDays">0d</h2>
+    <span>Planned Rental Days</span>
 </div>
 
 <div class="kpi">
-<h2 id="totalItems">0</h2>
-<span>Clothing Items Planned</span>
+    <i class="fas fa-tshirt"></i>
+    <h2 id="totalItems">0</h2>
+    <span>Clothing Items Planned</span>
 </div>
 
 <div class="kpi">
-<h2 id="totalPrice">£0</h2>
-<span>Total Plan Price</span>
+    <i class="fas fa-pound-sign"></i>
+    <h2 id="totalPrice">£0</h2>
+    <span>Total Plan Price</span>
 </div>
 
 </div>
@@ -241,18 +356,18 @@ footer{
 <div class="main-grid">
 
 <div class="card form-card">
-<h3>Add Style Plan</h3>
+<h3><i class="fas fa-plus-circle"></i> Add Style Plan</h3>
 
-<input id="date" type="date">
-<input id="item" placeholder="Clothing Item">
+<input id="date" type="date" placeholder="Select date">
+<input id="item" placeholder="Clothing Item (e.g., Summer Dress)">
 <input id="days" type="number" placeholder="Rental Days">
 <input id="price" type="number" placeholder="Price (£)">
 
-<button onclick="addPlan()">Save Plan</button>
+<button onclick="addPlan()"><i class="fas fa-save"></i> Save Plan</button>
 </div>
 
 <div class="card">
-<h3>Style Plan History</h3>
+<h3><i class="fas fa-history"></i> Style Plan History</h3>
 
 <div id="logList"></div>
 
@@ -263,14 +378,16 @@ footer{
 </div>
 
 <div class="note-section card">
-<h3>Style Notes</h3>
-<textarea id="userNotes" placeholder="Write your style thoughts..."></textarea>
-<button onclick="saveNotes()" style="margin-top:1rem;width:100%;background:#00ff66;border:none;padding:.8rem;border-radius:25px;">Save Notes</button>
+<h3><i class="fas fa-pen"></i> Style Notes</h3>
+<textarea id="userNotes" placeholder="Write your style thoughts, outfit combinations, or rental ideas..."></textarea>
+<button onclick="saveNotes()"><i class="fas fa-save"></i> Save Notes</button>
 </div>
 
 </section>
 
-<footer>© 2026 Rentique Style Planner</footer>
+<footer>
+    <i class="fas fa-copyright"></i> 2026 Rentique Style Planner. All rights reserved.
+</footer>
 
 <script>
 
@@ -302,11 +419,11 @@ div.className="log-item";
 div.innerHTML=`
 <div>
 <strong>${p.item}</strong><br>
-${p.date} • ${p.days}d • £${p.price}
+<i class="fas fa-calendar"></i> ${p.date} • <i class="fas fa-clock"></i> ${p.days}d • <i class="fas fa-pound-sign"></i> £${p.price}
 </div>
 
 <div>
-<button class="delete-btn" onclick="deletePlan(${index})">Delete</button>
+<button class="delete-btn" onclick="deletePlan(${index})"><i class="fas fa-trash"></i> Delete</button>
 </div>
 `;
 
@@ -324,7 +441,6 @@ document.getElementById("totalDays").innerText=totalDays+"d";
 document.getElementById("totalItems").innerText=plans.length;
 document.getElementById("totalPrice").innerText="£"+totalPrice;
 
-let goal=Math.min((totalDays/100)*100,100);
 updateBackground(totalDays);
 
 }
@@ -381,7 +497,10 @@ let item=document.getElementById("item").value;
 let days=+document.getElementById("days").value;
 let price=+document.getElementById("price").value;
 
-if(!d||!item||!days||!price) return;
+if(!d||!item||!days||!price) {
+    alert("Please fill in all fields!");
+    return;
+}
 
 plans.push({ date:d, item:item, days:days, price:price });
 
@@ -407,7 +526,7 @@ function saveNotes(){
 
 let text=document.getElementById("userNotes").value;
 localStorage.setItem("rentiqueNotes",text);
-alert("Notes saved!");
+alert("Notes saved successfully! ✨");
 }
 
 renderPlans();
@@ -415,5 +534,4 @@ renderPlans();
 </script>
 
 </body>
-
 </html>
