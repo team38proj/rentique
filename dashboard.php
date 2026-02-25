@@ -1,3 +1,20 @@
+<?php
+session_start();
+require_once 'connectdb.php';
+
+$userData = null;
+
+if (isset($_SESSION['uid'])) {
+    try {
+        $stmt = $db->prepare("SELECT uid, billing_fullname, role FROM users WHERE uid = ?");
+        $stmt->execute([$_SESSION['uid']]);
+        $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        error_log("Planner user fetch error: " . $e->getMessage());
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -305,20 +322,57 @@ footer{
 
 <body>
 
+<header>
 <nav class="navbar">
     <div class="logo">
         <a href="index.php">
-            <img src="/images/rentique_logo.png" alt="Rentique logo">
-            <span>Rentique</span>
+            <img src="images/rentique_logo.png" alt="Rentique Logo">
         </a>
+        <span>rentique.</span>
     </div>
 
     <ul class="nav-links">
-        <li><a href="index.php"><i class="fas fa-home"></i> Home</a></li>
-        <li><a href="game.php"><i class="fas fa-gamepad"></i> Game</a></li>
-        <li><a href="dashboard.php"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+        <li><a href="index.php">Home</a></li>
+        <li><a href="productsPage.php">Shop</a></li>
+        <li><a href="AboutUs.php">About</a></li>
+        <li><a href="Contact.php">Contact</a></li>
+        <li><a href="FAQTestimonials.php">FAQ</a></li>
+
+        <?php if (isset($userData)): ?>
+            <li><a href="style_planner.php">Planner</a></li>
+        <?php endif; ?>
+
+        <li><a href="basketPage.php" class="cart-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="9" cy="21" r="1"></circle>
+                <circle cx="20" cy="21" r="1"></circle>
+                <path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"></path>
+            </svg>
+        </a></li>
+
+        <li>
+            <button id="themeToggle" onclick="toggleTheme()">🌙</button>
+        </li>
+
+        <?php if (isset($userData['role']) && $userData['role'] === 'customer'): ?>
+            <li><a href="seller_dashboard.php">Sell</a></li>
+            <li><a href="user_dashboard.php">
+                <?= htmlspecialchars($userData['billing_fullname'] ?? "Account") ?>
+            </a></li>
+            <li><a href="index.php?logout=1" class="btn login">Logout</a></li>
+
+        <?php elseif (isset($userData['role']) && $userData['role'] === 'admin'): ?>
+            <li><a href="admin_dashboard.php">Admin</a></li>
+            <li><a href="index.php?logout=1" class="btn login">Logout</a></li>
+
+        <?php else: ?>
+            <li><a href="login.php" class="btn login">Login</a></li>
+            <li><a href="signup.php" class="btn signup">Sign Up</a></li>
+        <?php endif; ?>
     </ul>
 </nav>
+</header>
 
 <section class="banner">
     <div class="banner-overlay">
