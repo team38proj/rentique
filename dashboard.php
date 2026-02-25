@@ -54,48 +54,81 @@ background-color: #000;
 border-bottom: 1px solid #1f1f1f;
 }
 
+                .navbar {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 20px 60px;
+background-color: #000;
+border-bottom: 1px solid #1f1f1f;
+}
+
 .logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+display: flex;
+align-items: center;
+color: #a3ff00;
+font-size: 1.6rem;
+font-weight: bold;
+text-transform: lowercase;
 }
 
-.logo a {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
-    color: white;
+.logo img {
+width: 45px;
+margin-right: 10px;
 }
 
-.logo img{ 
-    height:60px;
-    width: auto;
-    display: block;
+.nav-links {
+list-style: none;
+display: flex;
+gap: 20px;
 }
 
-.logo span {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #00ff66;
+.nav-links li a {
+color: #eaeaea;
+text-decoration: none;
+font-weight: 500;
+transition: color 0.3s;
 }
 
-.nav-links{
-    display:flex;
-    gap:2rem;
-    list-style:none;
-    align-items: center;
+.nav-links li a:hover {
+color: #a3ff00;
 }
 
-.nav-links a{
-    color:#00ff66;
-    text-decoration:none;
-    font-weight: 500;
-    transition: color 0.3s ease;
+.btn {
+padding: 10px 18px;
+border-radius: 30px;
+text-decoration: none;
+font-weight: 600;
+transition: all 0.3s ease;
 }
 
-.nav-links a:hover {
-    color: white;
+.btn.login {
+border: 1px solid #a3ff00;
+color: #a3ff00;
+}
+
+.btn.login:hover {
+background-color: #a3ff00;
+color: #000;
+}
+
+.btn.signup {
+background-color: #a3ff00;
+color: #000;
+}
+
+.btn.signup:hover {
+background-color: #d2ff4c;
+}
+
+.cart-icon {
+font-size: 1.3rem;
+color: #a3ff00;
+transition: 0.3s;
+}
+
+.cart-icon:hover {
+color: #d2ff4c;
 }
 
 .banner{
@@ -336,15 +369,13 @@ footer{
         <li><a href="Contact.php">Contact</a></li>
         <li><a href="FAQTestimonials.php">FAQ</a></li>
 <li><a href="game.php" class="active">Game</a></li>
-    <?php if (isset($userData)): ?>
-    <a href="dashboard.php" class="active">Style Planner</a>
-<?php else: ?>
-    <a href="login.php" class="active">Style Planner</a>
-<?php endif; ?>
+   
 
         <?php if (isset($userData)): ?>
-            <li><a href="style_planner.php">Planner</a></li>
-        <?php endif; ?>
+            <li><a href="dashboard.php">Style Planner</a></li>
+        <?php else: ?>
+    <a href="login.php" class="active">Style Planner</a>
+<?php endif; ?>
 
         <li><a href="basketPage.php" class="cart-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
