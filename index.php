@@ -227,7 +227,7 @@ if (isset($_GET['search']) || isset($_GET['category']) || isset($_GET['price_ran
         <p>Rent. Wear. Return. Fashion freedom. Sustainable choice.</p>
         <div class="hero-buttons">
             <a href="productsPage.php" class="btn primary">Explore Collection</a>
-            <a href="#" class="btn secondary">Try Virtual Try-On</a>
+            <a href="dashboard.php" class="btn secondary">Try Virtual Try-On</a>
         </div>
     </div>
 </section>
