@@ -155,6 +155,12 @@ if (isset($_GET['search']) || isset($_GET['category']) || isset($_GET['price_ran
             <li><a href="AboutUs.php">About</a></li>
             <li><a href="Contact.php">Contact</a></li>
             <li><a href="FAQTestimonials.php" class="active">FAQ</a></li>
+               <li><a href="game.php" class="active">Game</a></li>
+    <?php if (isset($userData)): ?>
+    <a href="dashboard.php" class="active">Style Planner</a>
+<?php else: ?>
+    <a href="login.php" class="active">Style Planner</a>
+<?php endif; ?>
 
             <!-- SVG Cart Icon -->
             <li><a href="basketPage.php" class="cart-icon">
