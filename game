@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Rental Drop Game</title>
+<style>
+    body {
+        margin: 0;
+        background: black;
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        color: #00FF00;
+    }
+
+    #gameArea {
+        position: relative;
+        width: 900px;
+        height: 600px;
+        overflow: hidden;
+        border: 3px solid #00FF00;
+        box-shadow:
+            0 0 40px #00FF00,
+            inset 0 0 40px #00FF0022;
+        background: black;
+    }
+
+    #bgLayer {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: black;
+        z-index: 0;
+        transition: background-color 0.4s ease;
+    }
+
+    #player {
+        position: absolute;
+        bottom: 30px;
+        left: 390px;
+        width: 120px;
+        height: 20px;
+        background: #00FF00;
+        box-shadow: 0 0 20px #00FF00;
+        z-index: 2;
+    }
+
+    .item {
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        background: #00FF00;
+        text-align: center;
+        line-height: 40px;
+        font-size: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 15px #00FF00;
+        z-index: 2;
+    }
+
+    .bad {
+        background: red;
+        box-shadow: 0 0 15px red;
+    }
+
+    .scoreboard {
+        position: absolute;
+        top: 15px;
+        left: 20px;
+        font-size: 18px;
+        z-index: 2;
+    }
+
+    #gameOver {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: none;
+        text-align: center;
+        z-index: 3;
+    }
+
+    #gameOver h1 {
+        font-size: 45px;
+        margin: 0;
+    }
+
+    button {
+        background: transparent;
+        border: 2px solid #00FF00;
+        color: #00FF00;
+        padding: 10px 20px;
+        cursor: pointer;
+        margin-top: 15px;
+        transition: 0.3s;
+    }
+
+    button:hover {
+        background: #00FF00;
+        color: black;
+        box-shadow: 0 0 20px #00FF00;
+    }
+
+    #deathFlash {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: red;
+        opacity: 0;
+        pointer-events: none;
+        z-index: 4;
+    }
+</style>
+</head>
+<body>
+
+<div id="gameArea">
+    <div id="bgLayer"></div>
+    <div id="deathFlash"></div>
+    <div id="player"></div>
+
+    <div class="scoreboard">
+        Score: <span id="score">0</span><br>
+        Best: <span id="bestScore">0</span>
+    </div>
+
+    <div id="gameOver">
+        <h1>GAME OVER</h1>
+        <button onclick="restartGame()">PLAY AGAIN</button>
+    </div>
+</div>
+
+<script>
+let player = document.getElementById("player");
+let gameArea = document.getElementById("gameArea");
+let bgLayer = document.getElementById("bgLayer");
+let scoreDisplay = document.getElementById("score");
+let bestScoreDisplay = document.getElementById("bestScore");
+let gameOverScreen = document.getElementById("gameOver");
+let deathFlash = document.getElementById("deathFlash");
+
+let score = 0;
+let bestScore = localStorage.getItem("rentalBestScore") || 0;
+let itemInterval;
+let speed = 3;
+
+bestScoreDisplay.textContent = bestScore;
+
+function updateBackground() {
+    let maxScoreForFullGreen = 80;
+    let progress = Math.min(score / maxScoreForFullGreen, 1);
+    let greenValue = Math.floor(180 * progress);
+    bgLayer.style.backgroundColor = `rgb(0, ${greenValue}, 0)`;
+}
+
+gameArea.addEventListener("mousemove", (e) => {
+    const rect = gameArea.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const playerWidth = player.offsetWidth;
+    const maxX = rect.width - playerWidth;
+
+    let newLeft = mouseX - playerWidth / 2;
+
+    if (newLeft < 0) newLeft = 0;
+    if (newLeft > maxX) newLeft = maxX;
+
+    player.style.left = newLeft + "px";
+});
+
+function createItem() {
+    let item = document.createElement("div");
+    item.classList.add("item");
+
+    if (Math.random() < 0.2) {
+        item.classList.add("bad");
+        item.textContent = "X";
+    } else {
+        item.textContent = "👕";
+    }
+
+    let maxLeft = gameArea.clientWidth - 40;
+    item.style.left = Math.random() * maxLeft + "px";
+    item.style.top = "0px";
+
+    gameArea.appendChild(item);
+
+    let fall = setInterval(() => {
+        item.style.top = item.offsetTop + speed + "px";
+
+        let itemRect = item.getBoundingClientRect();
+        let playerRect = player.getBoundingClientRect();
+
+        if (
+            itemRect.bottom >= playerRect.top &&
+            itemRect.left < playerRect.right &&
+            itemRect.right > playerRect.left
+        ) {
+            if (item.classList.contains("bad")) {
+                endGame();
+            } else {
+                score++;
+                scoreDisplay.textContent = score;
+                updateBackground();
+                if (score % 5 === 0) speed++;
+            }
+
+            item.remove();
+            clearInterval(fall);
+        }
+
+        if (item.offsetTop > gameArea.clientHeight) {
+            item.remove();
+            clearInterval(fall);
+        }
+
+    }, 20);
+}
+
+function startGame() {
+    itemInterval = setInterval(createItem, 1000);
+}
+
+function endGame() {
+    clearInterval(itemInterval);
+
+    deathFlash.style.opacity = 0.8;
+    setTimeout(() => {
+        deathFlash.style.opacity = 0;
+    }, 500);
+
+    if (score > bestScore) {
+        bestScore = score;
+        localStorage.setItem("rentalBestScore", bestScore);
+        bestScoreDisplay.textContent = bestScore;
+    }
+
+    bgLayer.style.backgroundColor = "black";
+
+    setTimeout(() => {
+        gameOverScreen.style.display = "block";
+    }, 500);
+}
+
+function restartGame() {
+    location.reload();
+}
+
+startGame();
+</script>
+
+</body>
+
+</html>
