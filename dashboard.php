@@ -45,15 +45,13 @@ body.style-low{ background:#050505; }
 body.style-mid{ background:#0f2f0f; }
 body.style-high{ background:#00aa33; }
 
-.navbar{
-    display:flex;
-    justify-content:space-between;
-    padding:1rem 3rem;
-    background:rgba(0,0,0,0.6);
-    backdrop-filter:blur(10px);
-    position:sticky;
-    top:0;
-    z-index:100;
+.navbar {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 20px 60px;
+background-color: #000;
+border-bottom: 1px solid #1f1f1f;
 }
 
 .logo {
@@ -337,6 +335,12 @@ footer{
         <li><a href="AboutUs.php">About</a></li>
         <li><a href="Contact.php">Contact</a></li>
         <li><a href="FAQTestimonials.php">FAQ</a></li>
+<li><a href="game.php" class="active">Game</a></li>
+    <?php if (isset($userData)): ?>
+    <a href="dashboard.php" class="active">Style Planner</a>
+<?php else: ?>
+    <a href="login.php" class="active">Style Planner</a>
+<?php endif; ?>
 
         <?php if (isset($userData)): ?>
             <li><a href="style_planner.php">Planner</a></li>
@@ -352,7 +356,7 @@ footer{
         </a></li>
 
         <li>
-            <button id="themeToggle" onclick="toggleTheme()">🌙</button>
+            <button id="themeToggle" onclick="toggleTheme()">ðŸŒ™</button>
         </li>
 
         <?php if (isset($userData['role']) && $userData['role'] === 'customer'): ?>
@@ -401,7 +405,7 @@ footer{
 
 <div class="kpi">
     <i class="fas fa-pound-sign"></i>
-    <h2 id="totalPrice">£0</h2>
+    <h2 id="totalPrice">Â£0</h2>
     <span>Total Plan Price</span>
 </div>
 
@@ -415,7 +419,7 @@ footer{
 <input id="date" type="date" placeholder="Select date">
 <input id="item" placeholder="Clothing Item (e.g., Summer Dress)">
 <input id="days" type="number" placeholder="Rental Days">
-<input id="price" type="number" placeholder="Price (£)">
+<input id="price" type="number" placeholder="Price (Â£)">
 
 <button onclick="addPlan()"><i class="fas fa-save"></i> Save Plan</button>
 </div>
@@ -473,7 +477,7 @@ div.className="log-item";
 div.innerHTML=`
 <div>
 <strong>${p.item}</strong><br>
-<i class="fas fa-calendar"></i> ${p.date} • <i class="fas fa-clock"></i> ${p.days}d • <i class="fas fa-pound-sign"></i> £${p.price}
+<i class="fas fa-calendar"></i> ${p.date} â€¢ <i class="fas fa-clock"></i> ${p.days}d â€¢ <i class="fas fa-pound-sign"></i> Â£${p.price}
 </div>
 
 <div>
@@ -493,7 +497,7 @@ function updateStats(){
 
 document.getElementById("totalDays").innerText=totalDays+"d";
 document.getElementById("totalItems").innerText=plans.length;
-document.getElementById("totalPrice").innerText="£"+totalPrice;
+document.getElementById("totalPrice").innerText="Â£"+totalPrice;
 
 updateBackground(totalDays);
 
@@ -580,7 +584,7 @@ function saveNotes(){
 
 let text=document.getElementById("userNotes").value;
 localStorage.setItem("rentiqueNotes",text);
-alert("Notes saved successfully! ✨");
+alert("Notes saved successfully! âœ¨");
 }
 
 renderPlans();
