@@ -267,6 +267,16 @@ $canAddListing = $hasAddress && $sortcodeValid && $banknumberValid;
             <li><a href="AboutUs.php">About</a></li>
             <li><a href="Contact.php">Contact</a></li>
             <li><a href="basketPage.php" class="cart-icon">
+    <li><a href="game.php" class="active">Game</a></li>
+   
+
+        <?php if (isset($userData)): ?>
+            <li><a href="dashboard.php">Style Planner</a></li>
+        <?php else: ?>
+    <a href="login.php" class="active">Style Planner</a>
+<?php endif; ?>
+    
+    
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                     stroke-linejoin="round">
                     <circle cx="9" cy="21" r="1"></circle>
