@@ -23,6 +23,8 @@ if (isset($_SESSION['uid'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rentique Contact Us</title>
     <link rel="stylesheet" href="css/rentique.css">
+    <link rel="stylesheet" href="css/rentique.css?v=2">
+<link rel="stylesheet" href="assets/global.css">
     <link rel="icon" type="image/png" href="images/rentique_logo.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="js/theme.js" defer></script>
@@ -72,6 +74,80 @@ if (isset($_SESSION['uid'])) {
             transform: scale(1.1);
         }
     </style>
+    
+    <style>
+
+.contactForm {
+    max-width: 720px;
+    margin: 60px auto 0;
+    padding: 28px;
+    border-radius: 18px;
+    border: 1px solid rgba(0,255,0,0.18);
+    background: rgba(0,0,0,0.35);
+    box-shadow: 0 0 30px rgba(0,255,0,0.06);
+}
+
+.contactForm label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #eaeaea;
+}
+
+.contactForm input,
+.contactForm textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background-color: rgba(0,0,0,0.35);
+    color: #eaeaea;
+    margin-bottom: 16px;
+    resize: none;
+    outline: none;
+}
+
+.contactForm input:focus,
+.contactForm textarea:focus {
+    border-color: rgba(0,255,0,0.55);
+    box-shadow: 0 0 0 3px rgba(0,255,0,0.12);
+}
+
+.contactForm .nameRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+width: 700px;
+}
+
+#sendBtn {
+    width: 100%;
+    background-color: #a3ff00;
+    color: #000;
+    border: none;
+    border-radius: 14px;
+    padding: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.12s ease, background 0.2s ease;
+}
+
+#sendBtn:hover {
+    background: #00cc00;
+    transform: translateY(-1px);
+}
+
+/* Make it stack on mobile */
+@media (max-width: 700px) {
+    .contactForm {
+        margin: 40px 14px 0;
+        padding: 20px;
+    }
+    .contactForm .nameRow {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
 </head>
 <body>
 
@@ -90,6 +166,12 @@ if (isset($_SESSION['uid'])) {
             <li><a href="AboutUs.php">About</a></li>
             <li><a href="Contact.php">Contact</a></li>
             <li><a href="FAQTestimonials.php">FAQ</a></li>
+<li><a href="game.php" class="active">Game</a></li>
+    <?php if (isset($userData)): ?>
+            <li><a href="dashboard.php">Style Planner</a></li>
+        <?php else: ?>
+    <a href="login.php" class="active">Style Planner</a>
+<?php endif; ?>       
 
             <!-- SVG Cart Icon -->
             <li><a href="basketPage.php" class="cart-icon">
@@ -800,6 +882,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 </script>
-
+<script src="assets/global.js"></script>
 </body>
 </html>
