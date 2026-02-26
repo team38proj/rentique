@@ -133,11 +133,32 @@ if (isset($_GET['search']) || isset($_GET['category']) || isset($_GET['price_ran
             border-color: #d2ff4c;
             transform: scale(1.1);
         }
+.fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeUp 0.8s ease forwards;
+}
+
+@keyframes fadeUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes float {
+    from { transform: translateY(0); }
+    to { transform: translateY(-100vh); }
+}
+
+
     </style>
 </head>
 
 <script src="js/theme.js"></script>
 
+<div class="fade-in">
+   
 <body>
 
 <header>
@@ -263,7 +284,7 @@ if (isset($_GET['search']) || isset($_GET['category']) || isset($_GET['price_ran
         </div>
     </div>
 </section>
-
+</div>
 <section id="shop"></section>
 
 <!--Krish's Revamped Footer-->
@@ -742,5 +763,50 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 </script>
 
+<script>
+for (let i = 0; i < 20; i++) {
+    let dot = document.createElement("div");
+    dot.style.position = "fixed";
+    dot.style.width = "3px";
+    dot.style.height = "3px";
+    dot.style.background = "#00FF00";
+    dot.style.left = Math.random() * 100 + "vw";
+    dot.style.top = Math.random() * 100 + "vh";
+    dot.style.opacity = 0.3;
+    dot.style.pointerEvents = "none";
+    dot.style.animation = `float ${5 + Math.random()*5}s linear infinite`;
+    document.body.appendChild(dot);
+}
+</script>
+
+<script>
+const glow = document.createElement("div");
+
+glow.style.position = "fixed";
+glow.style.width = "120px";
+glow.style.height = "120px";
+glow.style.pointerEvents = "none";
+glow.style.transform = "translate(-50%, -50%)";
+glow.style.borderRadius = "50%";
+glow.style.zIndex = "0";
+
+glow.style.background = `
+radial-gradient(circle,
+rgba(163,255,0,0.25) 0%,
+rgba(163,255,0,0.15) 30%,
+rgba(163,255,0,0.08) 50%,
+transparent 60%)
+`;
+
+glow.style.filter = "blur(35px)";
+glow.style.transition = "left 0.25s ease-out, top 0.25s ease-out";
+document.body.appendChild(glow);
+
+document.addEventListener("mousemove", e => {
+    glow.style.left = e.clientX + "px";
+    glow.style.top = e.clientY + "px";
+});
+</script>
 </body>
 </html>
+
