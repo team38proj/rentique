@@ -21,6 +21,7 @@ if (isset($_SESSION['uid'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rentique | About Us</title>
     <link rel="stylesheet" href="css/rentique.css">
+	<link rel="stylesheet" href="assets/global.css">
     <link rel="icon" type="image/png" href="images/rentique_logo.png">
     <script src="js/theme.js" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -89,6 +90,12 @@ if (isset($_SESSION['uid'])) {
             <li><a href="AboutUs.php">About</a></li>
             <li><a href="Contact.php">Contact</a></li>
             <li><a href="FAQTestimonials.php">FAQ</a></li>
+        <li><a href="game.php" class="active">Game</a></li>
+    <?php if (isset($userData)): ?>
+            <li><a href="dashboard.php">Style Planner</a></li>
+        <?php else: ?>
+    <a href="login.php" class="active">Style Planner</a>
+<?php endif; ?>
 
             <!-- SVG Cart Icon -->
             <li><a href="basketPage.php" class="cart-icon">
@@ -115,6 +122,7 @@ if (isset($_SESSION['uid'])) {
                 <li><a href="login.php" class="btn login">Login</a></li>
                 <li><a href="signup.php" class="btn signup">Sign Up</a></li>
             <?php endif; ?>
+               
         </ul>
     </nav>
 </header>
@@ -697,5 +705,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 </script>
 
+<script src="assets/global.js"></script>
 </body>
 </html>
