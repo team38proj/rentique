@@ -155,10 +155,10 @@ if (isset($_GET['search']) || isset($_GET['category']) || isset($_GET['price_ran
             <li><a href="AboutUs.php">About</a></li>
             <li><a href="Contact.php">Contact</a></li>
             <li><a href="FAQTestimonials.php" class="active">FAQ</a></li>
-               <li><a href="game.php" class="active">Game</a></li>
+    <li><a href="game.php" class="active">Game</a></li>
     <?php if (isset($userData)): ?>
-    <a href="dashboard.php" class="active">Style Planner</a>
-<?php else: ?>
+            <li><a href="dashboard.php">Style Planner</a></li>
+        <?php else: ?>
     <a href="login.php" class="active">Style Planner</a>
 <?php endif; ?>
 
@@ -177,7 +177,7 @@ if (isset($_GET['search']) || isset($_GET['category']) || isset($_GET['price_ran
                 <button id="themeToggle" onclick="toggleTheme()">🌙</button>
             </li>
 
-            <?php if (isset($userData['role']) && $userData['role'] === 'customer'): ?>
+             <?php if (isset($userData['role']) && $userData['role'] === 'customer'): ?>
                 <li><a href="seller_dashboard.php">Sell</a></li>
                 <li><a href="user_dashboard.php"><?= htmlspecialchars($userData['billing_fullname'] ?? "Account") ?></a></li>
                 <li><a href="index.php?logout=1" class="btn login">Logout</a></li>
@@ -233,7 +233,11 @@ if (isset($_GET['search']) || isset($_GET['category']) || isset($_GET['price_ran
         <p>Rent. Wear. Return. Fashion freedom. Sustainable choice.</p>
         <div class="hero-buttons">
             <a href="productsPage.php" class="btn primary">Explore Collection</a>
-            <a href="dashboard.php" class="btn secondary">Try Virtual Try-On</a>
+            <?php if (isset($userData)): ?>
+    <a href="dashboard.php" class="btn secondary">Explore Style Planner</a>
+<?php else: ?>
+    <a href="login.php" class="btn secondary">Explore Style Planner</a>
+<?php endif; ?>
         </div>
     </div>
 </section>
