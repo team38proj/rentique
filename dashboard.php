@@ -21,7 +21,7 @@ if (isset($_SESSION['uid'])) {
 
 <meta charset="UTF-8">
 <title>Rentique | Style Planner Dashboard</title>
-
+<link rel="stylesheet" href="assets/global.css">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -133,7 +133,7 @@ color: #d2ff4c;
 
 .banner{
     height:55vh;
-    background:url("./rentiquebanner.png") center/cover no-repeat;
+    background:url("images/rentiquebanner2.png") center/cover no-repeat;
 }
 
 .banner-overlay{
@@ -174,7 +174,11 @@ color: #d2ff4c;
 }
 
 .kpi{
-    background:rgba(0,255,120,.1);
+    background: linear-gradient(
+    135deg,
+    #020600,
+    #051500
+);
     border-radius:25px;
     padding:2rem;
     text-align:center;
@@ -183,7 +187,7 @@ color: #d2ff4c;
 }
 
 .kpi h2{
-    color:#00ff66;
+    color:#a3ff00;
     font-size:2.5rem;
 }
 
@@ -198,7 +202,7 @@ color: #d2ff4c;
 
 .form-card h3 {
     margin-bottom: 1.5rem;
-    color: #00ff66;
+    color: #a3ff00;
 }
 
 .form-card input{
@@ -214,13 +218,13 @@ color: #d2ff4c;
 
 .form-card input:focus {
     outline: none;
-    border-color: #00ff66;
+    border-color: #a3ff00;
 }
 
 .form-card button{
     width:100%;
     padding:.9rem;
-    background:#00ff66;
+    background:#a3ff00;
     border:none;
     border-radius:30px;
     cursor:pointer;
@@ -231,7 +235,7 @@ color: #d2ff4c;
 
 .form-card button:hover {
     transform: translateY(-2px);
-    background: #00cc52;
+    background: #a3ff66;
 }
 
 .main-grid{
@@ -241,16 +245,20 @@ color: #d2ff4c;
 }
 
 .card{
-    background:rgba(0,255,120,.08);
+background: linear-gradient(
+    135deg,
+    #020600,
+    #051500
+);
     backdrop-filter:blur(20px);
     border-radius:28px;
     padding:2.5rem;
-    border: 1px solid rgba(0,255,120,0.1);
+    border: 2px solid rgba(0,255,120,0.1);
 }
 
 .card h3 {
     margin-bottom: 1.5rem;
-    color: #00ff66;
+    color: #a3ff00;
 }
 
 .log-item{
@@ -265,11 +273,11 @@ color: #d2ff4c;
 }
 
 .log-item strong {
-    color: #00ff66;
+    color: #a3ff00;
 }
 
 .delete-btn{
-    background:#ff5252;
+    background:#a3ff00;
     border:none;
     padding:.3rem .8rem;
     border-radius:8px;
@@ -306,13 +314,13 @@ textarea{
 
 textarea:focus {
     outline: none;
-    border-color: #00ff66;
+    border-color:#a3ff00;
 }
 
 .note-section button {
     margin-top:1rem;
     width:100%;
-    background:#00ff66;
+    background: #a3ff00;
     border:none;
     padding:.8rem;
     border-radius:25px;
@@ -324,7 +332,7 @@ textarea:focus {
 
 .note-section button:hover {
     transform: translateY(-2px);
-    background: #00cc52;
+    background: #a3ff66;
 }
 
 footer{
@@ -340,14 +348,34 @@ footer{
 
 .kpi i {
     font-size: 2rem;
-    color: #00ff66;
+    color: #a3ff00;
     margin-bottom: 1rem;
 }
 
+ .cart-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .cart-icon svg {
+            width: 20px;
+            height: 20px;
+            stroke: #eaeaea;
+            transition: all 0.3s ease;
+        }
+        html.light-mode .cart-icon svg {
+            stroke: #000000;
+        }
+        .cart-icon:hover svg {
+            stroke: #00FF00;
+        }
+      
 </style>
 
 
 <link rel="icon" type="image/png" href="/images/rentique_logo.png">
+
+
 
 </head>
 
@@ -386,9 +414,6 @@ footer{
             </svg>
         </a></li>
 
-        <li>
-            <button id="themeToggle" onclick="toggleTheme()">ðŸŒ™</button>
-        </li>
 
         <?php if (isset($userData['role']) && $userData['role'] === 'customer'): ?>
             <li><a href="seller_dashboard.php">Sell</a></li>
@@ -418,7 +443,7 @@ footer{
 
 <section class="dashboard">
 
-<h1 style="margin-bottom: 2rem; color: #00ff66;">Welcome Style Planner</h1>
+<h1 style="margin-bottom: 2rem; color: #a3ff00;">Welcome Style Planner</h1>
 
 <div class="kpi-grid">
 
@@ -436,7 +461,7 @@ footer{
 
 <div class="kpi">
     <i class="fas fa-pound-sign"></i>
-    <h2 id="totalPrice">Â£0</h2>
+    <h2 id="totalPrice">£0</h2>
     <span>Total Plan Price</span>
 </div>
 
@@ -447,10 +472,10 @@ footer{
 <div class="card form-card">
 <h3><i class="fas fa-plus-circle"></i> Add Style Plan</h3>
 
-<input id="date" type="date" placeholder="Select date">
+<input id="date" type="date" min="0" placeholder="Select date">
 <input id="item" placeholder="Clothing Item (e.g., Summer Dress)">
-<input id="days" type="number" placeholder="Rental Days">
-<input id="price" type="number" placeholder="Price (Â£)">
+<input id="days" type="number" min="0" placeholder="Rental Days">
+<input id="price" type="number" min="0"placeholder="Price (£)">
 
 <button onclick="addPlan()"><i class="fas fa-save"></i> Save Plan</button>
 </div>
@@ -474,9 +499,452 @@ footer{
 
 </section>
 
-<footer>
-    <i class="fas fa-copyright"></i> 2026 Rentique Style Planner. All rights reserved.
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-column brand-column">
+            <div class="footer-logo">
+                <img src="images/rentique_logo.png" alt="Rentique Logo">
+                <span>rentique.</span>
+            </div>
+            <p class="footer-description">Rent. Wear. Return.<br>Fashion freedom. Sustainable choice.</p>
+            <div class="footer-social">
+                <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://pinterest.com" target="_blank"><i class="fab fa-pinterest-p"></i></a>
+            </div>
+        </div>
+
+        <div class="footer-column links-column">
+            <h4>Quick Links</h4>
+            <ul>
+                <li><a href="index.php">Home</a></li>
+                <li><a href="productsPage.php">Shop</a></li>
+                <li><a href="AboutUs.php">About Us</a></li>
+                <li><a href="Contact.php">Contact</a></li>
+                <li><a href="FAQTestimonials.php">FAQ</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-column contact-column">
+            <h4>Stay Connected</h4>
+            <div class="contact-info">
+                <p><i class="fas fa-envelope"></i> dtblations@gmail.com</p>
+                <p><i class="fas fa-phone-alt"></i> 0121-875-3543</p>
+                <p><i class="fas fa-map-marker-alt"></i> Aston University, Birmingham</p>
+            </div>
+            
+            <div class="newsletter">
+                <p>Subscribe for exclusive offers</p>
+                <div class="newsletter-input">
+                    <input type="email" id="subscribeEmail" placeholder="Your email address">
+                    <button type="button" id="subscribeBtn">→</button>
+                </div>
+                <div id="subscribeMessage" class="subscribe-message"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer-bottom">
+        <p>© 2025 Rentique. All Rights Reserved.</p>
+    </div>
 </footer>
+
+<style>
+.footer {
+    background: #000;
+    color: #fff;
+    padding: 2.5rem 0 0;
+    margin-top: 3rem;
+    border-top: 3px solid #00FF00;
+    width: 100%;
+}
+
+.footer-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    display: grid;
+    grid-template-columns: 2fr 1fr 2fr;
+    gap: 1rem;
+    align-items: start;
+}
+
+.footer-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.brand-column {
+    align-items: flex-start;
+}
+
+.links-column {
+    align-items: center;
+    text-align: center;
+}
+
+.contact-column {
+    align-items: flex-end;
+    text-align: right;
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.8rem;
+}
+
+.footer-logo img {
+    width: 40px;
+    height: auto;
+}
+
+.footer-logo span {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #00FF00;
+    text-transform: lowercase;
+}
+
+.footer-description {
+    color: #b0b0b0;
+    line-height: 1.5;
+    margin-bottom: 1.2rem;
+    font-size: 0.9rem;
+    text-align: left;
+}
+
+.footer-social {
+    display: flex;
+    gap: 0.8rem;
+}
+
+.footer-social a {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    font-size: 1rem;
+    border: 1px solid rgba(0, 255, 0, 0.2);
+}
+
+.footer-social a:hover {
+    background: #00FF00;
+    color: #000;
+    transform: translateY(-3px);
+    border-color: transparent;
+}
+
+.footer-column h4 {
+    color: #00FF00;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    width: 100%;
+}
+
+.links-column h4 {
+    text-align: center;
+}
+
+.contact-column h4 {
+    text-align: right;
+}
+
+.footer-column ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.links-column ul {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.footer-column ul li {
+    margin-bottom: 0.6rem;
+}
+
+.footer-column ul li a {
+    color: #d0d0d0;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.footer-column ul li a:hover {
+    color: #00FF00;
+}
+
+.contact-info {
+    margin-bottom: 1.2rem;
+    width: 100%;
+}
+
+.contact-info p {
+    color: #d0d0d0;
+    font-size: 0.9rem;
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    justify-content: flex-end;
+}
+
+.contact-info i {
+    color: #00FF00;
+    width: 18px;
+    text-align: center;
+}
+
+.newsletter {
+    width: 100%;
+}
+
+.newsletter p {
+    color: #d0d0d0;
+    font-size: 0.9rem;
+    margin-bottom: 0.6rem;
+    text-align: right;
+}
+
+.newsletter-input {
+    display: flex;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(0, 255, 0, 0.2);
+    border-radius: 4px;
+    overflow: hidden;
+    width: 100%;
+    max-width: 260px;
+    margin-left: auto;
+}
+
+.newsletter-input input {
+    flex: 1;
+    padding: 0.7rem;
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 0.9rem;
+}
+
+.newsletter-input input:focus {
+    outline: none;
+}
+
+.newsletter-input input::placeholder {
+    color: #666;
+}
+
+.newsletter-input button {
+    background: #00FF00;
+    border: none;
+    color: #000;
+    padding: 0.7rem 1rem;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+.newsletter-input button:hover {
+    background: #d2ff4c;
+}
+
+.subscribe-message {
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+    min-height: 1.2rem;
+    color: #00FF00;
+    text-align: right;
+}
+
+.footer-bottom {
+    margin-top: 2rem;
+    padding: 1.2rem 0;
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.3);
+    width: 100%;
+}
+
+.footer-bottom p {
+    color: #aaa;
+    font-size: 0.85rem;
+    margin: 0;
+    line-height: 1.5;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+html.light-mode .footer {
+    background: #f8f8f8;
+    color: #333;
+}
+
+html.light-mode .footer-description {
+    color: #666;
+}
+
+html.light-mode .footer-social a {
+    background: rgba(0, 0, 0, 0.05);
+    color: #333;
+}
+
+html.light-mode .footer-social a:hover {
+    background: #00FF00;
+    color: #000;
+}
+
+html.light-mode .footer-column ul li a {
+    color: #555;
+}
+
+html.light-mode .contact-info p {
+    color: #555;
+}
+
+html.light-mode .newsletter p {
+    color: #555;
+}
+
+html.light-mode .newsletter-input {
+    background: #fff;
+}
+
+html.light-mode .newsletter-input input {
+    color: #333;
+}
+
+html.light-mode .newsletter-input input::placeholder {
+    color: #999;
+}
+
+html.light-mode .subscribe-message {
+    color: #00FF00;
+}
+
+html.light-mode .footer-bottom {
+    background: rgba(0, 0, 0, 0.02);
+}
+
+html.light-mode .footer-bottom p {
+    color: #666;
+}
+
+@media (max-width: 900px) {
+    .footer-container {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .brand-column {
+        grid-column: span 2;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .footer-description {
+        text-align: center;
+    }
+    
+    .footer-social {
+        justify-content: center;
+    }
+    
+    .contact-column {
+        align-items: center;
+        text-align: center;
+    }
+    
+    .contact-column h4 {
+        text-align: center;
+    }
+    
+    .contact-info p {
+        justify-content: center;
+    }
+    
+    .newsletter p {
+        text-align: center;
+    }
+    
+    .newsletter-input {
+        margin: 0 auto;
+    }
+    
+    .subscribe-message {
+        text-align: center;
+    }
+}
+
+@media (max-width: 600px) {
+    .footer-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .brand-column {
+        grid-column: span 1;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const subscribeBtn = document.getElementById('subscribeBtn');
+    const subscribeEmail = document.getElementById('subscribeEmail');
+    const subscribeMessage = document.getElementById('subscribeMessage');
+    
+    if (subscribeBtn) {
+        subscribeBtn.addEventListener('click', function() {
+            const email = subscribeEmail.value.trim();
+            
+            if (!email) {
+                showMessage('Please enter your email address', 'error');
+                return;
+            }
+            
+            if (!isValidEmail(email)) {
+                showMessage('Please enter a valid email address', 'error');
+                return;
+            }
+            
+            showMessage('Thank you for subscribing!', 'success');
+            subscribeEmail.value = '';
+            
+            setTimeout(() => {
+                subscribeMessage.innerHTML = '';
+            }, 3000);
+        });
+        
+        subscribeEmail.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                subscribeBtn.click();
+            }
+        });
+    }
+    
+    function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+    
+    function showMessage(text, type) {
+        subscribeMessage.innerHTML = text;
+        subscribeMessage.style.color = type === 'success' ? '#00FF00' : '#ff4444';
+    }
+});
+</script>
 
 <script>
 
@@ -508,7 +976,7 @@ div.className="log-item";
 div.innerHTML=`
 <div>
 <strong>${p.item}</strong><br>
-<i class="fas fa-calendar"></i> ${p.date} â€¢ <i class="fas fa-clock"></i> ${p.days}d â€¢ <i class="fas fa-pound-sign"></i> Â£${p.price}
+<i class="fas fa-calendar"></i> ${p.date} • <i class="fas fa-clock"></i> ${p.days}d • <i class="fas fa-pound-sign"></i> £${p.price}
 </div>
 
 <div>
@@ -528,7 +996,7 @@ function updateStats(){
 
 document.getElementById("totalDays").innerText=totalDays+"d";
 document.getElementById("totalItems").innerText=plans.length;
-document.getElementById("totalPrice").innerText="Â£"+totalPrice;
+document.getElementById("totalPrice").innerText="£"+totalPrice;
 
 updateBackground(totalDays);
 
@@ -583,8 +1051,8 @@ function addPlan(){
 
 let d=document.getElementById("date").value;
 let item=document.getElementById("item").value;
-let days=+document.getElementById("days").value;
-let price=+document.getElementById("price").value;
+let days = Math.max(0, Number(document.getElementById("days").value));
+let price = Math.max(0, Number(document.getElementById("price").value));
 
 if(!d||!item||!days||!price) {
     alert("Please fill in all fields!");
@@ -615,12 +1083,21 @@ function saveNotes(){
 
 let text=document.getElementById("userNotes").value;
 localStorage.setItem("rentiqueNotes",text);
-alert("Notes saved successfully! âœ¨");
+alert("Notes saved successfully! ✨");
 }
 
 renderPlans();
+          
+            
+ document.querySelectorAll('input[type="number"]').forEach(input=>{
+    input.addEventListener("input",()=>{
+        if(input.value < 0){
+            input.value = 0;
+        }
+    });
+});
 
 </script>
-
+<script src="assets/global.js"></script>
 </body>
 </html>
