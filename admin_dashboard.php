@@ -497,6 +497,15 @@ if ($view === 'order' && $oiParam > 0 && $hasOrders && $hasOrderItems) {
             <li><a href="AboutUs.php">About</a></li>
             <li><a href="Contact.php">Contact</a></li>
             <li><a href="FAQTestimonials.php">FAQ</a></li>
+    <li><a href="game.php" class="active">Game</a></li>
+   
+
+        <?php if (isset($userData)): ?>
+            <li><a href="dashboard.php">Style Planner</a></li>
+        <?php else: ?>
+    <a href="login.php" class="active">Style Planner</a>
+<?php endif; ?>
+    
             <li><button id="themeToggle" onclick="toggleTheme()">🌙</button></li>
             <li><a href="index.php?logout=1" class="btn logout">Logout</a></li>
         </ul>
