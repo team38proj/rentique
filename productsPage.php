@@ -128,12 +128,12 @@ $categories = $catStmt->fetchAll(PDO::FETCH_COLUMN);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rentique | Shop</title>
     <link rel="stylesheet" href="css/rentique.css">
+<link rel="stylesheet" href="assets/global.css">
     <link rel="icon" type="image/png" href="images/rentique_logo.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="js/theme.js" defer></script>
 
-    <!-- Cart icon & theme toggle styles -->
     <style>
         .cart-icon {
             display: flex;
@@ -302,15 +302,21 @@ $categories = $catStmt->fetchAll(PDO::FETCH_COLUMN);
             gap: 6px;
         }
 
-        .price-radio {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 10px;
-            background: var(--bg-hover);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
+		      .price-radio {
+		    display: flex;
+		    align-items: center;
+		    gap: 8px;
+		    padding: 6px 10px;
+		    background: #1a1a1a;
+		    border: 1px solid var(--border-color);
+		    border-radius: 6px;
+		    font-size: 0.85rem;
+		}	
+
+             .price-radio label {
+            color: #ffffff;
             font-size: 0.85rem;
+            cursor: pointer;
         }
 
         .price-radio input[type="radio"] {
@@ -523,10 +529,20 @@ $categories = $catStmt->fetchAll(PDO::FETCH_COLUMN);
         }
 
         .product-description {
+            background: #1a1a1a;
+            color: #eaeaea;
             padding: 12px;
-            background: var(--bg-hover);
             border-top: 1px solid var(--border-color);
             font-size: 0.8rem;
+            line-height: 1.4;
+        }
+
+        .product-description p {
+            color: #eaeaea;
+        }
+
+        .product-description small {
+            color: #aaaaaa;
         }
 
         .no-results {
@@ -536,6 +552,23 @@ $categories = $catStmt->fetchAll(PDO::FETCH_COLUMN);
             color: var(--text-muted);
             border: 1px dashed var(--border-color);
             border-radius: 10px;
+        }
+
+			html.light-mode .price-radio {
+		    background: #1a1a1a;
+		}
+
+        html.light-mode .product-description {
+            background: #f0f0f0;
+            color: #333333;
+        }
+
+        html.light-mode .product-description p {
+            color: #333333;
+        }
+
+        html.light-mode .product-description small {
+            color: #666666;
         }
 
         @media (max-width: 1100px) {
@@ -589,8 +622,13 @@ $categories = $catStmt->fetchAll(PDO::FETCH_COLUMN);
             <li><a href="AboutUs.php">About</a></li>
             <li><a href="Contact.php">Contact</a></li>
             <li><a href="FAQTestimonials.php">FAQ</a></li>
+    <li><a href="game.php" class="active">Game</a></li>
+    <?php if (isset($userData)): ?>
+    <a href="dashboard.php" class="active">Style Planner</a>
+<?php else: ?>
+    <a href="login.php" class="active">Style Planner</a>
+<?php endif; ?>
 
-            <!-- SVG Cart Icon -->
             <li><a href="basketPage.php" class="cart-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="9" cy="21" r="1"></circle>
@@ -599,7 +637,6 @@ $categories = $catStmt->fetchAll(PDO::FETCH_COLUMN);
                 </svg>
             </a></li>
 
-            <!-- Theme Toggle Button -->
             <li>
                 <button id="themeToggle" onclick="toggleTheme()">🌙</button>
             </li>
@@ -786,9 +823,6 @@ $categories = $catStmt->fetchAll(PDO::FETCH_COLUMN);
         </div>
     </main>
 </div>
-
-
-<!--Krish's Revamped Footer-->
 
 <footer class="footer">
     <div class="footer-container">
@@ -1237,7 +1271,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-<!-- Theme toggle script -->
 <script>
     function toggleTheme() {
         const body = document.body;
@@ -1287,6 +1320,13 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 </script>
-
+<script src="assets/global.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
