@@ -86,6 +86,7 @@ if (isset($_GET['search']) || isset($_GET['category']) || isset($_GET['price_ran
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rentique | Home</title>
     <link rel="stylesheet" href="css/rentique.css">
+<link rel="stylesheet" href= "assets/global.css">
     <link rel="icon" type="image/png" href="/images/rentique_logo.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
@@ -157,10 +158,10 @@ if (isset($_GET['search']) || isset($_GET['category']) || isset($_GET['price_ran
 
 <script src="js/theme.js"></script>
 
-<div class="fade-in">
-   
-<body>
 
+<body>
+<div class="fade-in">
+    
 <header>
     <nav class="navbar">
         <div class="logo">
@@ -261,6 +262,8 @@ if (isset($_GET['search']) || isset($_GET['category']) || isset($_GET['price_ran
 <?php endif; ?>
         </div>
     </div>
+
+
 </section>
 
 <section class="features">
@@ -779,34 +782,24 @@ for (let i = 0; i < 20; i++) {
 }
 </script>
 
-<script>
-const glow = document.createElement("div");
 
-glow.style.position = "fixed";
-glow.style.width = "120px";
-glow.style.height = "120px";
-glow.style.pointerEvents = "none";
-glow.style.transform = "translate(-50%, -50%)";
-glow.style.borderRadius = "50%";
-glow.style.zIndex = "0";
 
-glow.style.background = `
-radial-gradient(circle,
-rgba(163,255,0,0.25) 0%,
-rgba(163,255,0,0.15) 30%,
-rgba(163,255,0,0.08) 50%,
-transparent 60%)
-`;
+<button id="aiChatBtn">💬 AI Help</button>
 
-glow.style.filter = "blur(35px)";
-glow.style.transition = "left 0.25s ease-out, top 0.25s ease-out";
-document.body.appendChild(glow);
+<div id="chatBox">
+    <div class="chat-header">
+        AI Assistant
+        <span id="closeChat">✖</span>
+    </div>
 
-document.addEventListener("mousemove", e => {
-    glow.style.left = e.clientX + "px";
-    glow.style.top = e.clientY + "px";
-});
-</script>
+    <div id="chatMessages"></div>
+
+    <div class="chat-input">
+        <input type="text" id="userMessage" placeholder="Ask something..." />
+        <button id="sendMessage">Send</button>
+    </div>
+</div>
+
+<script src="assets/global.js"></script>
 </body>
 </html>
-
