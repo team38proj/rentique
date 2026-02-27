@@ -26,6 +26,13 @@ body.loaded {
     to { transform: translateY(-100vh); }
 }
 
+.card {
+    transition: 0.3s ease;
+}
 
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 0 25px #a3ff00;
+}
 
 
