@@ -152,6 +152,9 @@ if (isset($_GET['search']) || isset($_GET['category']) || isset($_GET['price_ran
     to { transform: translateY(-100vh); }
 }
 
+#chatBox{
+display:none;
+}
 
     </style>
 </head>
@@ -250,7 +253,18 @@ if (isset($_GET['search']) || isset($_GET['category']) || isset($_GET['price_ran
 <img src="images/rentiquebanner2.png" width="100%">
 
 <section class="hero">
+            
     <div class="hero-content">
+            
+            <div class="feed-toggle">
+    <span>Live Activity</span>
+    <label class="switch">
+        <input type="checkbox" id="feedSwitch" checked>
+        <span class="slider"></span>
+    </label>
+</div>
+            
+            
         <h1>Style That Moves With You</h1>
         <p>Rent. Wear. Return. Fashion freedom. Sustainable choice.</p>
         <div class="hero-buttons">
@@ -800,6 +814,10 @@ for (let i = 0; i < 20; i++) {
     </div>
 </div>
 
+<div id="liveFeed"></div>
+
+
 <script src="assets/global.js"></script>
+
 </body>
 </html>
