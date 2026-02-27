@@ -1320,6 +1320,24 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 </script>
+
+<button id="aiChatBtn">💬 AI Help</button>
+
+<div id="chatBox">
+    <div class="chat-header">
+        AI Assistant
+        <span id="closeChat">✖</span>
+    </div>
+
+    <div id="chatMessages"></div>
+
+    <div class="chat-input">
+        <input type="text" id="userMessage" placeholder="Ask something..." />
+        <button id="sendMessage">Send</button>
+    </div>
+</div>	
+
+	
 <script src="assets/global.js"></script>
 </body>
 </html>
