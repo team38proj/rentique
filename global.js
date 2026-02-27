@@ -61,3 +61,77 @@ document.querySelectorAll("a").forEach(link => {
         }
     });
 });
+
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const chatBtn = document.getElementById("aiChatBtn");
+    const chatBox = document.getElementById("chatBox");
+    const closeChat = document.getElementById("closeChat");
+    const sendBtn = document.getElementById("sendMessage");
+    const userInput = document.getElementById("userMessage");
+    const chatMessages = document.getElementById("chatMessages");
+
+    if (!chatBtn) return; // safety check
+
+    chatBtn.addEventListener("click", function () {
+        chatBox.classList.toggle("active");
+    });
+
+    closeChat.addEventListener("click", function () {
+        chatBox.classList.remove("active");
+    });
+
+    sendBtn.addEventListener("click", sendMessage);
+
+    userInput.addEventListener("keypress", function (e) {
+        if (e.key === "Enter") {
+            sendMessage();
+        }
+    });
+
+    function sendMessage() {
+    const message = userInput.value.trim();
+    if (!message) return;
+
+    appendMessage("You", message);
+    userInput.value = "";
+
+    const typing = document.createElement("div");
+    typing.classList.add("message", "ai");
+    typing.textContent = "Typing...";
+    chatMessages.appendChild(typing);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    fetch("ai_chat.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: message })
+    })
+    .then(res => res.json())
+    .then(data => {
+        typing.remove();
+        appendMessage("AI", data.reply);
+    })
+    .catch(err => {
+        typing.remove();
+        appendMessage("AI", "Error connecting to server.");
+    });
+}
+
+   function appendMessage(sender, text) {
+    const div = document.createElement("div");
+    div.classList.add("message");
+
+    if (sender === "You") {
+        div.classList.add("user");
+    } else {
+        div.classList.add("ai");
+    }
+
+    div.textContent = text;
+    chatMessages.appendChild(div);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+});
