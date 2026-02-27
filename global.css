@@ -1,0 +1,31 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: black;
+    color: #a3ff00;
+    overflow-x: hidden;
+position: relative;
+    z-index: 1;
+opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+
+body.loaded {
+    opacity: 1;
+}
+
+
+
+@keyframes float {
+    from { transform: translateY(0); }
+    to { transform: translateY(-100vh); }
+}
+
+
+
+
