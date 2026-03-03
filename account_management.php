@@ -167,12 +167,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         opacity: 1;
         }
 
+        /*return to dashboard link styling */
+        .return-btn {
+        padding: 10px 16px;
+        background: #222;
+        color: #fff;
+        border: 1px solid #000;
+        border-radius: 3px;
+        cursor: pointer;
+        }
     </style>
 </head>
 
 <body>
 
   <h2>Account Management</h2>
+
+    <h4>
+    <form action="admin_dashboard.php" method="GET">
+        <button class="return-btn">Return to Dashboard</button>
+    </form>
+    </h4>
 
   <div class="admin-wrapper">
 
