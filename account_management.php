@@ -161,10 +161,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         margin: 40px auto;
         }
 
-        /* Cross‑browser placeholder styling */
+        /* Cross‑browser placeholder styling - lighter and visible */
         input::placeholder {
-        color: #444;
-        opacity: 1;
+            color: #666 !important;
+            opacity: 1 !important;
+            font-weight: 400;
+        }
+
+        /* For older browsers */
+        input::-webkit-input-placeholder {
+            color: #666 !important;
+            opacity: 1 !important;
+            font-weight: 400;
+        }
+
+        input::-moz-placeholder {
+            color: #666 !important;
+            opacity: 1 !important;
+            font-weight: 400;
+        }
+
+        input:-ms-input-placeholder {
+            color: #666 !important;
+            opacity: 1 !important;
+            font-weight: 400;
+        }
+
+        input:-moz-placeholder {
+            color: #666 !important;
+            opacity: 1 !important;
+            font-weight: 400;
         }
 
         /*return to dashboard link styling */
