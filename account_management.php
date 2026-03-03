@@ -2,6 +2,7 @@
 /* Account Management Page */
 
 session_start();
+
 /*Expel user from page if not an admin*/
 if (!isset($_SESSION['uid']) || $_SESSION['role'] !== 'admin') {
     header("Location: login.php");
@@ -28,6 +29,72 @@ $stmt->execute();
 $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $csrf_token = generate_csrf_token();
+/* Handle POST actions */
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    if (!verify_csrf_token($_POST['csrf_token'])) {
+        die("Invalid CSRF token");
+    }
+
+    $uid = (int)$_POST['uid'];
+    $action = $_POST['action'];
+
+    /* UPDATE USERNAME + EMAIL */
+    if ($action === 'update_user') {
+    $new_username = trim($_POST['new_username']);
+    $new_email = trim($_POST['new_email']);
+
+    /* Check if username already exists (excluding this user) */
+        if ($new_username !== '') {
+            $check = $db->prepare("SELECT uid FROM users WHERE username = ? AND uid != ?");
+            $check->execute([$new_username, $uid]);
+
+            if ($check->fetch()) {
+                die("Username already taken.");
+            }
+
+            $stmt = $db->prepare("UPDATE users SET username = ? WHERE uid = ?");
+            $stmt->execute([$new_username, $uid]);
+        }
+
+    /* Check if email already exists (optional but recommended) */
+        if ($new_email !== '') {
+            $check = $db->prepare("SELECT uid FROM users WHERE email = ? AND uid != ?");
+            $check->execute([$new_email, $uid]);
+
+            if ($check->fetch()) {
+                die("Email already in use.");
+            }
+
+            $stmt = $db->prepare("UPDATE users SET email = ? WHERE uid = ?");
+            $stmt->execute([$new_email, $uid]);
+        }
+    }
+
+    /* RESET PASSWORD */
+        if ($action === 'reset_password') {
+            $new_password = trim($_POST['new_password']);
+
+            if ($new_password === '') {
+                die("Password cannot be empty.");
+            }
+
+            $hashed = password_hash($new_password, PASSWORD_DEFAULT);
+
+            $stmt = $db->prepare("UPDATE users SET password = ? WHERE uid = ?");
+            $stmt->execute([$hashed, $uid]);
+}
+
+
+    /* DELETE USER */
+    if ($action === 'delete_user') {
+        $stmt = $db->prepare("DELETE FROM users WHERE uid = ?");
+        $stmt->execute([$uid]);
+    }
+
+    header("Location: account_management.php");
+    exit;
+}
 ?>
 
 
@@ -42,10 +109,7 @@ $csrf_token = generate_csrf_token();
     <script src="js/script.js" defer></script>
     <style>
         body {
-            background-image: url("images/Dakar1.png");
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
+            background-color: #2f2f4f;
         }
         body { font-family: Arial, sans-serif; margin: 18px; color: #111; }
         h2 { margin: 0 0 10px; }
@@ -148,6 +212,8 @@ $csrf_token = generate_csrf_token();
             <form method="POST">
                 <input type="hidden" name="uid" value="<?= $u['uid'] ?>">
                 <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
+
+                <input type="password" name="new_password" placeholder="New password">
 
                 <button name="action" value="reset_password" style="background:#222; color:#fff;">
                     Reset
