@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->execute([$new_username, $uid]);
         }
 
-    /* Check if email already exists (optional but recommended) */
+    /* Check if email already exists*/
         if ($new_email !== '') {
             $check = $db->prepare("SELECT uid FROM users WHERE email = ? AND uid != ?");
             $check->execute([$new_email, $uid]);
@@ -83,7 +83,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $stmt = $db->prepare("UPDATE users SET password = ? WHERE uid = ?");
             $stmt->execute([$hashed, $uid]);
-}
+        }
+
+    /* RESET PASSWORD */
+        if ($action === 'reset_secret') {
+            $new_secret = trim($_POST['new_secret']);
+
+            if ($new_secret === '') {
+                die("Secret answer cannot be empty.");
+            }
+
+            $hashed_secret = password_hash($new_secret, PASSWORD_DEFAULT);
+
+            $stmt = $db->prepare("UPDATE users SET secret_answer = ? WHERE uid = ?");
+            $stmt->execute([$hashed_secret, $uid]);
+        }
 
 
     /* DELETE USER */
@@ -94,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     header("Location: account_management.php");
     exit;
-}
+    }
 ?>
 
 
@@ -144,7 +158,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         padding: 20px;
         border-radius: 10px;
         width: fit-content;
-        max-width: 100%;
         margin: 40px auto;
         }
 
@@ -182,6 +195,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <th>Products Listed</th>
         <th>Action: Edit Details</th>
         <th>Action: Password Reset </th>
+        <th>Action: Secret Answer Reset
         <th>Action: Delete User </th>
       </tr>
     </thead>
@@ -216,6 +230,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="password" name="new_password" placeholder="New password">
 
                 <button name="action" value="reset_password" style="background:#222; color:#fff;">
+                    Reset
+                </button>
+            </form>
+            </td>
+
+            <td>
+            <form method="POST">
+                <input type="hidden" name="uid" value="<?= $u['uid'] ?>">
+                <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
+
+                <input type="text" name="new_secret" placeholder="New secret answer">
+
+                <button name="action" value="reset_secret" style="background:#222; color:#fff;">
                     Reset
                 </button>
             </form>
