@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
         { user: "Emma", action: "just rented", item: "Vintage Jacket" },
         { user: "Daniel", action: "added to cart", item: "Designer Bag" },
         { user: "Sofia", action: "is checking out", item: "Sneakers" },
-        { user: "Lucas", action: "completed purchase of", item: "Winter Coat" },
+        { user: "Lucas", action: "completed renting of", item: "Winter Coat" },
         { user: "Olivia", action: "added to wishlist", item: "Leather Boots" },
         { user: "Noah", action: "just rented", item: "Oversized Hoodie" },
         { user: "Ava", action: "applied discount to", item: "Summer Dress" },
@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
         { user: "Mia", action: "is checking out", item: "Denim Jacket" },
         { user: "James", action: "just rented", item: "Premium Blazer" },
         { user: "Isabella", action: "added to cart", item: "Luxury Handbag" },
-        { user: "Benjamin", action: "completed purchase of", item: "Classic Trench Coat" }
+        { user: "Benjamin", action: "completed rent of", item: "Classic Trench Coat" }
     ];
 
     function generateTime() {
