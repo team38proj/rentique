@@ -89,6 +89,8 @@ if (isset($_GET['search']) || isset($_GET['category']) || isset($_GET['price_ran
 <link rel="stylesheet" href= "assets/global.css">
     <link rel="icon" type="image/png" href="/images/rentique_logo.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 
     <!-- Cart icon & theme toggle styles -->
     <style>
@@ -279,6 +281,107 @@ display:none;
 
 
 </section>
+
+
+
+<section class="homepage-carousel">
+
+  <div class="swiper mySwiper">
+    <div class="swiper-wrapper">
+
+      
+      <div class="swiper-slide slide-game">
+        <div class="game-promo">
+          <h2>🎮 Play & Win 5% Discount</h2>
+          <p>Score 100+ points and unlock an exclusive rental discount.</p>
+          <a href="game.php" class="game-btn">Play Now</a>
+        </div>
+      </div>
+
+     
+      <div class="swiper-slide slide-map">
+
+    <div class="map-container">
+
+        <div class="map-stats">
+            <h3>Top Customer Zones</h3>
+
+            <ul class="city-list">
+                <li>
+                    <span class="city-name">London</span>
+                    <span class="city-data">2,430 users • +12%</span>
+                </li>
+                <li>
+                    <span class="city-name">Manchester</span>
+                    <span class="city-data">1,580 users • +9%</span>
+                </li>
+                <li>
+                    <span class="city-name">Birmingham</span>
+                    <span class="city-data">1,210 users • +6%</span>
+                </li>
+                <li>
+                    <span class="city-name">Liverpool</span>
+                    <span class="city-data">860 users • +4%</span>
+                </li>
+                <li>
+                    <span class="city-name">Leeds</span>
+                    <span class="city-data">720 users • +3%</span>
+                </li>
+            </ul>
+        </div>
+
+        <div id="ukMap"></div>
+
+    </div>
+
+</div>
+
+     
+      <div class="swiper-slide slide-leaderboard">
+
+    <div class="leaderboard-wrapper">
+
+        <h2 class="leaderboard-title">🏆 Community Leaderboard 🏆</h2>
+
+        <div class="leaderboard-columns">
+
+         
+            <div class="leaderboard-card">
+                <h3>Top Users</h3>
+                <ul class="leaderboard-list">
+                    <li><span class="rank gold">1</span> Emma <span class="score">2,430 pts</span></li>
+                    <li><span class="rank silver">2</span> Daniel <span class="score">2,110 pts</span></li>
+                    <li><span class="rank bronze">3</span> Sofia <span class="score">1,980 pts</span></li>
+                    <li><span class="rank">4</span> Lucas <span class="score">1,720 pts</span></li>
+                    <li><span class="rank">5</span> Olivia <span class="score">1,510 pts</span></li>
+                </ul>
+            </div>
+
+            
+            <div class="leaderboard-card">
+                <h3>Top Sellers</h3>
+                <ul class="leaderboard-list">
+                    <li><span class="rank gold">1</span> VintageVault <span class="score">£12,430</span></li>
+                    <li><span class="rank silver">2</span> LuxeThreads <span class="score">£10,980</span></li>
+                    <li><span class="rank bronze">3</span> RetroHub <span class="score">£9,860</span></li>
+                    <li><span class="rank">4</span> StreetElite <span class="score">£8,110</span></li>
+                    <li><span class="rank">5</span> UrbanCouture <span class="score">£7,540</span></li>
+                </ul>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+    <!-- Navigation -->
+    <div class="swiper-pagination"></div>
+  </div>
+
+</section>
+
+
 
 <section class="features">
     <h2>Why Choose Rentique?</h2>
@@ -796,6 +899,81 @@ for (let i = 0; i < 20; i++) {
 }
 </script>
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+ 
+
+    const swiper = new Swiper(".mySwiper", {
+        loop: true,
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false
+        },
+        speed: 800,
+        allowTouchMove: true,
+        pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+        },
+    });
+
+    
+
+    const map = L.map('ukMap').setView([54.5, -3], 6);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+    const cities = [
+    { name: "London", coords: [51.5074, -0.1278], users: 2430 },
+    { name: "Manchester", coords: [53.4808, -2.2426], users: 1580 },
+    { name: "Birmingham", coords: [52.4862, -1.8904], users: 1210 },
+    { name: "Liverpool", coords: [53.4084, -2.9916], users: 860 },
+    { name: "Leeds", coords: [53.8008, -1.5491], users: 720 },
+    { name: "Glasgow", coords: [55.8642, -4.2518], users: 540 },
+    { name: "Bristol", coords: [51.4545, -2.5879], users: 480 }
+];
+
+cities.forEach(city => {
+    L.circle(city.coords, {
+        radius: city.users * 5,
+        color: "#a3ff00",
+        fillColor: "#a3ff00",
+        fillOpacity: 0.25
+    })
+    .bindPopup(`<strong>${city.name}</strong><br>${city.users} active customers`)
+    .addTo(map);
+});
+
+  
+
+    const users = [
+        "Emma", "Daniel", "Sofia", "Lucas", "Olivia",
+        "Noah", "Ava", "Ethan", "Mia", "James"
+    ];
+
+    const sellers = [
+        "StyleHub", "UrbanWear", "VintageVault", "EliteThreads",
+        "LuxeFits", "StreetMode", "ModaHouse",
+        "TrendNest", "CoutureLab", "WardrobeX"
+    ];
+
+    const usersList = document.getElementById("topUsers");
+    const sellersList = document.getElementById("topSellers");
+
+    users.forEach((user, index) => {
+        usersList.innerHTML += `<li>#${index + 1} ${user}</li>`;
+    });
+
+    sellers.forEach((seller, index) => {
+        sellersList.innerHTML += `<li>#${index + 1} ${seller}</li>`;
+    });
+
+});
+</script>
+
 
 
 <button id="aiChatBtn">💬 AI Help</button>
@@ -816,6 +994,10 @@ for (let i = 0; i < 20; i++) {
 
 <div id="liveFeed"></div>
 
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script src="assets/global.js"></script>
 
