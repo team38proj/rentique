@@ -74,13 +74,13 @@ display: none;
 
 .item {
     position: absolute;
-    width: 40px;
-    height: 40px;
+    width: 55px;
+    height: 55px;
     background: #00FF00;
     text-align: center;
-    line-height: 40px;
-    font-size: 20px;
-    border-radius: 5px;
+    line-height: 1;
+    font-size: 40px;
+    border-radius: 7px;
     box-shadow: 0 0 15px #00FF00;
     z-index: 2;
 }
@@ -206,6 +206,70 @@ border-radius:40px;
     filter: grayscale(100%);
 }
 
+#rewardPopup {
+    position: absolute;
+    inset: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0,0,0,0.85);
+    z-index: 5;
+    animation: fadeInReward 0.6s ease;
+}
+
+.reward-content {
+    text-align: center;
+    padding: 40px;
+    border-radius: 20px;
+    background: rgba(10,20,10,0.95);
+    border: 2px solid #a3ff00;
+    box-shadow: 0 0 50px rgba(163,255,0,0.5);
+    animation: scaleIn 0.5s ease;
+}
+
+.reward-content h2 {
+    font-size: 36px;
+    color: #a3ff00;
+    margin-bottom: 15px;
+}
+
+.reward-content p {
+    color: #ddd;
+    margin-bottom: 25px;
+}
+
+.reward-badge {
+    font-size: 40px;
+    font-weight: bold;
+    padding: 20px 40px;
+    border-radius: 50px;
+    background: linear-gradient(135deg,#a3ff00,#d2ff4c);
+    color: black;
+    box-shadow: 0 0 40px #a3ff00;
+    animation: pulseReward 1.5s infinite;
+}
+
+@keyframes pulseReward {
+    0% { box-shadow: 0 0 20px #a3ff00; }
+    50% { box-shadow: 0 0 60px #a3ff00; }
+    100% { box-shadow: 0 0 20px #a3ff00; }
+}
+
+@keyframes fadeInReward {
+    from { opacity:0 }
+    to { opacity:1 }
+}
+
+@keyframes scaleIn {
+    from { transform:scale(0.6); opacity:0 }
+    to { transform:scale(1); opacity:1 }
+}
+         
+ .emoji {
+    display: inline-block;
+    transform: translateY(5px);
+}
+
 </style>
 </head>
 
@@ -270,17 +334,18 @@ border-radius:40px;
           
 <div id="gameIntro" class="game-intro">
 
-<h1>Rental Drop Challenge</h1>
+<h1>Clean the Closet Challenge</h1>
 
 <p>
-Catch the green fashion items and avoid the red ones.
-Reach <strong>100 score</strong> to unlock a <strong>5% rental discount reward</strong>.
+Catch the <strong>clean fashion pieces</strong> and avoid the dirty ones.
+Reach <strong>100 Style Points</strong> to unlock an exclusive
+<strong>5% Rentique Discount</strong>.
 </p>
 
 <div class="intro-stats">
-⭐ Improve your style planning skill  
-💡 Higher score = better reward  
-🎁 5% discount voucher at 100 points
+🧥 Sort premium fashion  
+✨ Increase your Style Score  
+🎁 Unlock rewards at 100 points  
 </div>
 
 <button class="game-btn" onclick="startGameFromIntro()">
@@ -304,6 +369,16 @@ Start Game
         <h1>GAME OVER</h1>
         <button class="game-btn" onclick="restartGame()">PLAY AGAIN</button>
     </div>
+        
+        <div id="rewardPopup">
+    <div class="reward-content">
+        <h2>🎉 STYLE MASTER!</h2>
+        <p>You unlocked a <strong>5% Rentique Discount</strong></p>
+        <div class="reward-badge">5% OFF</div>
+    </div>
+</div>
+        
+        
 </div>
 </div>
         
@@ -811,28 +886,35 @@ function createItem() {
     let item = document.createElement("div");
     item.classList.add("item");
 
-    if (Math.random() < 0.2) {
-        item.classList.add("bad");
-        item.textContent = "X";
-    } else {
-        item.textContent = "👕";
-    }
+    const cleanClothes = ["👕","👗","🧥","👖","👚","👜"];
+    const dirtyClothes = ["🧦","🥾","🩳"];
 
-    let maxLeft = gameArea.clientWidth - 40;
+   let emoji;
+
+if (Math.random() < 0.25) {
+    item.classList.add("bad");
+    emoji = dirtyClothes[Math.floor(Math.random() * dirtyClothes.length)];
+} else {
+    emoji = cleanClothes[Math.floor(Math.random() * cleanClothes.length)];
+}
+
+item.innerHTML = `<span class="emoji">${emoji}</span>`;
+
+    let maxLeft = gameArea.clientWidth - 70;
     item.style.left = Math.random() * maxLeft + "px";
     item.style.top = "0px";
 
     gameArea.appendChild(item);
 
-   let fall = setInterval(() => {
+    let fall = setInterval(() => {
 
-    if (!gameStarted) {
-        clearInterval(fall);
-        item.remove();
-        return;
-    }
+        if (!gameStarted) {
+            clearInterval(fall);
+            item.remove();
+            return;
+        }
 
-    item.style.top = item.offsetTop + speed + "px";
+        item.style.top = item.offsetTop + speed + "px";
 
         let itemRect = item.getBoundingClientRect();
         let playerRect = player.getBoundingClientRect();
@@ -848,10 +930,9 @@ function createItem() {
                 score++;
                 scoreDisplay.textContent = score;
                 updateBackground();
-            
-            checkReward();
-         
-                if (score % 5 === 0) speed++;
+                checkReward();
+
+                if (score % 5 === 0) speed += 0.5;
             }
 
             item.remove();
@@ -927,12 +1008,14 @@ startGame();
 }
 
 function checkReward(){
-if(score >= 100 && discountUnlocked === "false"){
-    localStorage.setItem("rentalDiscount","true");
 
-    alert("🎉 Congratulations! You unlocked 5% rental discount!");
+    if(score === 100 && discountUnlocked === "false"){
 
-}
+        discountUnlocked = "true";
+        localStorage.setItem("rentalDiscount","true");
+
+        showRewardAnimation();
+    }
 }
 
 document.addEventListener("visibilitychange", () => {
@@ -958,6 +1041,17 @@ if(gamePaused && gameStarted){
     itemInterval = setInterval(createItem, 1000);
     gamePaused = false;
 }
+}
+         
+ function showRewardAnimation(){
+
+    const popup = document.getElementById("rewardPopup");
+
+    popup.style.display = "flex";
+
+    setTimeout(() => {
+        popup.style.display = "none";
+    }, 4000);
 }
 
 </script>
