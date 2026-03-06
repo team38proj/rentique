@@ -176,86 +176,189 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     </script>
     <style>
-        body {
-            background-color: #2f2f4f;
-        }
-        body { font-family: Arial, sans-serif; margin: 18px; color: #111; }
-        h2 { margin: 0 0 10px; }
-        h3 { margin: 18px 0 8px; }
-        .meta { margin-bottom: 12px; }
+.account-page .dashboard-container{
+display:flex;
+min-height:100vh;
+}
 
-        .kpi { border-collapse: collapse; width: 100%; max-width: 900px; }
-        .kpi td { border: 1px solid #ddd; padding: 8px; }
+.account-page .sidebar{
+width:260px;
+flex-shrink:0;
+}
 
-        .tbl { border-collapse: collapse; width: 100%; max-width: 900px; margin-top: 10px; }
-        .tbl td, .tbl th { border: 1px solid #ddd; padding: 8px; }
-        .tbl th { background: #f3f3f3; text-align: left; }
+.account-page .main-content{
+flex:1;
+padding:30px;
+}
 
-        .right { text-align: right; }
+.account-page .section-block{
+width:100%;
+background:#0f0f0f;
+padding:25px;
+border-radius:14px;
+margin-bottom:30px;
+}
 
-        .actions { margin: 12px 0; }
-        .actions button {
-        padding: 10px 14px;
-        border-radius: 10px;
-        border: 1px solid #222;
-        background: #222;
-        color: #fff;
-        cursor: pointer;
-        }
-        .actions button:hover { opacity: 0.9; }
+.admin-create-form{
+display:flex;
+flex-direction:column;
+gap:15px;
+max-width:500px;
+margin-top:20px;
+}
 
-        @media print { .actions { display:none; } }
+.admin-create-form input{
+padding:14px;
+border-radius:10px;
+border:1px solid #333;
+background:#0f0f0f;
+color:#fff;
+}
 
-        .admin-wrapper {
-        background: #fff;
-        color: #111;
-        padding: 20px;
-        border-radius: 10px;
-        width: fit-content;
-        margin: 40px auto;
-        }
+.btn-primary{
+background:#a6ff00;
+color:#000;
+padding:14px;
+border-radius:30px;
+border:none;
+font-weight:600;
+cursor:pointer;
+}
 
-        /* Cross‑browser placeholder styling - lighter and visible */
-        input::placeholder {
-            color: #666 !important;
-            opacity: 1 !important;
-            font-weight: 400;
-        }
+.table-wrapper{
+width:100%;
+overflow-x:auto;
+margin-top:20px;
+}
 
-        /* For older browsers */
-        input::-webkit-input-placeholder {
-            color: #666 !important;
-            opacity: 1 !important;
-            font-weight: 400;
-        }
+.account-page .main-table{
+width:100%;
+border-collapse:collapse;
+min-width:1100px;
+}
 
-        input::-moz-placeholder {
-            color: #666 !important;
-            opacity: 1 !important;
-            font-weight: 400;
-        }
+.account-page .main-table th,
+.account-page .main-table td{
+padding:12px 14px;
+text-align:left;
+white-space:nowrap;
+}
 
-        input:-ms-input-placeholder {
-            color: #666 !important;
-            opacity: 1 !important;
-            font-weight: 400;
-        }
+.account-page .main-table th{
+background:#151515;
+}
 
-        input:-moz-placeholder {
-            color: #666 !important;
-            opacity: 1 !important;
-            font-weight: 400;
-        }
+.account-page .main-table tr:nth-child(even){
+background:#111;
+}
 
-        /*return to dashboard link styling */
-        .return-btn {
-        padding: 10px 16px;
-        background: #222;
-        color: #fff;
-        border: 1px solid #000;
-        border-radius: 3px;
-        cursor: pointer;
-        }
+.account-page .action-buttons{
+display:flex;
+flex-direction:column;
+gap:6px;
+max-width:150px;
+}
+
+.account-page .main-table{
+    width:100%;
+    min-width:1400px;
+    border-collapse:collapse;
+}
+
+.account-page .main-table th,
+.account-page .main-table td{
+    padding:16px 18px;
+    vertical-align:top;
+}
+
+.account-page .action-buttons{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.account-page .action-buttons input{
+    width:100%;
+    min-width:160px;
+}
+
+.account-page .btn-action{
+    width:120px;
+}
+
+.account-page .btn-delete{
+    width:120px;
+}
+
+.account-page .main-table th{
+    white-space:nowrap;
+}
+
+.account-page .action-buttons button{
+    align-self:center;
+    width:120px;
+}
+
+.account-page .btn-action{
+    padding:10px 18px;
+    border-radius:10px;
+    border:1px solid #a3ff00;
+    background:#1a1a1a;
+    color:#ddd;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+.account-page .btn-action:hover{
+    background:#2a2a2a;
+}
+
+.account-page .btn-delete{
+    padding:10px 18px;
+    border-radius:10px;
+    border:none;
+    background:#b3261e;
+    color:white;
+    cursor:pointer;
+}
+
+.account-page .btn-delete:hover{
+    background:#d63a31;
+}
+
+:root.light-mode .account-page .main-table th{
+    background:#f4f4f4;
+    color:#111;
+}
+
+:root.light-mode .account-page .main-table td{
+    background:#ffffff;
+    color:#111;
+}
+
+:root.light-mode .account-page .main-table th,
+:root.light-mode .account-page .main-table td{
+    border-bottom:1px solid #ddd;
+}
+
+:root.light-mode .account-page .action-buttons button{
+    background:#252;
+    color:#fff;
+    border:1px solid #444;
+}
+
+:root.light-mode .account-page .action-buttons button:hover{
+    background:#a3ff00;
+}
+
+:root.light-mode .account-page .btn-delete{
+    background:#b3261e;
+    color:#fff;
+}
+
+:root.light-mode .account-page .btn-delete:hover{
+    background:#d63a31;
+}
     </style>
 </head>
 
