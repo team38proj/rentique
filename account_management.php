@@ -421,3 +421,31 @@ CREATE ACCOUNT
 <button onclick="window.location.reload()" class="btn small">
 Refresh
 </button>
+
+<div class="table-wrapper">
+
+<table class="main-table">
+
+<thead>
+
+<tr>
+<th>UID</th>
+<th>Username</th>
+<th>Email</th>
+<th>Role</th>
+<th>Created</th>
+<th>Products</th>
+<th>Edit</th>
+<th>Password</th>
+<th>Secret</th>
+<th>Delete</th>
+</tr>
+
+</thead>
+</table>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>
