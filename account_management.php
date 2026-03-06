@@ -78,7 +78,7 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $csrf_token = generate_csrf_token();
 /* Handle POST actions */
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
     if (!verify_csrf_token($_POST['csrf_token'])) {
         die("Invalid CSRF token");
