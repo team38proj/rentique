@@ -362,16 +362,22 @@ max-width:150px;
 }
     </style>
 </head>
+<body class="account-page">
+    
+<div class="dashboard-container">
 
-<body>
+<div class="sidebar">
 
-  <h2>Account Management</h2>
+<h2>ADMIN PANEL</h2>
 
-    <h4>
-    <form action="admin_dashboard.php" method="GET">
-        <button class="return-btn">Return to Dashboard</button>
-    </form>
-    </h4>
+<a href="admin_dashboard.php" class="side-link">Dashboard</a>
+<a href="account_management.php" class="side-link">Manage Accounts</a>
+<a href="report.php" class="side-link">Reports</a>
+<a href="logout.php" class="side-link">Logout</a>
+
+</div>
+
+<div class="main-content">
 
   <div class="admin-wrapper">
 
