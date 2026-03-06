@@ -489,8 +489,18 @@ Reset
 </button>
 </form>
 </td>
-    
+
+    <td>
+<form method="POST" onsubmit="return confirm('Delete this user?');">
+<input type="hidden" name="uid" value="<?= $u['uid'] ?>">
+<input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
+<button name="action" value="delete_user" class="btn-delete">
+Delete
+</button>
+</form>
+</td>
 </tr>
+        
     </tbody>
 
 </table>
