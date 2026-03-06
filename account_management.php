@@ -393,6 +393,21 @@ max-width:150px;
 <p style="color:#ff4c4c"><?= $e ?></p>
 <?php endforeach; ?>
 
+<form method="POST" class="admin-create-form">
+
+<input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
+
+<input type="text" name="admin_username" placeholder="Username" required>
+
+<input type="email" name="admin_email" placeholder="Email" required>
+
+<input type="password" name="admin_password" placeholder="Password" required>
+
+<button type="submit" name="create_admin" class="btn-primary">
+CREATE ACCOUNT
+</button>
+
+</form>
 </div>
     
   <div class="admin-wrapper">
