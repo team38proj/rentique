@@ -169,6 +169,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="css/rentique.css">
     <script src="js/login.js" defer></script>
     <script src="js/script.js" defer></script>
+    <script>
+        // Apply saved theme immediately to prevent flash
+        if (localStorage.getItem('theme') === 'light') {
+            document.documentElement.classList.add('light-mode');
+        }
+    </script>
     <style>
         body {
             background-color: #2f2f4f;
