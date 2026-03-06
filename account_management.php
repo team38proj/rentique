@@ -379,6 +379,22 @@ max-width:150px;
 
 <div class="main-content">
 
+<!-- CREATE ADMIN -->
+
+<div class="section-block">
+
+<h2>ADMIN ACCOUNT CREATION</h2>
+
+<?php if($success): ?>
+<p style="color:#00ff88"><?= $success ?></p>
+<?php endif; ?>
+
+<?php foreach($errors as $e): ?>
+<p style="color:#ff4c4c"><?= $e ?></p>
+<?php endforeach; ?>
+
+</div>
+    
   <div class="admin-wrapper">
 
   <div class="meta">
