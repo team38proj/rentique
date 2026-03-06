@@ -146,8 +146,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             $stmt = $db->prepare("UPDATE users SET secret_answer = ? WHERE uid = ?");
             $stmt->execute([$hashed_secret, $uid]);
         }
-
-
+    if ($uid == $_SESSION['uid']) {
+        die("You cannot delete your own account.");
+    }
     /* DELETE USER */
     if ($action === 'delete_user') {
         $stmt = $db->prepare("DELETE FROM users WHERE uid = ?");
