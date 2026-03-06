@@ -1,0 +1,513 @@
+<?php
+/* Account Management Page 
+Jay - backend 
+Saja - frontend 
+*/
+
+session_start();
+
+if (!isset($_SESSION['uid']) || $_SESSION['role'] !== 'admin') {
+    header("Location: login.php");
+    exit;
+}
+
+require('connectdb.php');
+
+$errors = [];
+$success = "";
+
+if (isset($_POST['create_admin'])) {
+
+    if (!verify_csrf_token($_POST['csrf_token'])) {
+        die("Invalid CSRF token");
+    }
+
+    $username = trim($_POST['admin_username']);
+    $email = trim($_POST['admin_email']);
+    $password = $_POST['admin_password'];
+
+    if (empty($username) || empty($email) || empty($password)) {
+        $errors[] = "All fields are required.";
+    }
+
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors[] = "Invalid email.";
+    }
+
+    if (strlen($password) < 6) {
+        $errors[] = "Password must be at least 6 characters.";
+    }
+
+    $stmt = $db->prepare("SELECT uid FROM users WHERE email=?");
+    $stmt->execute([$email]);
+
+    if ($stmt->fetch()) {
+        $errors[] = "Email already exists.";
+    }
+
+    if (empty($errors)) {
+
+        $hashed = password_hash($password, PASSWORD_DEFAULT);
+
+        $stmt = $db->prepare("
+            INSERT INTO users (username,email,password,role)
+            VALUES (?, ?, ?, 'admin')
+        ");
+
+        if ($stmt->execute([$username,$email,$hashed])) {
+            $success = "Admin account created successfully.";
+        }
+    }
+}
+
+/* Get Users*/
+
+$stmt = $db->prepare("
+SELECT 
+    u.uid,
+    u.username,
+    u.email,
+    u.role,
+    u.created_at,
+    COUNT(p.uid) AS product_count
+FROM users u
+LEFT JOIN products p ON p.uid = u.uid
+GROUP BY u.uid
+ORDER BY u.uid ASC
+");
+
+$stmt->execute();
+$users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$csrf_token = generate_csrf_token();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+
+    if (!verify_csrf_token($_POST['csrf_token'])) {
+        die("Invalid CSRF token");
+    }
+
+    $uid = (int)$_POST['uid'];
+    $action = $_POST['action'];
+
+    if ($action === 'update_user') {
+
+        $new_username = trim($_POST['new_username']);
+        $new_email = trim($_POST['new_email']);
+
+        if ($new_username !== '') {
+            $stmt = $db->prepare("UPDATE users SET username=? WHERE uid=?");
+            $stmt->execute([$new_username,$uid]);
+        }
+
+        if ($new_email !== '') {
+            $stmt = $db->prepare("UPDATE users SET email=? WHERE uid=?");
+            $stmt->execute([$new_email,$uid]);
+        }
+    }
+
+    if ($action === 'reset_password') {
+
+        $new_password = trim($_POST['new_password']);
+
+        if ($new_password !== "") {
+            $hashed = password_hash($new_password,PASSWORD_DEFAULT);
+
+            $stmt = $db->prepare("UPDATE users SET password=? WHERE uid=?");
+            $stmt->execute([$hashed,$uid]);
+        }
+    }
+
+    if ($action === 'reset_secret') {
+
+        $new_secret = trim($_POST['new_secret']);
+
+        if ($new_secret !== "") {
+            $hashed = password_hash($new_secret,PASSWORD_DEFAULT);
+
+            $stmt = $db->prepare("UPDATE users SET secret_answer=? WHERE uid=?");
+            $stmt->execute([$hashed,$uid]);
+        }
+    }
+
+    if ($action === 'delete_user') {
+
+        if ($uid == $_SESSION['uid']) {
+            die("You cannot delete your own account.");
+        }
+
+        $stmt = $db->prepare("DELETE FROM users WHERE uid=?");
+        $stmt->execute([$uid]);
+    }
+
+    header("Location: account_management.php");
+    exit;
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Account Management</title>
+
+<link rel="stylesheet" href="css/rentique.css">
+
+<script>
+        // Apply saved theme immediately to prevent flash
+        if (localStorage.getItem('theme') === 'light') {
+            document.documentElement.classList.add('light-mode');
+        }
+    </script>
+
+<style>
+
+.account-page .dashboard-container{
+display:flex;
+min-height:100vh;
+}
+
+.account-page .sidebar{
+width:260px;
+flex-shrink:0;
+}
+
+.account-page .main-content{
+flex:1;
+padding:30px;
+}
+
+.account-page .section-block{
+width:100%;
+background:#0f0f0f;
+padding:25px;
+border-radius:14px;
+margin-bottom:30px;
+}
+
+.admin-create-form{
+display:flex;
+flex-direction:column;
+gap:15px;
+max-width:500px;
+margin-top:20px;
+}
+
+.admin-create-form input{
+padding:14px;
+border-radius:10px;
+border:1px solid #333;
+background:#0f0f0f;
+color:#fff;
+}
+
+.btn-primary{
+background:#a6ff00;
+color:#000;
+padding:14px;
+border-radius:30px;
+border:none;
+font-weight:600;
+cursor:pointer;
+}
+
+.table-wrapper{
+width:100%;
+overflow-x:auto;
+margin-top:20px;
+}
+
+.account-page .main-table{
+width:100%;
+border-collapse:collapse;
+min-width:1100px;
+}
+
+.account-page .main-table th,
+.account-page .main-table td{
+padding:12px 14px;
+text-align:left;
+white-space:nowrap;
+}
+
+.account-page .main-table th{
+background:#151515;
+}
+
+.account-page .main-table tr:nth-child(even){
+background:#111;
+}
+
+.account-page .action-buttons{
+display:flex;
+flex-direction:column;
+gap:6px;
+max-width:150px;
+}
+
+.account-page .main-table{
+    width:100%;
+    min-width:1400px;
+    border-collapse:collapse;
+}
+
+.account-page .main-table th,
+.account-page .main-table td{
+    padding:16px 18px;
+    vertical-align:top;
+}
+
+.account-page .action-buttons{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.account-page .action-buttons input{
+    width:100%;
+    min-width:160px;
+}
+
+.account-page .btn-action{
+    width:120px;
+}
+
+.account-page .btn-delete{
+    width:120px;
+}
+
+.account-page .main-table th{
+    white-space:nowrap;
+}
+
+.account-page .action-buttons button{
+    align-self:center;
+    width:120px;
+}
+
+.account-page .btn-action{
+    padding:10px 18px;
+    border-radius:10px;
+    border:1px solid #a3ff00;
+    background:#1a1a1a;
+    color:#ddd;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+.account-page .btn-action:hover{
+    background:#2a2a2a;
+}
+
+.account-page .btn-delete{
+    padding:10px 18px;
+    border-radius:10px;
+    border:none;
+    background:#b3261e;
+    color:white;
+    cursor:pointer;
+}
+
+.account-page .btn-delete:hover{
+    background:#d63a31;
+}
+
+:root.light-mode .account-page .main-table th{
+    background:#f4f4f4;
+    color:#111;
+}
+
+:root.light-mode .account-page .main-table td{
+    background:#ffffff;
+    color:#111;
+}
+
+:root.light-mode .account-page .main-table th,
+:root.light-mode .account-page .main-table td{
+    border-bottom:1px solid #ddd;
+}
+
+:root.light-mode .account-page .action-buttons button{
+    background:#252;
+    color:#fff;
+    border:1px solid #444;
+}
+
+:root.light-mode .account-page .action-buttons button:hover{
+    background:#a3ff00;
+}
+
+:root.light-mode .account-page .btn-delete{
+    background:#b3261e;
+    color:#fff;
+}
+
+:root.light-mode .account-page .btn-delete:hover{
+    background:#d63a31;
+}
+
+</style>
+
+</head>
+
+<body class="account-page">
+
+<div class="dashboard-container">
+
+<div class="sidebar">
+
+<h2>ADMIN PANEL</h2>
+
+<a href="admin_dashboard.php" class="side-link">Dashboard</a>
+<a href="account_management.php" class="side-link">Manage Accounts</a>
+<a href="report.php" class="side-link">Reports</a>
+<a href="logout.php" class="side-link">Logout</a>
+
+</div>
+
+<div class="main-content">
+
+<!-- CREATE ADMIN -->
+
+<div class="section-block">
+
+<h2>ADMIN ACCOUNT CREATION</h2>
+
+<?php if($success): ?>
+<p style="color:#00ff88"><?= $success ?></p>
+<?php endif; ?>
+
+<?php foreach($errors as $e): ?>
+<p style="color:#ff4c4c"><?= $e ?></p>
+<?php endforeach; ?>
+
+<form method="POST" class="admin-create-form">
+
+<input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
+
+<input type="text" name="admin_username" placeholder="Username" required>
+
+<input type="email" name="admin_email" placeholder="Email" required>
+
+<input type="password" name="admin_password" placeholder="Password" required>
+
+<button type="submit" name="create_admin" class="btn-primary">
+CREATE ACCOUNT
+</button>
+
+</form>
+
+</div>
+
+<!-- USER TABLE -->
+
+<div class="section-block">
+
+<h2>MANAGE ACCOUNTS</h2>
+
+<p>Showing <?= count($users) ?> users</p>
+
+<button onclick="window.location.reload()" class="btn small">
+Refresh
+</button>
+
+<div class="table-wrapper">
+
+<table class="main-table">
+
+<thead>
+
+<tr>
+<th>UID</th>
+<th>Username</th>
+<th>Email</th>
+<th>Role</th>
+<th>Created</th>
+<th>Products</th>
+<th>Edit</th>
+<th>Password</th>
+<th>Secret</th>
+<th>Delete</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+<?php foreach ($users as $u): ?>
+
+<tr>
+
+<td><?= htmlspecialchars($u['uid']) ?></td>
+<td><?= htmlspecialchars($u['username']) ?></td>
+<td><?= htmlspecialchars($u['email']) ?></td>
+<td><?= htmlspecialchars($u['role']) ?></td>
+<td><?= htmlspecialchars($u['created_at']) ?></td>
+<td><?= htmlspecialchars($u['product_count']) ?></td>
+
+<td>
+<form method="POST" class="action-buttons">
+<input type="hidden" name="uid" value="<?= $u['uid'] ?>">
+<input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
+<input type="text" name="new_username" placeholder="Username">
+<input type="text" name="new_email" placeholder="Email">
+<button name="action" value="update_user" class="btn-action">
+Update
+</button>
+</form>
+</td>
+
+<td>
+<form method="POST" class="action-buttons">
+<input type="hidden" name="uid" value="<?= $u['uid'] ?>">
+<input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
+<input type="password" name="new_password" placeholder="Password">
+<button name="action" value="reset_password" class="btn-action">
+Reset
+</button>
+</form>
+</td>
+
+<td>
+<form method="POST" class="action-buttons">
+<input type="hidden" name="uid" value="<?= $u['uid'] ?>">
+<input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
+<input type="text" name="new_secret" placeholder="Secret">
+<button name="action" value="reset_secret" class="btn-action">
+Reset
+</button>
+</form>
+</td>
+
+<td>
+<form method="POST" onsubmit="return confirm('Delete this user?');">
+<input type="hidden" name="uid" value="<?= $u['uid'] ?>">
+<input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
+<button name="action" value="delete_user" class="btn-delete">
+Delete
+</button>
+</form>
+</td>
+
+</tr>
+
+<?php endforeach; ?>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>
