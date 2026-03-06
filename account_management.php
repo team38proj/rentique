@@ -1,5 +1,8 @@
 <?php
-/* Account Management Page */
+/* Account Management Page 
+Jay - backend 
+Saja - frontend 
+*/
 
 session_start();
 
