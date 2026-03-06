@@ -410,99 +410,14 @@ CREATE ACCOUNT
 </form>
 </div>
     
-  <div class="admin-wrapper">
+ <!-- USER TABLE -->
 
-  <div class="meta">
-    Showing <?= count($users) ?> users
-  </div>
+<div class="section-block">
 
-  <div class="actions">
-    <button onclick="window.location.reload()">Refresh</button>
-  </div>
+<h2>MANAGE ACCOUNTS</h2>
 
-  <table class="tbl">
-    <thead>
-      <tr>
-        <th>UID</th>
-        <th>Username</th>
-        <th>Email</th>
-        <th>Role</th>
-        <th>Created At</th>
-        <th>Products Listed</th>
-        <th>Action: Edit Details</th>
-        <th>Action: Password Reset </th>
-        <th>Action: Secret Answer Reset
-        <th>Action: Delete User </th>
-      </tr>
-    </thead>
+<p>Showing <?= count($users) ?> users</p>
 
-    <tbody>
-      <?php foreach ($users as $u): ?>
-        <tr>
-          <td><?= htmlspecialchars($u['uid']) ?></td>
-          <td><?= htmlspecialchars($u['username']) ?></td>
-          <td><?= htmlspecialchars($u['email']) ?></td>
-          <td><?= htmlspecialchars($u['role']) ?></td>
-          <td><?= htmlspecialchars($u['created_at']) ?></td>
-          <td><?= htmlspecialchars($u['product_count']) ?></td>
-
-            <td>
-            <form method="POST" style="display:flex; gap:3px; align-items:center;">
-                <input type="hidden" name="uid" value="<?= $u['uid'] ?>">
-                <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
-
-                <input type="text" name="new_username" placeholder="New username">
-                <input type="text" name="new_email" placeholder="New e-mail">
-
-                <button name="action" value="update_user" style="background:#222; color:#fff;">Confirm Changes</button>
-            </form>
-            </td>
-
-            <td>
-            <form method="POST">
-                <input type="hidden" name="uid" value="<?= $u['uid'] ?>">
-                <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
-
-                <input type="password" name="new_password" placeholder="New password">
-
-                <button name="action" value="reset_password" style="background:#222; color:#fff;">
-                    Reset
-                </button>
-            </form>
-            </td>
-
-            <td>
-            <form method="POST">
-                <input type="hidden" name="uid" value="<?= $u['uid'] ?>">
-                <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
-
-                <input type="text" name="new_secret" placeholder="New secret answer">
-
-                <button name="action" value="reset_secret" style="background:#222; color:#fff;">
-                    Reset
-                </button>
-            </form>
-            </td>
-
-
-            <td>
-            <form method="POST" onsubmit="return confirm('Delete this user?');">
-                <input type="hidden" name="uid" value="<?= $u['uid'] ?>">
-                <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
-
-                <button name="action" value="delete_user" style="background:#b30000; color:#fff;">
-                    Delete
-                </button>
-            </form>
-            </td>
-
-
-        </tr>
-      <?php endforeach; ?>
-    </tbody>
-  </table>
-
-    </div>
-
-</body>
-</html>
+<button onclick="window.location.reload()" class="btn small">
+Refresh
+</button>
