@@ -478,6 +478,17 @@ Reset
 </button>
 </form>
 </td>
+
+    <td>
+<form method="POST" class="action-buttons">
+<input type="hidden" name="uid" value="<?= $u['uid'] ?>">
+<input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
+<input type="text" name="new_secret" placeholder="Secret">
+<button name="action" value="reset_secret" class="btn-action">
+Reset
+</button>
+</form>
+</td>
     
 </tr>
     </tbody>
