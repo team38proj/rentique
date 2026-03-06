@@ -14,6 +14,51 @@ if (!isset($_SESSION['uid']) || $_SESSION['role'] !== 'admin') {
 require('connectdb.php');
 
 $errors = [];
+$success = "";
+
+if (isset($_POST['create_admin'])) {
+
+    if (!verify_csrf_token($_POST['csrf_token'])) {
+        die("Invalid CSRF token");
+    }
+
+    $username = trim($_POST['admin_username']);
+    $email = trim($_POST['admin_email']);
+    $password = $_POST['admin_password'];
+
+    if (empty($username) || empty($email) || empty($password)) {
+        $errors[] = "All fields are required.";
+    }
+
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors[] = "Invalid email.";
+    }
+
+    if (strlen($password) < 6) {
+        $errors[] = "Password must be at least 6 characters.";
+    }
+
+    $stmt = $db->prepare("SELECT uid FROM users WHERE email=?");
+    $stmt->execute([$email]);
+
+    if ($stmt->fetch()) {
+        $errors[] = "Email already exists.";
+    }
+
+    if (empty($errors)) {
+
+        $hashed = password_hash($password, PASSWORD_DEFAULT);
+
+        $stmt = $db->prepare("
+            INSERT INTO users (username,email,password,role)
+            VALUES (?, ?, ?, 'admin')
+        ");
+
+        if ($stmt->execute([$username,$email,$hashed])) {
+            $success = "Admin account created successfully.";
+        }
+    }
+}
 /* Collect $users variable from users table */
 $stmt = $db->prepare("
     SELECT 
