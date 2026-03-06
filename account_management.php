@@ -467,6 +467,18 @@ Update
 </button>
 </form>
 </td>
+    
+    <td>
+<form method="POST" class="action-buttons">
+<input type="hidden" name="uid" value="<?= $u['uid'] ?>">
+<input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
+<input type="password" name="new_password" placeholder="Password">
+<button name="action" value="reset_password" class="btn-action">
+Reset
+</button>
+</form>
+</td>
+    
 </tr>
     </tbody>
 
