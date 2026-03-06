@@ -442,6 +442,34 @@ Refresh
 </tr>
 
 </thead>
+
+    <tbody>
+
+<?php foreach ($users as $u): ?>
+
+<tr>
+
+<td><?= htmlspecialchars($u['uid']) ?></td>
+<td><?= htmlspecialchars($u['username']) ?></td>
+<td><?= htmlspecialchars($u['email']) ?></td>
+<td><?= htmlspecialchars($u['role']) ?></td>
+<td><?= htmlspecialchars($u['created_at']) ?></td>
+<td><?= htmlspecialchars($u['product_count']) ?></td>
+
+<td>
+<form method="POST" class="action-buttons">
+<input type="hidden" name="uid" value="<?= $u['uid'] ?>">
+<input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
+<input type="text" name="new_username" placeholder="Username">
+<input type="text" name="new_email" placeholder="Email">
+<button name="action" value="update_user" class="btn-action">
+Update
+</button>
+</form>
+</td>
+</tr>
+    </tbody>
+
 </table>
 </div>
 </div>
