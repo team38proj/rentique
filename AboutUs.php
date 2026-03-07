@@ -369,7 +369,7 @@ if (isset($_SESSION['uid'])) {
             </a></li>
 
             <li>
-                <button id="themeToggle" onclick="toggleTheme()">?</button>
+                <button id="themeToggle" onclick="toggleTheme()">&#127769;</button>
             </li>
 
             <?php if (isset($userData['role']) && $userData['role'] === 'customer'): ?>
@@ -529,7 +529,7 @@ if (isset($_SESSION['uid'])) {
                 <p>Subscribe for exclusive offers</p>
                 <div class="newsletter-input">
                     <input type="email" id="subscribeEmail" placeholder="Your email address">
-                    <button type="button" id="subscribeBtn">?</button>
+                    <button type="button" id="subscribeBtn">&rarr;</button>
                 </div>
                 <div id="subscribeMessage" class="subscribe-message"></div>
             </div>
@@ -591,12 +591,12 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <!-- AI Chat (KEEP) -->
-<button id="aiChatBtn">? AI Help</button>
+<button id="aiChatBtn">&#128172; AI Help</button>
 
 <div id="chatBox">
     <div class="chat-header">
         AI Assistant
-        <span id="closeChat">?</span>
+        <span id="closeChat">&#10006;</span>
     </div>
 
     <div id="chatMessages"></div>
