@@ -403,7 +403,7 @@ if (isset($_SESSION['uid'])) {
                 <p>
                     What began as an idea quickly became a platform with a clear message:
                     <span class="highlight">awareness</span>, <span class="highlight">accessibility</span>, and <span class="highlight">sustainability</span>.
-                    Our mission has always been simple — help people look good while <span class="highlight">doing good</span>.
+                    Our mission has always been simple &mdash; help people look good while <span class="highlight">doing good</span>.
                 </p>
             </div>
         </div>
@@ -420,7 +420,7 @@ if (isset($_SESSION['uid'])) {
                     It promotes re-use and gives people access to <span class="highlight">high-end fashion</span> without the cost of ownership.
                 </p>
                 <p>
-                    From shipment to expert cleaning, Rentique takes care of the process — ensuring style is never at the expense of
+                    From shipment to expert cleaning, Rentique takes care of the process &mdash; ensuring style is never at the expense of
                     <span class="highlight">people</span> or the <span class="highlight">planet</span>.
                 </p>
 
@@ -432,7 +432,7 @@ if (isset($_SESSION['uid'])) {
                     </div>
 
                     <div class="stat-item">
-                        <div class="stat-number">6–10%</div>
+                        <div class="stat-number">6&ndash;10%</div>
                         <div class="stat-label">Fast Fashion Emissions</div>
                         <div class="stat-note">Rental helps reduce repeat purchases.</div>
                     </div>
@@ -448,7 +448,7 @@ if (isset($_SESSION['uid'])) {
             <div class="mission-image map-hover">
                 <img src="images/map4.png" alt="Map of Dakar">
                 <div class="map-caption">
-                    Dakar, Senegal — a real-world example of how fast fashion waste can affect communities.
+                    Dakar, Senegal &mdash; a real-world example of how fast fashion waste can affect communities.
                 </div>
             </div>
         </div>
@@ -459,7 +459,7 @@ if (isset($_SESSION['uid'])) {
     <div class="container">
         <div class="section-header">
             <h2>Our Values</h2>
-            <p>At Rentique, we stand by our values — they influence every decision we make.</p>
+            <p>At Rentique, we stand by our values &mdash; they influence every decision we make.</p>
         </div>
 
         <div class="values-section">
