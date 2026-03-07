@@ -81,11 +81,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         } else {
 
-            $name   = trim($_POST['cardholder_name']);
-            $number = trim($_POST['card_number_real']);
-            $type   = trim($_POST['card_type']);
-            $expiry = trim($_POST['expiry_date']);
-            $cvv    = trim($_POST['cvv']);
+            $name   = trim($_POST['cardholder_name'] ?? '');
+            $number = trim($_POST['card_number_real'] ?? '');
+            $type   = trim($_POST['card_type'] ?? '');
+            $expiry = trim($_POST['expiry_date'] ?? '');
+            $cvv    = trim($_POST['cvv'] ?? '');
 
             if (!$number || strlen($number) < 4) {
                 die("Invalid card number.");
@@ -206,7 +206,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     $conversationId = (int)$conv['id'];
                 }
 
-                
                 $stmtMsg = $db->prepare("
                     INSERT INTO messages (conversation_id, sender_role, sender_uid, body, created_at)
                     VALUES (?, 'system', NULL, ?, NOW())
@@ -242,7 +241,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             exit;
 
         } catch (Exception $ex) {
-            $db->rollBack();
+            if ($db->inTransaction()) {
+                $db->rollBack();
+            }
             $errorMessage = "Checkout failed. " . $ex->getMessage();
         }
     }
@@ -267,12 +268,27 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     <script src="js/Checkout.js" defer></script>
 
-    <!-- Copy of AboutUs page navbar icon + toggle styling -->
     <style>
-        .cart-icon { display:flex; align-items:center; justify-content:center; }
-        .cart-icon svg { width:20px; height:20px; stroke:#eaeaea; transition:all 0.3s ease; }
-        html.light-mode .cart-icon svg { stroke:#000000; }
-        .cart-icon:hover svg { stroke:#00FF00; }
+        .cart-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cart-icon svg {
+            width: 20px;
+            height: 20px;
+            stroke: #eaeaea;
+            transition: all 0.3s ease;
+        }
+
+        html.light-mode .cart-icon svg {
+            stroke: #000000;
+        }
+
+        .cart-icon:hover svg {
+            stroke: #00FF00;
+        }
 
         #themeToggle {
             background: transparent;
@@ -289,71 +305,267 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             justify-content: center;
             padding: 0;
         }
-        html.light-mode #themeToggle { color:#333333; border-color:#00FF00; background:transparent; }
-        #themeToggle:hover { background:transparent; border-color:#d2ff4c; transform:scale(1.1); }
-    </style>
 
-    <style>
-        #checkoutPage{ background:#0a0a0a; color:#eaeaea; height:auto; overflow:auto; display:block; }
+        html.light-mode #themeToggle {
+            color: #333333;
+            border-color: #00FF00;
+            background: transparent;
+        }
 
-        .checkoutContainer{
-            display:grid;
+        #themeToggle:hover {
+            background: transparent;
+            border-color: #d2ff4c;
+            transform: scale(1.1);
+        }
+
+        #checkoutPage {
+            background: #0a0a0a;
+            color: #eaeaea;
+            height: auto;
+            overflow: auto;
+            display: block;
+        }
+
+        .intro {
+            text-align: center;
+            background: #0f0f0f;
+            border-radius: 12px;
+            padding: 28px 20px;
+            margin-bottom: 28px;
+        }
+
+        .intro h1 {
+            color: #a3ff00;
+            font-size: 4rem;
+            font-weight: 800;
+            margin: 0 0 10px;
+            line-height: 1.1;
+        }
+
+        .intro .subtitle {
+            font-size: 1.1rem;
+            color: #f1f1f1;
+            margin: 0;
+        }
+
+        .checkoutContainer {
+            display: grid;
             grid-template-columns: 2fr 1fr;
             gap: 30px;
             margin-top: 30px;
-            align-items:start;
+            align-items: start;
         }
 
-        .checkoutCard{
-            background:#1a1a1a;
-            border:1px solid #333;
-            border-radius:8px;
-            padding:18px;
-            margin-bottom:16px;
+        .checkoutLeft {
+            border: 1px solid rgba(163, 255, 0, 0.35);
+            border-radius: 16px;
+            padding: 20px;
+            background: rgba(20, 20, 20, 0.35);
         }
 
-        .checkoutCard h2{
-            font-size:1.2rem;
-            margin:0 0 12px;
-            color:#a3ff00;
+        .checkoutCard {
+            background: #171717;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 14px;
+            padding: 28px;
+            margin-bottom: 22px;
+            box-shadow: 0 0 0 1px rgba(163, 255, 0, 0.05);
         }
 
-        #checkoutPage .inputbox{
-            width:100%;
-            padding:10px 12px;
-            border-radius:6px;
-            border:1px solid #333;
-            background-color:#111;
-            color:#eaeaea;
-            margin-bottom:12px;
-            outline:none;
+        .checkoutCard h2 {
+            font-size: 1.9rem;
+            margin: 0 0 18px;
+            color: #a3ff00;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-        #checkoutPage .inputbox:focus{ border-color:#a3ff00; }
 
-        .checkoutGrid2{
-            display:grid;
+        #checkoutPage .inputbox {
+            width: 100%;
+            padding: 16px 16px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background-color: #0b0b0b;
+            color: #eaeaea;
+            margin-bottom: 16px;
+            outline: none;
+            font-size: 1rem;
+            transition: all 0.25s ease;
+            box-sizing: border-box;
+        }
+
+        #checkoutPage .inputbox:focus {
+            border-color: #a3ff00;
+            box-shadow: 0 0 0 3px rgba(163, 255, 0, 0.08);
+        }
+
+        .checkoutGrid2 {
+            display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            gap: 16px;
         }
 
-        .checkout-alert{
-            border-radius:6px;
-            padding:12px 14px;
-            border:1px solid #333;
+        .checkout-alert {
+            border-radius: 10px;
+            padding: 12px 14px;
+            border: 1px solid #333;
             margin-top: 12px;
         }
-        .checkout-alert--error{
+
+        .checkout-alert--error {
             background: rgba(217, 83, 79, 0.12);
             border-color: rgba(217, 83, 79, 0.35);
             color: #ffd1d1;
         }
 
-        .checkoutRight{ position: sticky; top: 20px; }
+        .checkoutBtn {
+            width: 100%;
+            background: #a3ff00;
+            color: #000;
+            border: none;
+            border-radius: 12px;
+            padding: 16px 20px;
+            font-size: 1.15rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            margin-top: 8px;
+        }
 
-        @media (max-width: 900px){
-            .checkoutContainer{ grid-template-columns: 1fr; }
-            .checkoutRight{ position: static; }
-            .checkoutGrid2{ grid-template-columns: 1fr; }
+        .checkoutBtn:hover {
+            background: #b7ff2a;
+            transform: translateY(-1px);
+        }
+
+        .checkoutRight {
+            position: sticky;
+            top: 20px;
+        }
+
+        .summaryPanel {
+            background: #171717;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 0 0 1px rgba(163, 255, 0, 0.05);
+        }
+
+        .summaryBox {
+            padding: 28px 28px 18px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .summaryBox h2 {
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: #a3ff00;
+            margin: 0 0 20px;
+            text-transform: uppercase;
+            line-height: 1.1;
+        }
+
+        .summaryBox #orderItems,
+        .summaryBox #orderDelivery,
+        .summaryBox #orderPlatformFee,
+        .summaryBox #orderTotal {
+            font-size: 1.05rem;
+            color: #f2f2f2;
+            line-height: 1.8;
+        }
+
+        .summaryBox #orderItems > div,
+        .summaryBox #orderDelivery > div,
+        .summaryBox #orderPlatformFee > div,
+        .summaryBox #orderTotal > div,
+        .summaryBox p {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin: 10px 0;
+        }
+
+        .summaryBox strong {
+            color: #a3ff00;
+        }
+
+        .impactBox {
+            background: transparent;
+            border: none;
+            border-radius: 0;
+            padding: 24px 28px 28px;
+            margin-top: 0;
+        }
+
+        .impactBox h2 {
+            font-size: 1.9rem;
+            margin: 0 0 14px;
+            color: #a3ff00;
+            font-weight: 800;
+            text-transform: uppercase;
+            line-height: 1.15;
+        }
+
+        .impactIntro {
+            color: #cfcfcf;
+            font-size: 0.95rem;
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .impactRow {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .impactRow:last-of-type {
+            border-bottom: none;
+        }
+
+        .impactLabel {
+            color: #d8d8d8;
+            font-size: 0.95rem;
+        }
+
+        .impactValue {
+            color: #a3ff00;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .impactNote {
+            margin-top: 14px;
+            font-size: 0.85rem;
+            color: #aaaaaa;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 900px) {
+            .checkoutContainer {
+                grid-template-columns: 1fr;
+            }
+
+            .checkoutRight {
+                position: static;
+            }
+
+            .checkoutGrid2 {
+                grid-template-columns: 1fr;
+            }
+
+            .intro h1 {
+                font-size: 3rem;
+            }
+
+            .summaryBox h2,
+            .impactBox h2,
+            .checkoutCard h2 {
+                font-size: 1.7rem;
+            }
         }
     </style>
 </head>
@@ -392,7 +604,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             </a></li>
 
             <li>
-                <button id="themeToggle" onclick="toggleTheme()">🌙</button>
+                <button id="themeToggle" onclick="toggleTheme()">&#127769;</button>
             </li>
 
             <?php if (isset($userData['role']) && $userData['role'] === 'customer'): ?>
@@ -429,7 +641,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <form action="Checkout.php" method="POST" id="checkoutForm">
 
                 <div class="checkoutCard">
-                    <h2>Shipping address</h2>
+                    <h2>Shipping Address</h2>
 
                     <input type="text" class="inputbox" name="buyer_address_line1" placeholder="Address line 1" required>
                     <input type="text" class="inputbox" name="buyer_address_line2" placeholder="Address line 2">
@@ -480,18 +692,56 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <input type="hidden" name="card_number_real">
                 </div>
 
-                <button type="submit" class="checkoutBtn">Place order</button>
+                <button type="submit" class="checkoutBtn">Place Order</button>
 
             </form>
         </section>
 
         <aside class="checkoutRight">
-            <div class="summaryBox">
-                <h2>Order summary</h2>
-                <div id="orderItems"></div>
-                <div id="orderDelivery"></div>
-                <div id="orderPlatformFee"></div>
-                <div id="orderTotal"></div>
+            <div class="summaryPanel">
+                <div class="summaryBox">
+                    <h2>Order Summary</h2>
+                    <div id="orderItems"></div>
+                    <div id="orderDelivery"></div>
+                    <div id="orderPlatformFee"></div>
+                    <div id="orderTotal"></div>
+                </div>
+
+                <div class="impactBox">
+                    <h2>Your Sustainability Impact</h2>
+                    <p class="impactIntro">
+                        Renting instead of buying helps reduce waste and supports a more circular fashion model.
+                    </p>
+
+                    <div class="impactRow">
+                        <span class="impactLabel">Items rented</span>
+                        <span class="impactValue" id="impactItems">0</span>
+                    </div>
+
+                    <div class="impactRow">
+                        <span class="impactLabel">Total rental days</span>
+                        <span class="impactValue" id="impactDays">0</span>
+                    </div>
+
+                    <div class="impactRow">
+                        <span class="impactLabel">Estimated CO&#8322; saved</span>
+                        <span class="impactValue" id="impactCo2">0.0 kg</span>
+                    </div>
+
+                    <div class="impactRow">
+                        <span class="impactLabel">Estimated textile waste reduced</span>
+                        <span class="impactValue" id="impactWaste">0.0 kg</span>
+                    </div>
+
+                    <div class="impactRow">
+                        <span class="impactLabel">Estimated 5% donation</span>
+                        <span class="impactValue" id="impactDonation">&#163;0.00</span>
+                    </div>
+
+                    <p class="impactNote">
+                        Estimates are based on the number of rented items and your current basket value.
+                    </p>
+                </div>
             </div>
         </aside>
 
@@ -505,18 +755,17 @@ if (file_exists('footer.html')) {
 }
 ?>
 
-<!-- Theme toggle script (copied from AboutUs.php so button works) -->
 <script>
 function toggleTheme() {
     const body = document.body;
     const themeToggle = document.getElementById('themeToggle');
     if (body.classList.contains('light-mode')) {
         body.classList.remove('light-mode');
-        themeToggle.textContent = '🌙';
+        themeToggle.innerHTML = '&#127769;';
         localStorage.setItem('theme', 'dark');
     } else {
         body.classList.add('light-mode');
-        themeToggle.textContent = '☀️';
+        themeToggle.innerHTML = '&#9728;';
         localStorage.setItem('theme', 'light');
     }
 }
@@ -526,11 +775,51 @@ document.addEventListener('DOMContentLoaded', function () {
     if (themeToggle) {
         if (savedTheme === 'light') {
             document.body.classList.add('light-mode');
-            themeToggle.textContent = '☀️';
+            themeToggle.innerHTML = '&#9728;';
         } else {
-            themeToggle.textContent = '🌙';
+            themeToggle.innerHTML = '&#127769;';
         }
     }
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const basket = Array.isArray(window.basket) ? window.basket : [];
+    const platformFeePerItem = parseFloat(window.platformFeePerItem || 0);
+
+    let totalItems = 0;
+    let totalRentalDays = 0;
+    let estimatedOrderValue = 0;
+
+    basket.forEach(item => {
+        const qty = Math.max(1, parseInt(item.quantity || 1, 10));
+        const days = Math.max(1, parseInt(item.rental_days || 1, 10));
+        const price = parseFloat(item.price || 0);
+
+        totalItems += qty;
+        totalRentalDays += (qty * days);
+        estimatedOrderValue += (price * qty * days);
+    });
+
+    const platformFees = totalItems * platformFeePerItem;
+    const estimatedCheckoutTotal = estimatedOrderValue + platformFees;
+
+    const estimatedCo2Saved = (totalItems * 4.2);
+    const estimatedWasteReduced = (totalItems * 0.8);
+    const estimatedDonation = (estimatedCheckoutTotal * 0.05);
+
+    const impactItems = document.getElementById('impactItems');
+    const impactDays = document.getElementById('impactDays');
+    const impactCo2 = document.getElementById('impactCo2');
+    const impactWaste = document.getElementById('impactWaste');
+    const impactDonation = document.getElementById('impactDonation');
+
+    if (impactItems) impactItems.textContent = totalItems;
+    if (impactDays) impactDays.textContent = totalRentalDays;
+    if (impactCo2) impactCo2.textContent = estimatedCo2Saved.toFixed(1) + ' kg';
+    if (impactWaste) impactWaste.textContent = estimatedWasteReduced.toFixed(1) + ' kg';
+    if (impactDonation) impactDonation.innerHTML = '&#163;' + estimatedDonation.toFixed(2);
 });
 </script>
 
