@@ -268,322 +268,219 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
    <script src="js/Checkout.js?v=4" defer></script>
 
-    <style>
-    .cart-icon {
-        display: flex;
-        align-items: center;
-        justify-content: center;
+<style>
+.cart-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cart-icon svg {
+    width: 20px;
+    height: 20px;
+    stroke: #eaeaea;
+    transition: all 0.3s ease;
+}
+
+html.light-mode .cart-icon svg {
+    stroke: #000000;
+}
+
+.cart-icon:hover svg {
+    stroke: #00FF00;
+}
+
+#themeToggle {
+    appearance: none;
+    -webkit-appearance: none;
+    background: transparent;
+    border: 1px solid #00FF00;
+    color: #ffffff;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    line-height: 1;
+}
+
+html.light-mode #themeToggle {
+    color: #333333;
+    border-color: #00FF00;
+    background: transparent;
+}
+
+#themeToggle:hover {
+    background: transparent;
+    border-color: #d2ff4c;
+    transform: scale(1.1);
+}
+
+#checkoutPage .checkoutContainer{
+    display:grid;
+    grid-template-columns:1.85fr 1fr;
+    gap:24px;
+    margin-top:20px;
+    align-items:start;
+}
+
+#checkoutPage .checkoutLeft{
+    border:1px solid rgba(163,255,0,0.22);
+    border-radius:16px;
+    padding:24px;
+    background:rgba(20,20,20,0.18);
+}
+
+#checkoutPage .checkoutRight{
+    position:sticky;
+    top:20px;
+}
+
+#checkoutPage .summaryPanel{
+    background:#171717;
+    border:1px solid rgba(255,255,255,0.10);
+    border-radius:14px;
+    overflow:hidden;
+}
+
+#checkoutPage .summaryBox{
+    padding:22px 22px 16px;
+}
+
+#checkoutPage .impactToggleBox{
+    margin-top:18px;
+    padding-top:14px;
+    border-top:1px solid rgba(255,255,255,0.08);
+}
+
+#checkoutPage .impactTeaser{
+    color:#cfcfcf;
+    font-size:0.95rem;
+    margin:0 0 10px;
+}
+
+#checkoutPage .impactToggleBtn{
+    appearance:none;
+    -webkit-appearance:none;
+    background:transparent;
+    border:1px solid rgba(163,255,0,0.35);
+    color:#a3ff00;
+    border-radius:8px;
+    padding:10px 14px;
+    font-size:0.92rem;
+    font-weight:600;
+    cursor:pointer;
+    transition:all 0.25s ease;
+}
+
+#checkoutPage .impactToggleBtn:hover{
+    background:rgba(163,255,0,0.08);
+    border-color:#a3ff00;
+}
+
+#checkoutPage .impactBox{
+    display:none;
+    border-top:1px solid rgba(255,255,255,0.08);
+    padding:18px 22px 22px;
+    background:rgba(255,255,255,0.01);
+}
+
+#checkoutPage .impactBox h2{
+    color:#dcdcdc;
+    font-size:1.05rem;
+    font-weight:700;
+    margin:0 0 14px;
+    text-transform:uppercase;
+}
+
+#checkoutPage .impactIntro{
+    color:#b5b5b5;
+    font-size:0.9rem;
+    line-height:1.45;
+    margin-bottom:12px;
+}
+
+#checkoutPage .impactRow{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    padding:9px 0;
+    border-bottom:1px solid rgba(255,255,255,0.08);
+}
+
+#checkoutPage .impactRow:last-of-type{
+    border-bottom:none;
+}
+
+#checkoutPage .impactLabel{
+    color:#cfcfcf;
+    font-size:0.93rem;
+}
+
+#checkoutPage .impactValue{
+    color:#e8e8e8;
+    font-weight:700;
+    white-space:nowrap;
+}
+
+#checkoutPage .impactNote{
+    margin-top:12px;
+    font-size:0.82rem;
+    color:#9a9a9a;
+    line-height:1.45;
+}
+
+#checkoutPage .summaryLine,
+#checkoutPage .summaryTotal{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:14px;
+    margin:10px 0;
+    font-size:0.96rem;
+}
+
+#checkoutPage .summaryLine span:first-child,
+#checkoutPage .summaryTotal span:first-child{
+    color:#cfcfcf;
+}
+
+#checkoutPage .summaryLine span:last-child,
+#checkoutPage .summaryTotal span:last-child{
+    text-align:right;
+    white-space:nowrap;
+    color:#e8e8e8;
+}
+
+#checkoutPage .summaryTotal{
+    margin-top:12px;
+    padding-top:12px;
+    border-top:1px solid rgba(255,255,255,0.08);
+    font-weight:700;
+}
+
+#checkoutPage .summaryTotal .price{
+    color:#A3FF00;
+    font-weight:800;
+}
+
+@media (max-width: 900px){
+    #checkoutPage .checkoutContainer{
+        grid-template-columns:1fr;
     }
 
-    .cart-icon svg {
-        width: 20px;
-        height: 20px;
-        stroke: #eaeaea;
-        transition: all 0.3s ease;
+    #checkoutPage .checkoutRight{
+        position:static;
     }
-
-    html.light-mode .cart-icon svg {
-        stroke: #000000;
-    }
-
-    .cart-icon:hover svg {
-        stroke: #00FF00;
-    }
-
-    #themeToggle {
-        background: transparent;
-        border: 1px solid #00FF00;
-        color: #ffffff;
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        cursor: pointer;
-        font-size: 1.2rem;
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0;
-    }
-
-    html.light-mode #themeToggle {
-        color: #333333;
-        border-color: #00FF00;
-        background: transparent;
-    }
-
-    #themeToggle:hover {
-        background: transparent;
-        border-color: #d2ff4c;
-        transform: scale(1.1);
-    }
-
-    #checkoutPage {
-        background: #0a0a0a;
-        color: #d0d0d0;
-        height: auto;
-        overflow: auto;
-        display: block;
-    }
-
-    .intro {
-        text-align: center;
-        margin-bottom: 26px;
-    }
-
-    .intro h1 {
-        color: #a3ff00;
-        font-size: 3.15rem;
-        font-weight: 800;
-        margin: 0 0 10px;
-        line-height: 1.1;
-    }
-
-    .intro .subtitle {
-        font-size: 1.02rem;
-        color: #d8d8d8;
-        margin: 0;
-    }
-
-    .checkoutContainer {
-        display: grid;
-        grid-template-columns: 1.85fr 1fr;
-        gap: 24px;
-        margin-top: 20px;
-        align-items: start;
-    }
-
-    .checkoutLeft {
-        border: 1px solid rgba(163, 255, 0, 0.22);
-        border-radius: 16px;
-        padding: 24px;
-        background: rgba(20, 20, 20, 0.18);
-    }
-
-    .checkoutCard {
-        background: transparent;
-        border: none;
-        border-radius: 0;
-        padding: 0;
-        margin-bottom: 22px;
-        box-shadow: none;
-    }
-
-    .checkoutCard:last-of-type {
-        margin-bottom: 0;
-    }
-
-    .checkoutCard h2 {
-        font-size: 1.12rem;
-        margin: 0 0 16px;
-        color: #a3ff00;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.4px;
-    }
-
-    #checkoutPage .inputbox {
-        width: 100%;
-        padding: 14px 15px;
-        border-radius: 10px;
-        border: 1px solid rgba(255, 255, 255, 0.10);
-        background-color: #101010;
-        color: #ececec;
-        margin-bottom: 13px;
-        outline: none;
-        font-size: 0.98rem;
-        transition: all 0.25s ease;
-        box-sizing: border-box;
-    }
-
-    #checkoutPage .inputbox::placeholder {
-        color: #b8b8b8;
-    }
-
-    #checkoutPage .inputbox:focus {
-        border-color: #a3ff00;
-        box-shadow: 0 0 0 3px rgba(163, 255, 0, 0.08);
-    }
-
-    .checkoutGrid2 {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 14px;
-    }
-
-    .checkout-alert {
-        border-radius: 10px;
-        padding: 12px 14px;
-        border: 1px solid #333;
-        margin-top: 12px;
-    }
-
-    .checkout-alert--error {
-        background: rgba(217, 83, 79, 0.12);
-        border-color: rgba(217, 83, 79, 0.35);
-        color: #ffd1d1;
-    }
-
-    .checkoutBtn {
-        width: 100%;
-        background: #a3ff00;
-        color: #000;
-        border: none;
-        border-radius: 12px;
-        padding: 15px 20px;
-        font-size: 1.08rem;
-        font-weight: 800;
-        cursor: pointer;
-        transition: all 0.25s ease;
-        margin-top: 8px;
-    }
-
-    .checkoutBtn:hover {
-        background: #b7ff2a;
-        transform: translateY(-1px);
-    }
-
-    .checkoutRight {
-        position: sticky;
-        top: 20px;
-    }
-
-    .summaryPanel {
-        background: #171717;
-        border: 1px solid rgba(255, 255, 255, 0.10);
-        border-radius: 14px;
-        overflow: hidden;
-    }
-
-    .summaryBox {
-        padding: 22px 22px 12px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    .summaryBox h2 {
-        font-size: 1.12rem;
-        font-weight: 700;
-        color: #a3ff00;
-        margin: 0 0 16px;
-        text-transform: uppercase;
-        letter-spacing: 0.4px;
-    }
-
-    .summaryBox #orderItems,
-    .summaryBox #orderDelivery,
-    .summaryBox #orderPlatformFee,
-    .summaryBox #orderTotal {
-        font-size: 0.96rem;
-        color: #d0d0d0;
-        line-height: 1.6;
-    }
-
-    .summaryLine,
-    .summaryTotal {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 14px;
-        margin: 10px 0;
-        font-size: 0.96rem;
-    }
-
-    .summaryLine span:first-child,
-    .summaryTotal span:first-child {
-        color: #cfcfcf;
-    }
-
-    .summaryLine span:last-child,
-    .summaryTotal span:last-child {
-        text-align: right;
-        white-space: nowrap;
-        color: #e8e8e8;
-    }
-
-    .summaryTotal {
-        margin-top: 12px;
-        padding-top: 12px;
-        border-top: 1px solid rgba(255,255,255,0.08);
-        font-weight: 700;
-    }
-
-    .summaryTotal .price {
-        color: #a3ff00;
-        font-weight: 800;
-    }
-
-    .impactBox {
-        background: transparent;
-        border: none;
-        padding: 18px 22px 22px;
-        margin-top: 0;
-    }
-
-    .impactBox h2 {
-        font-size: 1.12rem;
-        margin: 0 0 14px;
-        color: #a3ff00;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.4px;
-    }
-
-    .impactIntro {
-        color: #a9a9a9;
-        font-size: 0.9rem;
-        margin-bottom: 12px;
-        line-height: 1.45;
-    }
-
-    .impactRow {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 12px;
-        padding: 9px 0;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    .impactRow:last-of-type {
-        border-bottom: none;
-    }
-
-    .impactLabel {
-        color: #c7c7c7;
-        font-size: 0.93rem;
-    }
-
-    .impactValue {
-        color: #a3ff00;
-        font-weight: 700;
-        white-space: nowrap;
-    }
-
-    .impactNote {
-        margin-top: 12px;
-        font-size: 0.82rem;
-        color: #909090;
-        line-height: 1.45;
-    }
-
-    @media (max-width: 900px) {
-        .checkoutContainer {
-            grid-template-columns: 1fr;
-        }
-
-        .checkoutRight {
-            position: static;
-        }
-
-        .checkoutGrid2 {
-            grid-template-columns: 1fr;
-        }
-
-        .intro h1 {
-            font-size: 2.7rem;
-        }
-    }
-    </style>
+}
+</style>
+    
 </head>
 
 <body id="checkoutPage">
@@ -713,43 +610,48 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             </form>
         </section>
 
-        <aside class="checkoutRight">
-            <div class="summaryPanel">
-                <div class="summaryBox">
-                    <h2>Order Summary</h2>
-                    <div id="orderItems"></div>
-                    <div id="orderDelivery"></div>
-                    <div id="orderPlatformFee"></div>
-                    <div id="orderTotal"></div>
-                </div>
+       <aside class="checkoutRight">
+    <div class="summaryPanel">
+        <div class="summaryBox">
+            <h2>Order Summary</h2>
+            <div id="orderItems"></div>
+            <div id="orderDelivery"></div>
+            <div id="orderPlatformFee"></div>
+            <div id="orderTotal"></div>
 
-                <div class="impactBox">
-                    <h2>Sustainability Impact</h2>
-                    <p class="impactIntro">
-                        Renting instead of buying helps reduce waste and supports a more circular fashion model.
-                    </p>
-
-                    <div class="impactRow">
-                        <span class="impactLabel">Estimated CO&#8322; saved</span>
-                        <span class="impactValue" id="impactCo2">0.0 kg</span>
-                    </div>
-
-                    <div class="impactRow">
-                        <span class="impactLabel">Estimated textile waste reduced</span>
-                        <span class="impactValue" id="impactWaste">0.0 kg</span>
-                    </div>
-
-                    <div class="impactRow">
-                        <span class="impactLabel">Estimated 5% donation</span>
-                        <span class="impactValue" id="impactDonation">&#163;0.00</span>
-                    </div>
-
-                    <p class="impactNote">
-                        Estimates are based on your current basket value.
-                    </p>
-                </div>
+            <div class="impactToggleBox">
+                <p class="impactTeaser">Look at the difference you've made today.</p>
+                <button type="button" class="impactToggleBtn" id="impactToggleBtn">Read more</button>
             </div>
-        </aside>
+        </div>
+
+        <div class="impactBox" id="impactBox">
+            <h2>Sustainability Impact</h2>
+            <p class="impactIntro">
+                Renting instead of buying helps reduce waste and supports a more circular fashion model.
+            </p>
+
+            <div class="impactRow">
+                <span class="impactLabel">Estimated CO&#8322; saved</span>
+                <span class="impactValue" id="impactCo2">0.0 kg</span>
+            </div>
+
+            <div class="impactRow">
+                <span class="impactLabel">Estimated textile waste reduced</span>
+                <span class="impactValue" id="impactWaste">0.0 kg</span>
+            </div>
+
+            <div class="impactRow">
+                <span class="impactLabel">Estimated 5% donation</span>
+                <span class="impactValue" id="impactDonation">&#163;0.00</span>
+            </div>
+
+            <p class="impactNote">
+                Estimates are based on your current basket value.
+            </p>
+        </div>
+    </div>
+</aside>
 
     </div>
 
