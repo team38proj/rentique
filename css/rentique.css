@@ -826,8 +826,7 @@ cursor: pointer;
 }
 
 #checkoutPage .checkoutCard h2,
-#checkoutPage .summaryBox h2,
-#checkoutPage .impactBox h2{
+#checkoutPage .summaryBox h2{
     color:#A3FF00;
     font-size:1.12rem;
     font-weight:700;
@@ -845,6 +844,9 @@ cursor: pointer;
 
 #checkoutPage .impactBox h2{
     margin:0 0 14px;
+    font-size:1.05rem;
+    color:#e8e8e8;
+    font-weight:700;
 }
 
 #checkoutPage .inputbox{
@@ -925,8 +927,7 @@ cursor: pointer;
 }
 
 #checkoutPage .summaryBox{
-    padding:22px 22px 12px;
-    border-bottom:1px solid rgba(255,255,255,0.08);
+    padding:22px 22px 16px;
 }
 
 #checkoutPage .summaryBox #orderItems,
@@ -972,18 +973,51 @@ cursor: pointer;
     font-weight:800;
 }
 
-#checkoutPage .impactBox{
+#checkoutPage .impactToggleBox{
+    margin-top:18px;
+    padding-top:14px;
+    border-top:1px solid rgba(255,255,255,0.08);
+}
+
+#checkoutPage .impactTeaser{
+    color:#cfcfcf;
+    font-size:0.95rem;
+    margin:0 0 10px;
+}
+
+#checkoutPage .impactToggleBtn{
     background:transparent;
-    border:none;
+    border:1px solid rgba(163,255,0,0.35);
+    color:#a3ff00;
+    border-radius:8px;
+    padding:10px 14px;
+    font-size:0.92rem;
+    font-weight:600;
+    cursor:pointer;
+    transition:all 0.25s ease;
+}
+
+#checkoutPage .impactToggleBtn:hover{
+    background:rgba(163,255,0,0.08);
+    border-color:#a3ff00;
+}
+
+#checkoutPage .impactBox{
+    display:none;
+    border-top:1px solid rgba(255,255,255,0.08);
     padding:18px 22px 22px;
-    margin-top:0;
+    background:rgba(255,255,255,0.01);
+}
+
+#checkoutPage .impactBox.open{
+    display:block;
 }
 
 #checkoutPage .impactIntro{
-    color:#a9a9a9;
+    color:#b5b5b5;
     font-size:0.9rem;
-    margin-bottom:12px;
     line-height:1.45;
+    margin-bottom:12px;
 }
 
 #checkoutPage .impactRow{
@@ -1000,12 +1034,12 @@ cursor: pointer;
 }
 
 #checkoutPage .impactLabel{
-    color:#c7c7c7;
+    color:#cfcfcf;
     font-size:0.93rem;
 }
 
 #checkoutPage .impactValue{
-    color:#A3FF00;
+    color:#e8e8e8;
     font-weight:700;
     white-space:nowrap;
 }
@@ -1013,7 +1047,7 @@ cursor: pointer;
 #checkoutPage .impactNote{
     margin-top:12px;
     font-size:0.82rem;
-    color:#909090;
+    color:#9a9a9a;
     line-height:1.45;
 }
 
