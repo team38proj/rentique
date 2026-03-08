@@ -1294,7 +1294,7 @@ font-weight: 600;
     color: #A3FF00;
     font-size: 30px;
     margin-bottom: 15px;
-    font-family: 'Playfair Display', serif;
+    font-family: 'Poppins', sans-serif;
 }
 
 #aboutPage .mission-content p {
@@ -1409,7 +1409,7 @@ font-weight: 600;
 #aboutPage .section-header h2 {
     font-size: 35px;
     color: #A3FF00;
-    font-family: 'Playfair Display', serif;
+    font-family: 'Poppins', sans-serif;
     margin-bottom: 10px;
 }
 
