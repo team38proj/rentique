@@ -1236,6 +1236,134 @@ font-weight: 700;
 color: #a3ff00;
 }
 
+.trackingMetaSimple {
+    margin-top: 18px;
+    margin-bottom: 24px;
+    text-align: left;
+}
+
+.trackingMetaSimple p {
+    margin: 6px 0;
+    color: #d6d6d6;
+}
+
+.trackingMetaSimple strong {
+    color: #a3ff00;
+}
+
+.trackingSimple {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin: 28px 0 18px;
+    padding-top: 6px;
+    gap: 10px;
+}
+
+.trackingLine {
+    position: absolute;
+    top: 14px;
+    left: 8%;
+    right: 8%;
+    height: 2px;
+    background: #333;
+    z-index: 0;
+}
+
+.trackingStepSimple {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    text-align: center;
+}
+
+.trackingCircle {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #2f2f2f;
+    border: 2px solid #444;
+    margin: 0 auto 10px;
+    transition: all 0.3s ease;
+}
+
+.trackingStepSimple span {
+    display: block;
+    font-size: 0.88rem;
+    color: #9f9f9f;
+    line-height: 1.3;
+}
+
+.trackingStepSimple.done .trackingCircle,
+.trackingStepSimple.active .trackingCircle {
+    background: #a3ff00;
+    border-color: #a3ff00;
+    box-shadow: 0 0 10px rgba(163,255,0,0.35);
+}
+
+.trackingStepSimple.done span,
+.trackingStepSimple.active span {
+    color: #eaeaea;
+}
+
+.trackingStepSimple.active span {
+    color: #a3ff00;
+    font-weight: 600;
+}
+
+.trackingHelpLink {
+    margin-top: 18px;
+    font-size: 0.95rem;
+    color: #bdbdbd;
+}
+
+.trackingHelpLink a {
+    color: #a3ff00;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.trackingHelpLink a:hover {
+    text-decoration: underline;
+}
+
+:root.light-mode .trackingMetaSimple p {
+    color: #444;
+}
+
+:root.light-mode .trackingLine {
+    background: #d6d6d6;
+}
+
+:root.light-mode .trackingCircle {
+    background: #dcdcdc;
+    border-color: #cfcfcf;
+}
+
+:root.light-mode .trackingStepSimple span {
+    color: #666;
+}
+
+:root.light-mode .trackingStepSimple.done span {
+    color: #222;
+}
+
+@media (max-width: 700px) {
+    .trackingSimple {
+        gap: 4px;
+    }
+
+    .trackingStepSimple span {
+        font-size: 0.75rem;
+    }
+
+    .trackingLine {
+        left: 10%;
+        right: 10%;
+    }
+}
+
 #backHomeBtn {
 margin-top: 15px;
 background-color: #a3ff00;
