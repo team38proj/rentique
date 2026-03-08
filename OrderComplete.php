@@ -61,8 +61,8 @@ document.addEventListener('DOMContentLoaded', function () {
             <img src="images/rentique_logo.png">
             <span>rentique.</span>
             <script src="js/theme.js" defer></script>
-
         </div>
+
         <ul class="nav-links">
             <li><a href="index.php">Home</a></li>
             <button id="themeToggle">Theme</button>
@@ -71,23 +71,76 @@ document.addEventListener('DOMContentLoaded', function () {
 </header>
 
 <main>
-    <section class="intro">
-        <div class="tickIcon">✓</div>
+<section class="intro">
 
-        <h1>Thank you for your order</h1>
-        <p class="subtitle">Your payment was successful.</p>
-        <p class="subtitle">Card ending in <?= htmlspecialchars($cardLast4) ?></p>
+<div class="tickIcon">✓</div>
 
-        <div class="orderSummary">
-            <h2>Order Complete</h2>
+<h1>Thank you for your order</h1>
+<p class="subtitle">Your payment was successful.</p>
+<p class="subtitle">Card ending in <?= htmlspecialchars($cardLast4) ?></p>
 
-            <p>Your items will be processed and prepared.</p>
+<div class="orderSummary">
 
-            <button id="backHomeBtn" onclick="window.location.href='index.php'">
-                Back to Home
-            </button>
-        </div>
-    </section>
+<h2>Order Complete</h2>
+
+<?php
+$orderNumber = 'RTQ-' . rand(100000, 999999);
+$trackingNumber = 'TRK-' . rand(10000000, 99999999);
+$estimatedDelivery = date('j M Y', strtotime('+3 days'));
+$currentStep = 3;
+?>
+
+<p>Your items will be processed and prepared.</p>
+
+<div class="trackingMetaSimple">
+<p><strong>Order Number:</strong> <?= htmlspecialchars($orderNumber) ?></p>
+<p><strong>Tracking Number:</strong> <?= htmlspecialchars($trackingNumber) ?></p>
+<p><strong>Estimated Delivery:</strong> <?= htmlspecialchars($estimatedDelivery) ?></p>
+</div>
+
+<div class="trackingSimple">
+
+<div class="trackingLine"></div>
+
+<div class="trackingStepSimple <?= $currentStep >= 1 ? 'done' : '' ?>">
+<div class="trackingCircle"></div>
+<span>Placed</span>
+</div>
+
+<div class="trackingStepSimple <?= $currentStep >= 2 ? 'done' : '' ?>">
+<div class="trackingCircle"></div>
+<span>Confirmed</span>
+</div>
+
+<div class="trackingStepSimple <?= $currentStep >= 3 ? 'active' : '' ?>">
+<div class="trackingCircle"></div>
+<span>Preparing</span>
+</div>
+
+<div class="trackingStepSimple <?= $currentStep >= 4 ? 'done' : '' ?>">
+<div class="trackingCircle"></div>
+<span>Shipped</span>
+</div>
+
+<div class="trackingStepSimple <?= $currentStep >= 5 ? 'done' : '' ?>">
+<div class="trackingCircle"></div>
+<span>Delivered</span>
+</div>
+
+</div>
+
+<p class="trackingHelpLink">
+Need to update your delivery plans?
+<a href="Contact.php">Contact our team</a>
+</p>
+
+<button id="backHomeBtn" onclick="window.location.href='index.php'">
+Back to Home
+</button>
+
+</div>
+
+</section>
 </main>
 
 </body>
