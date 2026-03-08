@@ -13,6 +13,38 @@ $cardLast4 = $_SESSION['last_card4'] ?? "XXXX";
     <meta charset="UTF-8">
     <title>Order Complete</title>
     <link rel="stylesheet" href="css/rentique.css">
+    <link rel="stylesheet" href="assets/global.css">
+    <script src="js/theme.js" defer></script>
+
+    <style>
+        #themeToggle {
+            background: transparent;
+            border: 1px solid #00FF00;
+            color: #ffffff;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+
+        html.light-mode #themeToggle {
+            color: #333333;
+            border-color: #00FF00;
+            background: transparent;
+        }
+
+        #themeToggle:hover {
+            background: transparent;
+            border-color: #d2ff4c;
+            transform: scale(1.1);
+        }
+    </style>
 </head>
 
 <script>
@@ -60,12 +92,13 @@ document.addEventListener('DOMContentLoaded', function () {
         <div class="logo">
             <img src="images/rentique_logo.png">
             <span>rentique.</span>
-            <script src="js/theme.js" defer></script>
         </div>
 
         <ul class="nav-links">
             <li><a href="index.php">Home</a></li>
-            <button id="themeToggle">Theme</button>
+            <li>
+                <button id="themeToggle" onclick="toggleTheme()">&#127769;</button>
+            </li>
         </ul>
     </nav>
 </header>
@@ -142,6 +175,24 @@ Back to Home
 
 </section>
 </main>
+
+<button id="aiChatBtn">&#128172; AI Help</button>
+
+<div id="chatBox">
+    <div class="chat-header">
+        AI Assistant
+        <span id="closeChat">&#10006;</span>
+    </div>
+
+    <div id="chatMessages"></div>
+
+    <div class="chat-input">
+        <input type="text" id="userMessage" placeholder="Ask something..." />
+        <button id="sendMessage">Send</button>
+    </div>
+</div>
+
+<script src="assets/global.js"></script>
 
 </body>
 </html>
