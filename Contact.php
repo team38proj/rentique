@@ -78,46 +78,63 @@ if (isset($_SESSION['uid'])) {
     <style>
 
 .contactForm {
-    max-width: 720px;
-    margin: 60px auto 0;
-    padding: 28px;
-    border-radius: 18px;
-    border: 1px solid rgba(0,255,0,0.18);
-    background: rgba(0,0,0,0.35);
-    box-shadow: 0 0 30px rgba(0,255,0,0.06);
+    max-width: 900px;
+    margin: 48px auto 0;
+    padding: 34px 32px;
+    border-radius: 24px;
+    border: 1px solid rgba(163, 255, 0, 0.25);
+    background: rgba(7, 7, 7, 0.92);
+    box-shadow:
+        0 0 0 1px rgba(163, 255, 0, 0.04),
+        0 20px 60px rgba(0, 0, 0, 0.5),
+        0 0 35px rgba(163, 255, 0, 0.08);
 }
 
 .contactForm label {
     display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
-    color: #eaeaea;
+    margin-bottom: 10px;
+    font-weight: 700;
+    color: #f2f2f2;
+    font-size: 1rem;
 }
 
 .contactForm input,
 .contactForm textarea {
     width: 100%;
-    padding: 12px 14px;
-    border-radius: 12px;
-    border: 1px solid rgba(255,255,255,0.12);
-    background-color: rgba(0,0,0,0.35);
+    padding: 16px 18px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.10);
+    background-color: #0b0b0b;
     color: #eaeaea;
     margin-bottom: 16px;
     resize: none;
     outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
+}
+
+.contactForm input::placeholder,
+.contactForm textarea::placeholder {
+    color: #7f7f7f;
+}
+
+.contactForm textarea {
+    min-height: 150px;
+    resize: vertical;
 }
 
 .contactForm input:focus,
 .contactForm textarea:focus {
-    border-color: rgba(0,255,0,0.55);
-    box-shadow: 0 0 0 3px rgba(0,255,0,0.12);
+    border-color: rgba(163, 255, 0, 0.7);
+    box-shadow: 0 0 0 3px rgba(163, 255, 0, 0.12);
+    transform: translateY(-1px);
 }
 
 .contactForm .nameRow {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 50px;
-width: 700px;
+    gap: 18px;
+    width: 100%;
 }
 
 #sendBtn {
@@ -125,16 +142,19 @@ width: 700px;
     background-color: #a3ff00;
     color: #000;
     border: none;
-    border-radius: 14px;
-    padding: 14px;
-    font-weight: 700;
+    border-radius: 16px;
+    padding: 16px;
+    font-weight: 800;
+    font-size: 1rem;
     cursor: pointer;
-    transition: transform 0.12s ease, background 0.2s ease;
+    transition: transform 0.18s ease, background 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 8px 24px rgba(163, 255, 0, 0.22);
 }
 
 #sendBtn:hover {
-    background: #00cc00;
-    transform: translateY(-1px);
+    background: #b7ff33;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(163, 255, 0, 0.3);
 }
 
 /* Make it stack on mobile */
@@ -143,8 +163,10 @@ width: 700px;
         margin: 40px 14px 0;
         padding: 20px;
     }
+
     .contactForm .nameRow {
         grid-template-columns: 1fr;
+        gap: 0;
     }
 }
 </style>
@@ -883,7 +905,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 
-    <button id="aiChatBtn">💬 AI Help</button>
+<button id="aiChatBtn">💬 AI Help</button>
 
 <div id="chatBox">
     <div class="chat-header">
@@ -900,8 +922,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </div>
 
 
-
-    
 <script src="assets/global.js"></script>
 </body>
 </html>
