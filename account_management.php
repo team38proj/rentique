@@ -6,11 +6,11 @@ Saja - frontend
 
 session_start();
 
-/*Expel user from page if not an admin*/
 if (!isset($_SESSION['uid']) || $_SESSION['role'] !== 'admin') {
     header("Location: login.php");
     exit;
 }
+
 require('connectdb.php');
 
 $errors = [];
@@ -59,25 +59,28 @@ if (isset($_POST['create_admin'])) {
         }
     }
 }
-/* Collect $users variable from users table */
+
+/* Get Users*/
+
 $stmt = $db->prepare("
-    SELECT 
-        u.uid,
-        u.username,
-        u.email,
-        u.role,
-        u.created_at,
-        COUNT(p.uid) AS product_count
-    FROM users u
-    LEFT JOIN products p ON p.uid = u.uid
-    GROUP BY u.uid
-    ORDER BY u.uid ASC
+SELECT 
+    u.uid,
+    u.username,
+    u.email,
+    u.role,
+    u.created_at,
+    COUNT(p.uid) AS product_count
+FROM users u
+LEFT JOIN products p ON p.uid = u.uid
+GROUP BY u.uid
+ORDER BY u.uid ASC
 ");
+
 $stmt->execute();
 $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $csrf_token = generate_csrf_token();
-/* Handle POST actions */
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
     if (!verify_csrf_token($_POST['csrf_token'])) {
@@ -87,96 +90,82 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     $uid = (int)$_POST['uid'];
     $action = $_POST['action'];
 
-    /* UPDATE USERNAME + EMAIL */
     if ($action === 'update_user') {
-    $new_username = trim($_POST['new_username']);
-    $new_email = trim($_POST['new_email']);
 
-    /* Check if username already exists (excluding this user) */
+        $new_username = trim($_POST['new_username']);
+        $new_email = trim($_POST['new_email']);
+
         if ($new_username !== '') {
-            $check = $db->prepare("SELECT uid FROM users WHERE username = ? AND uid != ?");
-            $check->execute([$new_username, $uid]);
-
-            if ($check->fetch()) {
-                die("Username already taken.");
-            }
-
-            $stmt = $db->prepare("UPDATE users SET username = ? WHERE uid = ?");
-            $stmt->execute([$new_username, $uid]);
+            $stmt = $db->prepare("UPDATE users SET username=? WHERE uid=?");
+            $stmt->execute([$new_username,$uid]);
         }
 
-    /* Check if email already exists*/
         if ($new_email !== '') {
-            $check = $db->prepare("SELECT uid FROM users WHERE email = ? AND uid != ?");
-            $check->execute([$new_email, $uid]);
-
-            if ($check->fetch()) {
-                die("Email already in use.");
-            }
-
-            $stmt = $db->prepare("UPDATE users SET email = ? WHERE uid = ?");
-            $stmt->execute([$new_email, $uid]);
+            $stmt = $db->prepare("UPDATE users SET email=? WHERE uid=?");
+            $stmt->execute([$new_email,$uid]);
         }
     }
 
-    /* RESET PASSWORD */
-        if ($action === 'reset_password') {
-            $new_password = trim($_POST['new_password']);
+    if ($action === 'reset_password') {
 
-            if ($new_password === '') {
-                die("Password cannot be empty.");
-            }
+        $new_password = trim($_POST['new_password']);
 
-            $hashed = password_hash($new_password, PASSWORD_DEFAULT);
+        if ($new_password !== "") {
+            $hashed = password_hash($new_password,PASSWORD_DEFAULT);
 
-            $stmt = $db->prepare("UPDATE users SET password = ? WHERE uid = ?");
-            $stmt->execute([$hashed, $uid]);
+            $stmt = $db->prepare("UPDATE users SET password=? WHERE uid=?");
+            $stmt->execute([$hashed,$uid]);
         }
-
-    /* RESET PASSWORD */
-        if ($action === 'reset_secret') {
-            $new_secret = trim($_POST['new_secret']);
-
-            if ($new_secret === '') {
-                die("Secret answer cannot be empty.");
-            }
-
-            $hashed_secret = password_hash($new_secret, PASSWORD_DEFAULT);
-
-            $stmt = $db->prepare("UPDATE users SET secret_answer = ? WHERE uid = ?");
-            $stmt->execute([$hashed_secret, $uid]);
-        }
-    if ($uid == $_SESSION['uid']) {
-        die("You cannot delete your own account.");
     }
-    /* DELETE USER */
+
+    if ($action === 'reset_secret') {
+
+        $new_secret = trim($_POST['new_secret']);
+
+        if ($new_secret !== "") {
+            $hashed = password_hash($new_secret,PASSWORD_DEFAULT);
+
+            $stmt = $db->prepare("UPDATE users SET secret_answer=? WHERE uid=?");
+            $stmt->execute([$hashed,$uid]);
+        }
+    }
+
     if ($action === 'delete_user') {
-        $stmt = $db->prepare("DELETE FROM users WHERE uid = ?");
+
+        if ($uid == $_SESSION['uid']) {
+            die("You cannot delete your own account.");
+        }
+
+        $stmt = $db->prepare("DELETE FROM users WHERE uid=?");
         $stmt->execute([$uid]);
     }
 
     header("Location: account_management.php");
     exit;
-    }
+}
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rentique | Login</title>
-    <link rel="stylesheet" href="css/rentique.css">
-    <script src="js/login.js" defer></script>
-    <script src="js/script.js" defer></script>
-    <script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Account Management</title>
+
+<link rel="stylesheet" href="css/rentique.css">
+
+<script>
         // Apply saved theme immediately to prevent flash
         if (localStorage.getItem('theme') === 'light') {
             document.documentElement.classList.add('light-mode');
         }
     </script>
-    <style>
+
+<style>
+
 .account-page .dashboard-container{
 display:flex;
 min-height:100vh;
@@ -347,70 +336,60 @@ max-width:150px;
     color:#fff;
     border:1px solid #444;
 }
-
 :root.light-mode .account-page .action-buttons button:hover{
     background:#a3ff00;
 }
-
 :root.light-mode .account-page .btn-delete{
     background:#b3261e;
     color:#fff;
 }
-
 :root.light-mode .account-page .btn-delete:hover{
     background:#d63a31;
 }
-    </style>
+</style>
 </head>
-<body class="account-page">
-    
-<div class="dashboard-container">
-
-<div class="sidebar">
-
-<h2>ADMIN PANEL</h2>
-
-<a href="admin_dashboard.php" class="side-link">Dashboard</a>
-<a href="account_management.php" class="side-link">Manage Accounts</a>
-<a href="report.php" class="side-link">Reports</a>
-<a href="logout.php" class="side-link">Logout</a>
-
+    <body class="account-page">
+    <div class="dashboard-container">
+    <div class="sidebar">
+    <h2>ADMIN PANEL</h2>
+    <a href="admin_dashboard.php" class="side-link">Dashboard</a>
+    <a href="account_management.php" class="side-link">Manage Accounts</a>
+    <a href="report.php" class="side-link">Reports</a>
+    <a href="index.php?logout=1" class="side-link">Logout</a>
 </div>
-
 <div class="main-content">
-
 <!-- CREATE ADMIN -->
-
 <div class="section-block">
 
-<h2>ADMIN ACCOUNT CREATION</h2>
+    <h2>ADMIN ACCOUNT CREATION</h2>
 
 <?php if($success): ?>
-<p style="color:#00ff88"><?= $success ?></p>
+    <p style="color:#00ff88"><?= $success ?></p>
 <?php endif; ?>
 
 <?php foreach($errors as $e): ?>
-<p style="color:#ff4c4c"><?= $e ?></p>
+    <p style="color:#ff4c4c"><?= $e ?></p>
 <?php endforeach; ?>
 
 <form method="POST" class="admin-create-form">
 
-<input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
+    <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
 
-<input type="text" name="admin_username" placeholder="Username" required>
+    <input type="text" name="admin_username" placeholder="Username" required>
 
-<input type="email" name="admin_email" placeholder="Email" required>
+    <input type="email" name="admin_email" placeholder="Email" required>
 
-<input type="password" name="admin_password" placeholder="Password" required>
+    <input type="password" name="admin_password" placeholder="Password" required>
 
 <button type="submit" name="create_admin" class="btn-primary">
 CREATE ACCOUNT
 </button>
 
 </form>
+
 </div>
-    
- <!-- USER TABLE -->
+
+<!-- USER TABLE -->
 
 <div class="section-block">
 
@@ -443,7 +422,7 @@ Refresh
 
 </thead>
 
-    <tbody>
+<tbody>
 
 <?php foreach ($users as $u): ?>
 
@@ -460,37 +439,37 @@ Refresh
 <form method="POST" class="action-buttons">
 <input type="hidden" name="uid" value="<?= $u['uid'] ?>">
 <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
-<input type="text" name="new_username" placeholder="Username">
-<input type="text" name="new_email" placeholder="Email">
+<input type="text" name="new_username" placeholder="username">
+<input type="text" name="new_email" placeholder="email">
 <button name="action" value="update_user" class="btn-action">
 Update
 </button>
 </form>
 </td>
-    
-    <td>
+
+<td>
 <form method="POST" class="action-buttons">
 <input type="hidden" name="uid" value="<?= $u['uid'] ?>">
 <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
-<input type="password" name="new_password" placeholder="Password">
+<input type="password" name="new_password" placeholder="password">
 <button name="action" value="reset_password" class="btn-action">
 Reset
 </button>
 </form>
 </td>
 
-    <td>
+<td>
 <form method="POST" class="action-buttons">
 <input type="hidden" name="uid" value="<?= $u['uid'] ?>">
 <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
-<input type="text" name="new_secret" placeholder="Secret">
+<input type="text" name="new_secret" placeholder="secret">
 <button name="action" value="reset_secret" class="btn-action">
 Reset
 </button>
 </form>
 </td>
 
-    <td>
+<td>
 <form method="POST" onsubmit="return confirm('Delete this user?');">
 <input type="hidden" name="uid" value="<?= $u['uid'] ?>">
 <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
@@ -499,14 +478,22 @@ Delete
 </button>
 </form>
 </td>
+
 </tr>
-      <?php endforeach; ?>  
-    </tbody>
+
+<?php endforeach; ?>
+
+</tbody>
 
 </table>
+
 </div>
+
 </div>
+
 </div>
+
 </div>
+
 </body>
 </html>
