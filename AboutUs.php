@@ -537,7 +537,7 @@ if (isset($_SESSION['uid'])) {
     </div>
 
     <div class="footer-bottom">
-        <p>Â© 2025 Rentique. All Rights Reserved.</p>
+        <p>© 2025 Rentique. All Rights Reserved.</p>
     </div>
 </footer>
 

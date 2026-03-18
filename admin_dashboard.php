@@ -526,7 +526,7 @@ if ($view === 'order' && $oiParam > 0 && $hasOrders && $hasOrderItems) {
             ['report.php', 'Reports'],
             ['#support', 'Support'],
             ['account_management.php', 'Account Management'],
-            ['product_management.php', 'Manage Inventory']
+			['product_management.php', 'Manage Inventory']
         ];
         for ($i = 0; $i < count($menuItems); $i++):
         ?>

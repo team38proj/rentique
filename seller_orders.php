@@ -96,9 +96,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             "Seller confirmed item received back and relisted."
         );
 
-         add_system_message($db, $orderIdFk, $buyerUid, $sellerUid,
-        "Your return has been confirmed. Please leave a star rating for this product in your dashboard."
-    );
+        add_system_message($db, $orderIdFk, $buyerUid, $sellerUid,
+            "Your return has been confirmed. Please leave a star rating for this product in your dashboard."
+        );
 
         header("Location: seller_orders.php");
         exit;
@@ -137,7 +137,55 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta charset="UTF-8">
     <title>Seller Orders</title>
     <link rel="stylesheet" href="css/rentique.css">
-    <script src="js/theme.js" defer></script>
+    <script>
+        // Apply saved theme immediately to prevent flash
+        if (localStorage.getItem('theme') === 'light') {
+            document.documentElement.classList.add('light-mode');
+        }
+    </script>
+    <style>
+        .cart-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .cart-icon svg {
+            width: 20px;
+            height: 20px;
+            stroke: #ffffff;
+            transition: all 0.3s ease;
+        }
+        html.light-mode .cart-icon svg {
+            stroke: #333333;
+        }
+        .cart-icon:hover svg {
+            stroke: #00ff00;
+            filter: drop-shadow(0 0 10px rgba(0, 255, 0, 0.5));
+        }
+        #themeToggle {
+            background: none;
+            border: none;
+            box-shadow: none;
+            outline: none;
+            color: inherit;
+            width: auto;
+            height: auto;
+            border-radius: 0;
+            cursor: pointer;
+            font-size: 1.3rem;
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            line-height: 1;
+        }
+        #themeToggle:hover {
+            background: none;
+            border: none;
+            transform: scale(1.2);
+        }
+    </style>
 </head>
 <body>
 
@@ -151,8 +199,16 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
         <ul class="nav-links">
             <li><a href="index.php">Home</a></li>
-            <li><a href="seller_dashboard.php">Dashboard</a></li>
-            <button id="themeToggle">Theme</button>
+            <li><a href="seller_dashboard.php">Account</a></li>
+            <li><a href="basketPage.php" class="cart-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"></path>
+                </svg>
+            </a></li>
+            <li><button id="themeToggle" onclick="toggleTheme()">🌙</button></li>
         </ul>
     </nav>
 </header>
@@ -217,6 +273,29 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <?php endif; ?>
 </main>
 
+<script>
+    function toggleTheme() {
+        const html = document.documentElement;
+        const themeToggle = document.getElementById('themeToggle');
+        if (html.classList.contains('light-mode')) {
+            html.classList.remove('light-mode');
+            themeToggle.textContent = '🌙';
+            localStorage.setItem('theme', 'dark');
+        } else {
+            html.classList.add('light-mode');
+            themeToggle.textContent = '☀️';
+            localStorage.setItem('theme', 'light');
+        }
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+        const themeToggle = document.getElementById('themeToggle');
+        if (localStorage.getItem('theme') === 'light') {
+            themeToggle.textContent = '☀️';
+        } else {
+            themeToggle.textContent = '🌙';
+        }
+    });
+</script>
+
 </body>
 </html>
-
