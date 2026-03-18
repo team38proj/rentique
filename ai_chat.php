@@ -4,7 +4,7 @@ header("Content-Type: application/json");
 $data = json_decode(file_get_contents("php://input"), true);
 $userMessage = $data["message"] ?? "";
 
-$apiKey = "can't be posted online :) PLACEHOLDER"; 
+$apiKey = "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"; 
 
 $ch = curl_init();
 
@@ -31,6 +31,5 @@ curl_close($ch);
 
 $result = json_decode($response, true);
 $reply = $result["choices"][0]["message"]["content"] ?? "Sorry, something went wrong.";
-
 
 echo json_encode(["reply" => $reply]);

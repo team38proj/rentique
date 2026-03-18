@@ -1,0 +1,1077 @@
+<?php
+session_start();
+require_once 'connectdb.php';
+
+$userData = null;
+
+if (isset($_SESSION['uid'])) {
+    $stmt = $db->prepare("SELECT uid, billing_fullname, role FROM users WHERE uid = ?");
+    $stmt->execute([$_SESSION['uid']]);
+    $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rental Drop Game | Rentique</title>
+
+<link rel="stylesheet" href="css/rentique.css">
+<link rel="stylesheet" href="assets/global.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
+<style>
+
+body {
+    margin: 0;
+}
+
+.game-wrapper{
+max-width:1100px;
+margin:40px auto 80px auto;
+
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:40px;
+}
+
+#gameArea {
+display: none;
+    position: relative;
+    width: 90%;
+    max-width: 1000px;
+    height: 70vh;
+    max-height: 700px;
+    overflow: hidden;
+    border: 3px solid #00FF00;
+    box-shadow: 0 0 40px #00FF00, inset 0 0 40px #00FF0022;
+    background: black;
+    border-radius: 20px;
+}
+
+#bgLayer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: black;
+    z-index: 0;
+    transition: background-color 0.4s ease;
+}
+
+#player {
+    position: absolute;
+    bottom: 30px;
+    width: 120px;
+    height: 20px;
+    background: #00FF00;
+    box-shadow: 0 0 20px #00FF00;
+    z-index: 2;
+}
+
+.item {
+    position: absolute;
+    width: 55px;
+    height: 55px;
+    background: #00FF00;
+    text-align: center;
+    line-height: 1;
+    font-size: 40px;
+    border-radius: 7px;
+    box-shadow: 0 0 15px #00FF00;
+    z-index: 2;
+}
+
+.bad {
+    background: red;
+    box-shadow: 0 0 15px red;
+}
+
+.scoreboard {
+    position: absolute;
+    top: 15px;
+    left: 20px;
+    font-size: 18px;
+    z-index: 2;
+    color: #00FF00;
+}
+
+#gameOver {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+    text-align: center;
+    z-index: 3;
+    color: #00FF00;
+}
+
+#gameOver h1 {
+    font-size: 45px;
+}
+
+.game-btn {
+    background: transparent;
+    border: 2px solid #00FF00;
+    color: #00FF00;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: 0.3s;
+}
+
+.game-btn:hover {
+    background: #00FF00;
+    color: black;
+    box-shadow: 0 0 20px #00FF00;
+}
+
+#deathFlash {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: red;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 4;
+}
+
+ .cart-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .cart-icon svg {
+            width: 20px;
+            height: 20px;
+            stroke: #eaeaea;
+            transition: all 0.3s ease;
+        }
+        html.light-mode .cart-icon svg {
+            stroke: #000000;
+        }
+        .cart-icon:hover svg {
+            stroke: #00FF00;
+        }
+
+       .game-intro{
+max-width:800px;
+margin:80px auto 30px auto;
+padding:40px;
+text-align:center;
+border-radius:25px;
+
+background: linear-gradient(
+135deg,
+#020600,
+#051500
+);
+
+border:1px solid rgba(163,255,0,0.2);
+box-shadow:0 0 40px rgba(163,255,0,0.1);
+
+color:#a3ff00;
+}
+
+.game-intro h1{
+font-size:42px;
+margin-bottom:20px;
+}
+
+.game-intro p{
+color:#ddd;
+line-height:1.6;
+margin-bottom:25px;
+}
+
+.intro-stats{
+color:#a3ff00;
+font-size:15px;
+margin-bottom:30px;
+opacity:0.9;
+}
+
+.game-intro .game-btn{
+font-size:18px;
+padding:14px 40px;
+border-radius:40px;
+}
+
+.scoreboard.locked {
+    opacity: 0.5;
+    filter: grayscale(100%);
+}
+
+#rewardPopup {
+    position: absolute;
+    inset: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0,0,0,0.85);
+    z-index: 5;
+    animation: fadeInReward 0.6s ease;
+}
+
+.reward-content {
+    text-align: center;
+    padding: 40px;
+    border-radius: 20px;
+    background: rgba(10,20,10,0.95);
+    border: 2px solid #a3ff00;
+    box-shadow: 0 0 50px rgba(163,255,0,0.5);
+    animation: scaleIn 0.5s ease;
+}
+
+.reward-content h2 {
+    font-size: 36px;
+    color: #a3ff00;
+    margin-bottom: 15px;
+}
+
+.reward-content p {
+    color: #ddd;
+    margin-bottom: 25px;
+}
+
+.reward-badge {
+    font-size: 40px;
+    font-weight: bold;
+    padding: 20px 40px;
+    border-radius: 50px;
+    background: linear-gradient(135deg,#a3ff00,#d2ff4c);
+    color: black;
+    box-shadow: 0 0 40px #a3ff00;
+    animation: pulseReward 1.5s infinite;
+}
+
+@keyframes pulseReward {
+    0% { box-shadow: 0 0 20px #a3ff00; }
+    50% { box-shadow: 0 0 60px #a3ff00; }
+    100% { box-shadow: 0 0 20px #a3ff00; }
+}
+
+@keyframes fadeInReward {
+    from { opacity:0 }
+    to { opacity:1 }
+}
+
+@keyframes scaleIn {
+    from { transform:scale(0.6); opacity:0 }
+    to { transform:scale(1); opacity:1 }
+}
+         
+ .emoji {
+    display: inline-block;
+    transform: translateY(5px);
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<header>
+<nav class="navbar">
+        <div class="logo">
+            <a href="index.php">
+                <img src="images/rentique_logo.png" alt="Rentique Logo">
+            </a>
+            <span>rentique.</span>
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="index.php">Home</a></li>
+            <li><a href="productsPage.php">Shop</a></li>
+            <li><a href="AboutUs.php">About</a></li>
+            <li><a href="Contact.php">Contact</a></li>
+            <li><a href="FAQTestimonials.php" class="active">FAQ</a></li>
+    <li><a href="game.php" class="active">Game</a></li>
+   
+ <?php if (!empty($userData)): ?>
+            <li><a href="dashboard.php">Style Planner</a></li>
+        <?php else: ?>
+    <a href="login.php" class="active">Style Planner</a>
+<?php endif; ?>
+
+            <!-- SVG Cart Icon -->
+            <li><a href="basketPage.php" class="cart-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"></path>
+                </svg>
+            </a></li>
+
+   
+
+             <?php if (isset($userData['role']) && $userData['role'] === 'customer'): ?>
+                <li><a href="seller_dashboard.php">Sell</a></li>
+                <li><a href="user_dashboard.php"><?= htmlspecialchars($userData['billing_fullname'] ?? "Account") ?></a></li>
+                <li><a href="index.php?logout=1" class="btn login">Logout</a></li>
+
+            <?php elseif (isset($userData['role']) && $userData['role'] === 'admin'): ?>
+            <!-- Admin logged in -->
+                <li><a href="admin_dashboard.php">Admin</a></li>
+                <li><a href="index.php?logout=1" class="btn login">Logout</a></li>
+
+            <?php else: ?>
+                <li><a href="login.php" class="btn login">Login</a></li>
+                <li><a href="signup.php" class="btn signup">Sign Up</a></li>
+            <?php endif; ?>
+        </ul>
+</nav>
+</header>
+
+<div class="game-wrapper">
+            
+          
+<div id="gameIntro" class="game-intro">
+
+<h1>Clean the Closet Challenge</h1>
+
+<p>
+Catch the <strong>clean fashion pieces</strong> and avoid the dirty ones.
+Reach <strong>100 Style Points</strong> to unlock an exclusive
+<strong>5% Rentique Discount</strong>.
+</p>
+
+<div class="intro-stats">
+🧥 Sort premium fashion  
+✨ Increase your Style Score  
+🎁 Unlock rewards at 100 points  
+</div>
+
+<button class="game-btn" onclick="startGameFromIntro()">
+Start Game
+</button>
+
+</div>
+            
+            
+<div id="gameArea">
+    <div id="bgLayer"></div>
+    <div id="deathFlash"></div>
+    <div id="player"></div>
+
+    <div class="scoreboard">
+        Score: <span id="score">0</span><br>
+        Best: <span id="bestScore">0</span>
+    </div>
+
+    <div id="gameOver">
+        <h1>GAME OVER</h1>
+        <button class="game-btn" onclick="restartGame()">PLAY AGAIN</button>
+    </div>
+        
+        <div id="rewardPopup">
+    <div class="reward-content">
+        <h2>🎉 STYLE MASTER!</h2>
+        <p>You unlocked a <strong>5% Rentique Discount</strong></p>
+        <div class="reward-badge">5% OFF</div>
+    </div>
+</div>
+        
+        
+</div>
+</div>
+        
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-column brand-column">
+            <div class="footer-logo">
+                <img src="images/rentique_logo.png" alt="Rentique Logo">
+                <span>rentique.</span>
+            </div>
+            <p class="footer-description">Rent. Wear. Return.<br>Fashion freedom. Sustainable choice.</p>
+            <div class="footer-social">
+                <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://pinterest.com" target="_blank"><i class="fab fa-pinterest-p"></i></a>
+            </div>
+        </div>
+
+        <div class="footer-column links-column">
+            <h4>Quick Links</h4>
+            <ul>
+                <li><a href="index.php">Home</a></li>
+                <li><a href="productsPage.php">Shop</a></li>
+                <li><a href="AboutUs.php">About Us</a></li>
+                <li><a href="Contact.php">Contact</a></li>
+                <li><a href="FAQTestimonials.php">FAQ</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-column contact-column">
+            <h4>Stay Connected</h4>
+            <div class="contact-info">
+                <p><i class="fas fa-envelope"></i> dtblations@gmail.com</p>
+                <p><i class="fas fa-phone-alt"></i> 0121-875-3543</p>
+                <p><i class="fas fa-map-marker-alt"></i> Aston University, Birmingham</p>
+            </div>
+            
+            <div class="newsletter">
+                <p>Subscribe for exclusive offers</p>
+                <div class="newsletter-input">
+                    <input type="email" id="subscribeEmail" placeholder="Your email address">
+                    <button type="button" id="subscribeBtn">→</button>
+                </div>
+                <div id="subscribeMessage" class="subscribe-message"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer-bottom">
+        <p>© 2025 Rentique. All Rights Reserved.</p>
+    </div>
+</footer>
+
+<style>
+.footer {
+    background: #000;
+    color: #fff;
+    padding: 2.5rem 0 0;
+    margin-top: 3rem;
+    border-top: 3px solid #00FF00;
+    width: 100%;
+}
+
+.footer-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    display: grid;
+    grid-template-columns: 2fr 1fr 2fr;
+    gap: 1rem;
+    align-items: start;
+}
+
+.footer-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.brand-column {
+    align-items: flex-start;
+}
+
+.links-column {
+    align-items: center;
+    text-align: center;
+}
+
+.contact-column {
+    align-items: flex-end;
+    text-align: right;
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.8rem;
+}
+
+.footer-logo img {
+    width: 40px;
+    height: auto;
+}
+
+.footer-logo span {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #00FF00;
+    text-transform: lowercase;
+}
+
+.footer-description {
+    color: #b0b0b0;
+    line-height: 1.5;
+    margin-bottom: 1.2rem;
+    font-size: 0.9rem;
+    text-align: left;
+}
+
+.footer-social {
+    display: flex;
+    gap: 0.8rem;
+}
+
+.footer-social a {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    font-size: 1rem;
+    border: 1px solid rgba(0, 255, 0, 0.2);
+}
+
+.footer-social a:hover {
+    background: #00FF00;
+    color: #000;
+    transform: translateY(-3px);
+    border-color: transparent;
+}
+
+.footer-column h4 {
+    color: #00FF00;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    width: 100%;
+}
+
+.links-column h4 {
+    text-align: center;
+}
+
+.contact-column h4 {
+    text-align: right;
+}
+
+.footer-column ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.links-column ul {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.footer-column ul li {
+    margin-bottom: 0.6rem;
+}
+
+.footer-column ul li a {
+    color: #d0d0d0;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.footer-column ul li a:hover {
+    color: #00FF00;
+}
+
+.contact-info {
+    margin-bottom: 1.2rem;
+    width: 100%;
+}
+
+.contact-info p {
+    color: #d0d0d0;
+    font-size: 0.9rem;
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    justify-content: flex-end;
+}
+
+.contact-info i {
+    color: #00FF00;
+    width: 18px;
+    text-align: center;
+}
+
+.newsletter {
+    width: 100%;
+}
+
+.newsletter p {
+    color: #d0d0d0;
+    font-size: 0.9rem;
+    margin-bottom: 0.6rem;
+    text-align: right;
+}
+
+.newsletter-input {
+    display: flex;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(0, 255, 0, 0.2);
+    border-radius: 4px;
+    overflow: hidden;
+    width: 100%;
+    max-width: 260px;
+    margin-left: auto;
+}
+
+.newsletter-input input {
+    flex: 1;
+    padding: 0.7rem;
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 0.9rem;
+}
+
+.newsletter-input input:focus {
+    outline: none;
+}
+
+.newsletter-input input::placeholder {
+    color: #666;
+}
+
+.newsletter-input button {
+    background: #00FF00;
+    border: none;
+    color: #000;
+    padding: 0.7rem 1rem;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+.newsletter-input button:hover {
+    background: #d2ff4c;
+}
+
+.subscribe-message {
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+    min-height: 1.2rem;
+    color: #00FF00;
+    text-align: right;
+}
+
+.footer-bottom {
+    margin-top: 2rem;
+    padding: 1.2rem 0;
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.3);
+    width: 100%;
+}
+
+.footer-bottom p {
+    color: #aaa;
+    font-size: 0.85rem;
+    margin: 0;
+    line-height: 1.5;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+html.light-mode .footer {
+    background: #f8f8f8;
+    color: #333;
+}
+
+html.light-mode .footer-description {
+    color: #666;
+}
+
+html.light-mode .footer-social a {
+    background: rgba(0, 0, 0, 0.05);
+    color: #333;
+}
+
+html.light-mode .footer-social a:hover {
+    background: #00FF00;
+    color: #000;
+}
+
+html.light-mode .footer-column ul li a {
+    color: #555;
+}
+
+html.light-mode .contact-info p {
+    color: #555;
+}
+
+html.light-mode .newsletter p {
+    color: #555;
+}
+
+html.light-mode .newsletter-input {
+    background: #fff;
+}
+
+html.light-mode .newsletter-input input {
+    color: #333;
+}
+
+html.light-mode .newsletter-input input::placeholder {
+    color: #999;
+}
+
+html.light-mode .subscribe-message {
+    color: #00FF00;
+}
+
+html.light-mode .footer-bottom {
+    background: rgba(0, 0, 0, 0.02);
+}
+
+html.light-mode .footer-bottom p {
+    color: #666;
+}
+
+@media (max-width: 900px) {
+    .footer-container {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .brand-column {
+        grid-column: span 2;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .footer-description {
+        text-align: center;
+    }
+    
+    .footer-social {
+        justify-content: center;
+    }
+    
+    .contact-column {
+        align-items: center;
+        text-align: center;
+    }
+    
+    .contact-column h4 {
+        text-align: center;
+    }
+    
+    .contact-info p {
+        justify-content: center;
+    }
+    
+    .newsletter p {
+        text-align: center;
+    }
+    
+    .newsletter-input {
+        margin: 0 auto;
+    }
+    
+    .subscribe-message {
+        text-align: center;
+    }
+}
+
+@media (max-width: 600px) {
+    .footer-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .brand-column {
+        grid-column: span 1;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const subscribeBtn = document.getElementById('subscribeBtn');
+    const subscribeEmail = document.getElementById('subscribeEmail');
+    const subscribeMessage = document.getElementById('subscribeMessage');
+    
+    if (subscribeBtn) {
+        subscribeBtn.addEventListener('click', function() {
+            const email = subscribeEmail.value.trim();
+            
+            if (!email) {
+                showMessage('Please enter your email address', 'error');
+                return;
+            }
+            
+            if (!isValidEmail(email)) {
+                showMessage('Please enter a valid email address', 'error');
+                return;
+            }
+            
+            showMessage('Thank you for subscribing!', 'success');
+            subscribeEmail.value = '';
+            
+            setTimeout(() => {
+                subscribeMessage.innerHTML = '';
+            }, 3000);
+        });
+        
+        subscribeEmail.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                subscribeBtn.click();
+            }
+        });
+    }
+    
+    function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+    
+    function showMessage(text, type) {
+        subscribeMessage.innerHTML = text;
+        subscribeMessage.style.color = type === 'success' ? '#00FF00' : '#ff4444';
+    }
+});
+</script>
+      
+     
+<script>
+const isLoggedIn = <?= isset($_SESSION['uid']) ? 'true' : 'false' ?>;
+</script>
+
+<script>
+let player = document.getElementById("player");
+let gameArea = document.getElementById("gameArea");
+let bgLayer = document.getElementById("bgLayer");
+let scoreDisplay = document.getElementById("score");
+let bestScoreDisplay = document.getElementById("bestScore");
+let gameOverScreen = document.getElementById("gameOver");
+let gamePaused = false;
+let deathFlash = document.getElementById("deathFlash");
+
+let score = 0;
+let bestScore = 0;
+
+if (isLoggedIn) {
+    bestScore = localStorage.getItem("rentalBestScore") || 0;
+} else {
+    localStorage.removeItem("rentalBestScore");
+}
+
+let itemInterval;
+let speed = 3;
+
+bestScoreDisplay.textContent = bestScore;
+
+player.style.left = (gameArea.clientWidth/2 - 60) + "px";
+
+
+function updateBackground() {
+    let maxScoreForFullGreen = 80;
+    let progress = Math.min(score / maxScoreForFullGreen, 1);
+    let greenValue = Math.floor(180 * progress);
+    bgLayer.style.backgroundColor = `rgb(0, ${greenValue}, 0)`;
+}
+
+gameArea.addEventListener("mousemove", (e) => {
+    const rect = gameArea.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const playerWidth = player.offsetWidth;
+    const maxX = rect.width - playerWidth;
+
+    let newLeft = mouseX - playerWidth / 2;
+
+    if (newLeft < 0) newLeft = 0;
+    if (newLeft > maxX) newLeft = maxX;
+
+    player.style.left = newLeft + "px";
+});
+
+function createItem() {
+    let item = document.createElement("div");
+    item.classList.add("item");
+
+    const cleanClothes = ["👕","👗","🧥","👖","👚","👜"];
+    const dirtyClothes = ["🧦","🥾","🩳"];
+
+   let emoji;
+
+if (Math.random() < 0.25) {
+    item.classList.add("bad");
+    emoji = dirtyClothes[Math.floor(Math.random() * dirtyClothes.length)];
+} else {
+    emoji = cleanClothes[Math.floor(Math.random() * cleanClothes.length)];
+}
+
+item.innerHTML = `<span class="emoji">${emoji}</span>`;
+
+    let maxLeft = gameArea.clientWidth - 70;
+    item.style.left = Math.random() * maxLeft + "px";
+    item.style.top = "0px";
+
+    gameArea.appendChild(item);
+
+    let fall = setInterval(() => {
+
+        if (!gameStarted) {
+            clearInterval(fall);
+            item.remove();
+            return;
+        }
+
+        item.style.top = item.offsetTop + speed + "px";
+
+        let itemRect = item.getBoundingClientRect();
+        let playerRect = player.getBoundingClientRect();
+
+        if (
+            itemRect.bottom >= playerRect.top &&
+            itemRect.left < playerRect.right &&
+            itemRect.right > playerRect.left
+        ) {
+            if (item.classList.contains("bad")) {
+                endGame();
+            } else {
+                score++;
+                scoreDisplay.textContent = score;
+                updateBackground();
+                checkReward();
+
+                if (score % 5 === 0) speed += 0.5;
+            }
+
+            item.remove();
+            clearInterval(fall);
+        }
+
+        if (item.offsetTop > gameArea.clientHeight) {
+            item.remove();
+            clearInterval(fall);
+        }
+
+    }, 20);
+}
+
+function startGame() {
+
+document.getElementById("gameArea").style.display="block";
+
+itemInterval = setInterval(createItem, 1000);
+
+}
+
+function endGame() {
+
+    clearInterval(itemInterval);
+    gamePaused = true;
+    gameStarted = false;
+
+    deathFlash.style.opacity = 0.8;
+    setTimeout(() => deathFlash.style.opacity = 0, 500);
+
+    // Update best score
+    if (score > bestScore) {
+        bestScore = score;
+
+        if (isLoggedIn) {
+            localStorage.setItem("rentalBestScore", bestScore);
+        }
+    }
+
+    bestScoreDisplay.textContent = bestScore;
+
+    bgLayer.style.backgroundColor = "black";
+
+    // LOCK scoreboard
+    document.querySelector(".scoreboard").classList.add("locked");
+
+    // Show game over screen ALWAYS
+    setTimeout(() => {
+        gameOverScreen.style.display = "block";
+    }, 500);
+}
+
+function restartGame() {
+    location.reload();
+
+}
+
+
+let discountUnlocked = localStorage.getItem("rentalDiscount") || "false";
+
+let gameStarted = false;
+
+function startGameFromIntro(){
+
+if(gameStarted) return;
+
+gameStarted = true;
+
+document.getElementById("gameIntro").style.display="none";
+
+startGame();
+}
+
+function checkReward(){
+
+    if(score === 100 && discountUnlocked === "false"){
+
+        discountUnlocked = "true";
+        localStorage.setItem("rentalDiscount","true");
+
+        showRewardAnimation();
+    }
+}
+
+document.addEventListener("visibilitychange", () => {
+
+if (document.hidden) {
+    pauseGame();
+} else {
+    resumeGame();
+}
+
+});
+
+function pauseGame(){
+if(!gamePaused && gameStarted){
+    clearInterval(itemInterval);
+    gamePaused = true;
+
+}
+}
+
+function resumeGame(){
+if(gamePaused && gameStarted){
+    itemInterval = setInterval(createItem, 1000);
+    gamePaused = false;
+}
+}
+         
+ function showRewardAnimation(){
+
+    const popup = document.getElementById("rewardPopup");
+
+    popup.style.display = "flex";
+
+    setTimeout(() => {
+        popup.style.display = "none";
+    }, 4000);
+}
+
+</script>
+
+<button id="aiChatBtn">💬 AI Help</button>
+
+<div id="chatBox">
+    <div class="chat-header">
+        AI Assistant
+        <span id="closeChat">✖</span>
+    </div>
+
+    <div id="chatMessages"></div>
+
+    <div class="chat-input">
+        <input type="text" id="userMessage" placeholder="Ask something..." />
+        <button id="sendMessage">Send</button>
+    </div>
+</div>
+
+<script src="assets/global.js"></script>
+</body>
+</html>

@@ -1335,13 +1335,11 @@ document.addEventListener("DOMContentLoaded", function() {
         <input type="text" id="userMessage" placeholder="Ask something..." />
         <button id="sendMessage">Send</button>
     </div>
-</div>	
+</div>
 
-	
 <script src="assets/global.js"></script>
 </body>
 </html>
-
 
 
 
