@@ -172,13 +172,13 @@ min-height:100vh;
 }
 
 .account-page .sidebar{
-width:260px;
+width:10%;
 flex-shrink:0;
 }
 
 .account-page .main-content{
 flex:1;
-padding:30px;
+padding:20px;
 }
 
 .account-page .section-block{
@@ -224,14 +224,13 @@ margin-top:20px;
 .account-page .main-table{
 width:100%;
 border-collapse:collapse;
-min-width:1100px;
 }
 
 .account-page .main-table th,
 .account-page .main-table td{
 padding:12px 14px;
 text-align:left;
-white-space:nowrap;
+white-space:normal;
 }
 
 .account-page .main-table th{
@@ -243,21 +242,17 @@ background:#111;
 }
 
 .account-page .action-buttons{
-display:flex;
-flex-direction:column;
-gap:6px;
-max-width:150px;
+max-width: 100%;
 }
 
 .account-page .main-table{
     width:100%;
-    min-width:1400px;
     border-collapse:collapse;
 }
 
 .account-page .main-table th,
 .account-page .main-table td{
-    padding:16px 18px;
+    padding:8px 8px;
     vertical-align:top;
 }
 
@@ -269,7 +264,7 @@ max-width:150px;
 
 .account-page .action-buttons input{
     width:100%;
-    min-width:160px;
+    min-width:unset;
 }
 
 .account-page .btn-action{
@@ -277,20 +272,21 @@ max-width:150px;
 }
 
 .account-page .btn-delete{
-    width:120px;
+    max-width:80px;
 }
 
 .account-page .main-table th{
-    white-space:nowrap;
+    white-space:normal;
 }
 
 .account-page .action-buttons button{
     align-self:center;
-    width:120px;
+    min-width:unset;
+    width:100%;
 }
 
 .account-page .btn-action{
-    padding:10px 18px;
+    padding:4px 18px;
     border-radius:10px;
     border:1px solid #a3ff00;
     background:#1a1a1a;
@@ -346,6 +342,27 @@ max-width:150px;
 :root.light-mode .account-page .btn-delete:hover{
     background:#d63a31;
 }
+
+.input-field {
+    width: 100%;
+    max-width: 120px;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.email-cell {
+    white-space: normal;
+    word-break: break-word;
+    max-width: 120px;
+}
+
+.action-cell {
+    white-space: normal;
+    font-size: 12px;
+    max-width: 80px;
+}
+
+
 </style>
 </head>
     <body class="account-page">
@@ -430,46 +447,46 @@ Refresh
 
 <td><?= htmlspecialchars($u['uid']) ?></td>
 <td><?= htmlspecialchars($u['username']) ?></td>
-<td><?= htmlspecialchars($u['email']) ?></td>
+<td class="email-cell"><?= htmlspecialchars($u['email']) ?></td>
 <td><?= htmlspecialchars($u['role']) ?></td>
 <td><?= htmlspecialchars($u['created_at']) ?></td>
 <td><?= htmlspecialchars($u['product_count']) ?></td>
 
-<td>
+<td class="action-cell">
 <form method="POST" class="action-buttons">
 <input type="hidden" name="uid" value="<?= $u['uid'] ?>">
 <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
-<input type="text" name="new_username" placeholder="username">
-<input type="text" name="new_email" placeholder="email">
+<input type="text" name="new_username" placeholder="username" class="input-field">
+<input type="text" name="new_email" placeholder="email" class="input-field">
 <button name="action" value="update_user" class="btn-action">
 Update
 </button>
 </form>
 </td>
 
-<td>
+<td class="action-cell">
 <form method="POST" class="action-buttons">
 <input type="hidden" name="uid" value="<?= $u['uid'] ?>">
 <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
-<input type="password" name="new_password" placeholder="password">
+<input type="password" name="new_password" placeholder="password" class="input-field">
 <button name="action" value="reset_password" class="btn-action">
 Reset
 </button>
 </form>
 </td>
 
-<td>
+<td class="action-cell">
 <form method="POST" class="action-buttons">
 <input type="hidden" name="uid" value="<?= $u['uid'] ?>">
 <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
-<input type="text" name="new_secret" placeholder="secret">
+<input type="text" name="new_secret" placeholder="secret" class="input-field">
 <button name="action" value="reset_secret" class="btn-action">
 Reset
 </button>
 </form>
 </td>
 
-<td>
+<td class="action-cell">
 <form method="POST" onsubmit="return confirm('Delete this user?');">
 <input type="hidden" name="uid" value="<?= $u['uid'] ?>">
 <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
