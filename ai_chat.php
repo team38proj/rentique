@@ -4,7 +4,8 @@ header("Content-Type: application/json");
 $data = json_decode(file_get_contents("php://input"), true);
 $userMessage = $data["message"] ?? "";
 
-$apiKey = "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"; 
+//this api key has been hidden as to not break the live version
+//$apiKey = ""; 
 
 $ch = curl_init();
 
